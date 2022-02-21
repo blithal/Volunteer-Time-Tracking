@@ -94,15 +94,43 @@ class _UserAccountPage extends State<UserAccountPage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Hello World',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
+              color: Colors.blue,
+              width: displayWidth(context) * .5,
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    color: Colors.blue,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text(
+                      'Hello World',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Roboto',
+                        letterSpacing: 0.5,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(15),
+                    child: const Text(
+                      'Hello World',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Roboto',
+                        letterSpacing: 0.5,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

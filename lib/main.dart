@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Login Page - Fayetteville Public Library Volunteer System',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         //test
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(
+          title: 'Fayetteville Public Library Volunteer System - Login'),
     );
   }
 }
@@ -49,17 +51,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  _verifiyUsername() {
+    setState(() {});
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  _verifyPassword() {
+    setState(() {});
+  }
+
+  Size displaySize(BuildContext context) {
+    return MediaQuery.of(context).size;
+  }
+
+  double displayHeight(BuildContext context) {
+    return displaySize(context).height;
+  }
+
+  double displayWidth(BuildContext context) {
+    if (displaySize(context).width > 1000) {
+      return 1000;
+    }
+    return displaySize(context).width;
   }
 
   @override
@@ -94,23 +106,100 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 25,
+                ),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Container(
+              padding: const EdgeInsets.all(10),
+              width: displayWidth(context) * .5,
+              child: TextField(
+                controller: _verifiyUsername(),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                ),
+              ),
             ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              width: displayWidth(context) * .5,
+              child: TextField(
+                controller: _verifyPassword(),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                ),
+              ),
+            ),
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.hovered)) {
+                            return Colors.blue.withOpacity(0.04);
+                          }
+
+                          if (states.contains(MaterialState.focused) ||
+                              states.contains(MaterialState.pressed)) {
+                            return Colors.blue.withOpacity(0.12);
+                          }
+
+                          return null; // Defer to the widget's default.
+                        },
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Text('Create an account'))),
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 75, 157, 224)),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.hovered)) {
+                            return const Color.fromARGB(255, 24, 111, 182)
+                                .withOpacity(0.04);
+                          }
+
+                          if (states.contains(MaterialState.focused) ||
+                              states.contains(MaterialState.pressed)) {
+                            return const Color.fromARGB(255, 17, 70, 114)
+                                .withOpacity(0.12);
+                          }
+
+                          return null; // Defer to the widget's default.
+                        },
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserAccount()),
+                      );
+                    }, // verify login creditionals (change later)
+                    child: const Text('Login'))),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -7,7 +7,6 @@ class userSerializer(serializers.ModelSerializer):
     class Meta:
         model = info
         fields = [
-          'userID',
           'name',
           'volunteerAdmin',
           'active'

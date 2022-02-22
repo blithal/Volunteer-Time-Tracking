@@ -2,10 +2,9 @@ from django.db import models
 
 # Create your models here.
 
-class user(models.Model):
-    userID = models.IntegerField()
+class info(models.Model):
     name = models.CharField(max_length = 40)
-    volunteerAdmin = models.CharField(max_length = 10)
+    volunteerAdmin = models.BooleanField(default = False)
     active = models.BooleanField()
 class Meta:
     db_table = "User Info Table"

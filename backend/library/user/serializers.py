@@ -1,13 +1,12 @@
 from rest_framework import serializers
 
-from .models import user
+from .models import info
 
 
 class userSerializer(serializers.ModelSerializer):
     class Meta:
-        model = user
+        model = info
         fields = [
-          'userID',
           'name',
           'volunteerAdmin',
           'active'

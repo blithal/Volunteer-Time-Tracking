@@ -16,6 +16,9 @@ class _TestState extends State<Test> { // state object
   DateTime startClockTime = DateTime.now();
   DateTime finishClockTime = DateTime.now();
   Duration timeElapsed = new Duration();
+  // double hours = 0.0;
+  final myController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +33,7 @@ class _TestState extends State<Test> { // state object
               if (isActive) { // button has just been toggled on (clock in occurred)
                 timeElapsed = new Duration();
                 startClockTime = DateTime.now();
+
               } else { // button has just been toggled off (clock out occurred)
                 finishClockTime = DateTime.now();
                 timeElapsed = startClockTime.difference(finishClockTime);
@@ -37,7 +41,7 @@ class _TestState extends State<Test> { // state object
             });
           },
           child: Icon(Icons.access_alarm_outlined),
-          backgroundColor: Colors.grey,
+          backgroundColor: isActive ? Colors.red : Colors.green,
         ),
         body: Center(
           child: Column(
@@ -45,6 +49,23 @@ class _TestState extends State<Test> { // state object
               Text('Clock-in time: ' + '$startClockTime'),
               Text('Clock-out time: ' + '$finishClockTime'),
               Text('Time Elapsed: ' + '$timeElapsed'),
+
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Manually enter hours of volunteer service',
+                ),
+                controller: myController,
+              ),
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+
+                    });
+                  },
+                  child: Text('Submit hours'),
+              ),
+              Text(myController.text + ' hours of service logged!'),
             ],
           ),
         ),

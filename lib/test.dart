@@ -71,7 +71,7 @@ class _TestingStatefulWidgetState extends State<TestingStatefulWidget> {
         child: ListView.builder(
           itemCount: users?.length,
           itemBuilder: (context, index) {
-            return Container(child: Text(users![index].name));
+            return Container(child: Text(users![index].firstName));
           },
         ),
         replacement: const Center(child: CircularProgressIndicator()),

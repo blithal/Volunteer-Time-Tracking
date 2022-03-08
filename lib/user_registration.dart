@@ -33,6 +33,51 @@ class UserRegistrationPage extends StatefulWidget {
 class _UserRegistrationPage extends State<UserRegistrationPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  Widget volunteerCard(
+      String name, String date, String discription, String orginizerName) {
+    return Container(
+      width: displayWidth(context) * .70,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        color: const Color.fromARGB(255, 167, 206, 238),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Column(children: <Widget>[
+          Container(
+            width: displayWidth(context) * .70,
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              name,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontSize: 17),
+            ),
+          ),
+          /*Area to display email*/
+          Container(
+            width: displayWidth(context) * .70,
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              date,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontSize: 15),
+            ),
+          ),
+          Container(
+            width: displayWidth(context) * .70,
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              discription,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontSize: 15),
+            ),
+          )
+        ])
+      ]),
+    );
+  }
+
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
   }
@@ -67,6 +112,8 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
                 style: TextStyle(fontSize: 25),
               ),
             ),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            volunteerCard("Opp 1", "01-01-22", "This is a test", "John Doe"),
           ],
         ),
       ),

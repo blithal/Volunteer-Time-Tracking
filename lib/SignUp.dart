@@ -99,7 +99,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: ElevatedButton(
                   child: const Text('Sign Up'),
                   onPressed: () {
-                    //do nothing
+                    Navigator.pop(context);
                   },
                 )),
           ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
 
 class UserRegistration extends StatelessWidget {
   const UserRegistration({Key? key}) : super(key: key);
@@ -29,6 +31,8 @@ class UserRegistrationPage extends StatefulWidget {
 }
 
 class _UserRegistrationPage extends State<UserRegistrationPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
   }
@@ -44,6 +48,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -53,21 +58,92 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 10) /*Spacing for user*/,
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              /*Area for name*/
-              Container(
-                width: displayWidth(context) * .25,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Hello World',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25),
-                ),
+            Container(
+              width: displayWidth(context) * .70,
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                'Volunteer Opportunities',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 25),
               ),
-            ]),
+            ),
           ],
         ),
       ),
+      drawer: Drawer(
+          child: ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Volunteer Opportunities'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {},
+            child: const Text('Currently Enrolled'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {},
+            child: const Text('Volunteer History'),
+          ),
+          const SizedBox(height: 25) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserAccount()));
+            },
+            icon: const Icon(
+              Icons.account_circle,
+              size: 20,
+            ),
+            label: const Text('Account'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {},
+            icon: const Icon(
+              Icons.settings,
+              size: 20,
+            ),
+            label: const Text('Settings'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyApp()));
+            },
+            icon: const Icon(
+              Icons.logout,
+              size: 20,
+            ),
+            label: const Text('Logout'),
+          ),
+        ],
+      )),
     );
   }
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'env.sample.dart';
-import 'user.dart';
+import 'package:provider/provider.dart';
+import 'package:volunteer_time_tracking/models/user.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,29 +14,29 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    users = getUserList();
+    // users = getUserList();
   }
 
-  Future<List<User>> getUserList() async {
-    final response = await http.get("${Env.URL_PREFIX}userdetails");
+  // Future<List<User>> getUserList() async {
+  //   final response = await http.get(Uri.parse("${Env.URL_PREFIX}userdetails"));
 
-    final items = json.decode(response.body).cast<Map<String, dynamic>>();
-    List<User> users = items.map<User>((json) {
-      return User.fromJson(json);
-    }).toList();
-    return users;
-  }
+  //   final items = json.decode(response.body).cast<Map<String, dynamic>>();
+  //   List<User> users = items.map<User>((json) {
+  //     return User.fromJson(json);
+  //   }).toList();
+  //   return users;
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: userListKey,
       appBar: AppBar(
-        title: Text('User List'),
-      ),
+          // title: Text(getUserList().toString()),
+          ),
       body: Center(
         child: FutureBuilder<List<User>>(
-          future: users,
+          // future: getUserList(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) return CircularProgressIndicator();
             return ListView.builder(

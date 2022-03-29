@@ -3,42 +3,48 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
-import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
+import 'package:volunteer_time_tracking/user_registration.dart';
 
-class UserRegistration extends StatelessWidget {
-  const UserRegistration({Key? key}) : super(key: key);
+class UserCompleted extends StatelessWidget {
+  const UserCompleted({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title:
-          'User Registration Page - Fayetteville Public Library Volunteer System',
+      title: 'User History Page - Fayetteville Public Library Volunteer System',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UserRegistrationPage(
+      home: const UserCompletedPage(
           title:
-              'Fayetteville Public Library Volunteer System - User Account Page'),
+              'Fayetteville Public Library Volunteer System - User History Page'),
     );
   }
 }
 
-class UserRegistrationPage extends StatefulWidget {
-  const UserRegistrationPage({Key? key, required this.title}) : super(key: key);
+class UserCompletedPage extends StatefulWidget {
+  const UserCompletedPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<UserRegistrationPage> createState() => _UserRegistrationPage();
+  State<UserCompletedPage> createState() => _UserCompletedPage();
 }
 
-class _UserRegistrationPage extends State<UserRegistrationPage> {
+class _UserCompletedPage extends State<UserCompletedPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Widget volunteerCard(String name, String date, String description,
-      String organizerName, String startTime, String endTime, String loca) {
+  Widget volunteerCard(
+      String name,
+      String date,
+      String description,
+      String organizerName,
+      String startTime,
+      String endTime,
+      String loca,
+      String timeRecorded) {
     return Container(
         width: displayWidth(context) * .70,
         padding: const EdgeInsets.all(10),
@@ -127,34 +133,19 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
                 style: const TextStyle(fontSize: 15),
               ),
             ),
+            const SizedBox(height: 10),
             Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .66,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 75, 157, 224)),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return const Color.fromARGB(255, 24, 111, 182)
-                                .withOpacity(0.04);
-                          }
-
-                          if (states.contains(MaterialState.focused) ||
-                              states.contains(MaterialState.pressed)) {
-                            return const Color.fromARGB(255, 17, 70, 114)
-                                .withOpacity(0.12);
-                          }
-
-                          return null; // Defer to the widget's default.
-                        },
-                      ),
-                    ),
-                    onPressed: () {}, //
-                    child: const Text('Sign Up'))),
+              width: displayWidth(context) * .66,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 238, 184, 167),
+              ),
+              child: Text(
+                "Time Recorded: " + timeRecorded,
+                textAlign: TextAlign.left,
+                style: const TextStyle(fontSize: 15),
+              ),
+            )
           ],
         ));
   }
@@ -188,7 +179,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               width: displayWidth(context) * .70,
               padding: const EdgeInsets.all(10),
               child: const Text(
-                'Volunteer Opportunities',
+                'Volunteer History',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 25),
               ),
@@ -201,7 +192,8 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
                 "John Doe",
                 "8:00am",
                 "4:00pm",
-                "0000 N Empty St Fayetteville, Arkansas 72701"),
+                "0000 N Empty St Fayetteville, Arkansas 72701",
+                "0h 0m 0s"),
           ],
         ),
       ),
@@ -215,7 +207,10 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserRegistration()));
             },
             child: const Text('Volunteer Opportunities'),
           ),
@@ -238,10 +233,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
+              Navigator.pop(context);
             },
             child: const Text('Volunteer History'),
           ),

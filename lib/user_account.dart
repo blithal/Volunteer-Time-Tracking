@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/user_completed.dart';
+import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
 
 class UserAccount extends StatelessWidget {
@@ -232,7 +234,12 @@ class _UserAccountPage extends State<UserAccountPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserEnrolled()));
+            },
             child: const Text('Currently Enrolled'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
@@ -240,7 +247,12 @@ class _UserAccountPage extends State<UserAccountPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserCompleted()));
+            },
             child: const Text('Volunteer History'),
           ),
           const SizedBox(height: 25) /*Spacing for user*/,

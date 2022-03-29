@@ -32,6 +32,8 @@ class UserAccountPage extends StatefulWidget {
 class _UserAccountPage extends State<UserAccountPage> {
   List<User>? users;
   var isLoaded = false;
+  var username = "";
+  var password = "";
 
   @override
   void initState() {

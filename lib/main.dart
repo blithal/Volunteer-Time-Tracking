@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/test.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -37,13 +38,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  _verifiyUsername() {
-    setState(() {});
-  }
-
-  _verifyPassword() {
-    setState(() {});
-  }
+  // _verifiyUsername() {
+  //   setState(() {});
+  // }
+  // _verifyPassword() {
+  //   setState(() {});
+  // }
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
@@ -58,6 +60,19 @@ class _MyHomePageState extends State<MyHomePage> {
       return 1000;
     }
     return displaySize(context).width;
+  }
+
+  postData() async {
+    try {
+      var response = await http
+          .post(Uri.parse("http://127.0.0.1:8000/userdetails"), body: {
+        "firstName": usernameController.text,
+        "lastName": passwordController.text,
+      });
+      return response.body;
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   @override
@@ -83,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(10),
               width: displayWidth(context) * .5,
               child: TextField(
-                controller: _verifiyUsername(),
+                controller: usernameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username',
@@ -94,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(10),
               width: displayWidth(context) * .5,
               child: TextField(
-                controller: _verifyPassword(),
+                controller: passwordController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
@@ -157,11 +172,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UserAccount()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const UserAccount()),
+                      // );
+                      postData();
                     }, // verify login creditionals (change later)
                     child: const Text('Login'))),
           ],

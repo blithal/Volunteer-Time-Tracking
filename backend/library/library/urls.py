@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from user import views
+from events import urls
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
@@ -24,4 +25,5 @@ router.register('userdetails', views.user)
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('events/', include('events.urls')),
 ]

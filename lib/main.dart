@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
-import 'package:volunteer_time_tracking/test.dart';
 import 'package:http/http.dart' as http;
+import 'package:volunteer_time_tracking/user_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -166,12 +166,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     onPressed: () {
-                      postData();
-                      /*Navigator.push(
+                      //postData();
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const UserAccount()),
-                      );*/
+                            builder: (context) => const UserHome()),
+                      );
                     }, // verify login creditionals (change later)
                     child: const Text('Login'))),
           ],

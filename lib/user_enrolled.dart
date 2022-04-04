@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
+import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
 
 class UserEnrolled extends StatelessWidget {
@@ -233,10 +234,26 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
           ],
         ),
       ),
+      /* */
       drawer: Drawer(
           child: ListView(
         padding: const EdgeInsets.all(8),
         children: <Widget>[
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserHome()));
+            },
+            icon: const Icon(
+              Icons.home,
+              size: 20,
+            ),
+            label: const Text('Home'),
+          ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
             style: TextButton.styleFrom(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/test.dart';
-import 'package:http/http.dart' as http;
 import 'services/remote_service.dart';
 import 'user.dart';
 import 'login_info.dart';
@@ -77,21 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         }
       });
-    }
-  }
-
-  postData() async {
-    try {
-      var response = await http
-          .post(Uri.parse("http://127.0.0.1:8000/userdetails"), body: {
-        "firstName": usernameController.text,
-        "lastName": passwordController.text,
-      });
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const UserAccount()));
-      //return response.body;
-    } catch (e) {
-      return e.toString();
     }
   }
 

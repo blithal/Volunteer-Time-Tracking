@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 class info(models.Model):
+    id = models.AutoField(primary_key=True)
     firstName = models.CharField(max_length = 40)
     lastName = models.CharField(max_length = 40)
     email = models.CharField(default = "", max_length = 60, null=True)

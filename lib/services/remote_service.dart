@@ -25,4 +25,34 @@ class RemoteService {
       return loginInfoFromJson(json);
     }
   }
+
+  Future<List<User>?> createUser(
+      String firstName, String lastName, String email) async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/userdetails");
+    var response = await client.post(uri,
+        body: {"firstName": firstName, "lastName": lastName, "email": email});
+    if (response.statusCode == 201) {
+      return getUsers();
+    }
+  }
+
+  Future<bool?> createLogin(
+      String userId, String username, String password) async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/logindetails");
+    print("creating login...\nUserId: " +
+        userId +
+        "\nUsername: " +
+        username +
+        "\nPassword: " +
+        password);
+    var response = await client.post(uri,
+        body: {"userId": userId, "username": username, "password": password});
+    if (response.statusCode == 201) {
+      return true;
+    }
+  }
 }

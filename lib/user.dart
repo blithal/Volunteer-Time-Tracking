@@ -12,6 +12,7 @@ String userToJson(List<User> data) =>
 
 class User {
   User({
+    required this.id,
     required this.firstName,
     required this.isAdmin,
     required this.isActive,
@@ -20,6 +21,7 @@ class User {
     required this.phone,
   });
 
+  int id;
   String firstName;
   bool isAdmin;
   bool isActive;
@@ -28,6 +30,7 @@ class User {
   String phone;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
         firstName: json["firstName"],
         isAdmin: json["isAdmin"],
         isActive: json["isActive"],
@@ -37,6 +40,7 @@ class User {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "firstName": firstName,
         "isAdmin": isAdmin,
         "isActive": isActive,

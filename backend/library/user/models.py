@@ -9,5 +9,14 @@ class info(models.Model):
     phone = models.CharField(default = "", max_length = 15, null=True)
     isAdmin = models.BooleanField(default = False, null=True)
     isActive = models.BooleanField(default = True, null=True)
-class Meta:
-    db_table = "User Info Table"
+
+    def __str__(self):
+        return self.title
+
+class login(models.Model):
+    userId = models.CharField(max_length=40)
+    username = models.CharField(max_length=40)
+    password = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.title

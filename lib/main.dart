@@ -3,6 +3,9 @@ import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/test.dart';
 import 'package:http/http.dart' as http;
+import 'services/remote_service.dart';
+import 'user.dart';
+import 'login_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,12 +41,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // _verifiyUsername() {
-  //   setState(() {});
-  // }
-  // _verifyPassword() {
-  //   setState(() {});
-  // }
+  List<User>? users;
+  List<LoginInfo>? logins;
+  bool isLoaded = false;
+  bool invalidLogin = false;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -62,6 +63,23 @@ class _MyHomePageState extends State<MyHomePage> {
     return displaySize(context).width;
   }
 
+  validateLogin() async {
+    logins = await RemoteService().getLogins();
+    if (logins != null) {
+      logins!.forEach((LoginInfo login) {
+        if (login.username == usernameController.text &&
+            login.password == passwordController.text) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const UserAccount()));
+        } else {
+          setState(() {
+            invalidLogin = true;
+          });
+        }
+      });
+    }
+  }
+
   postData() async {
     try {
       var response = await http
@@ -69,11 +87,41 @@ class _MyHomePageState extends State<MyHomePage> {
         "firstName": usernameController.text,
         "lastName": passwordController.text,
       });
-      return response.body;
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const UserAccount()));
+      //return response.body;
     } catch (e) {
       return e.toString();
     }
   }
+
+  // void _showDialog() {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext context) {
+  //       return new AlertDialog(
+  //         title: new Text('Please try again.'),
+  //         content: new SingleChildScrollView(
+  //           child: new ListBody(
+  //             children: [
+  //               new Text('Invalid username or password.'),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           new TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: new Text('Ok')),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+  // void _showMainPage() {}
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +158,9 @@ class _MyHomePageState extends State<MyHomePage> {
               width: displayWidth(context) * .5,
               child: TextField(
                 controller: passwordController,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
@@ -172,14 +223,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const UserAccount()),
-                      // );
-                      postData();
+                      validateLogin();
                     }, // verify login creditionals (change later)
                     child: const Text('Login'))),
+            if (invalidLogin)
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Invalid username or password.',
+                  style: TextStyle(
+                      fontSize: 25, color: Color.fromARGB(255, 17, 70, 114)),
+                ),
+              ),
           ],
         ),
       ),

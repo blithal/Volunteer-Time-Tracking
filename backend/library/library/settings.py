@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'account',
     'login',
     'loginInfo',
+    'events',
 ]
 
 MIDDLEWARE = [

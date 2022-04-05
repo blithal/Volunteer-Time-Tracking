@@ -4,38 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
-import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
+import 'package:volunteer_time_tracking/user_registration.dart';
 
-class UserRegistration extends StatelessWidget {
-  const UserRegistration({Key? key}) : super(key: key);
+class UserEnrolled extends StatelessWidget {
+  const UserEnrolled({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title:
-          'User Registration Page - Fayetteville Public Library Volunteer System',
+          'User Enrolled Page - Fayetteville Public Library Volunteer System',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UserRegistrationPage(
+      home: const UserEnrolledPage(
           title:
-              'Fayetteville Public Library Volunteer System - User Account Page'),
+              'Fayetteville Public Library Volunteer System - User Enrolled Page'),
     );
   }
 }
 
-class UserRegistrationPage extends StatefulWidget {
-  const UserRegistrationPage({Key? key, required this.title}) : super(key: key);
+class UserEnrolledPage extends StatefulWidget {
+  const UserEnrolledPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<UserRegistrationPage> createState() => _UserRegistrationPage();
+  State<UserEnrolledPage> createState() => _UserEnrolledPage();
 }
 
-class _UserRegistrationPage extends State<UserRegistrationPage> {
+class _UserEnrolledPage extends State<UserEnrolledPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget volunteerCard(String name, String date, String description,
@@ -155,7 +155,35 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
                       ),
                     ),
                     onPressed: () {}, //
-                    child: const Text('Sign Up'))),
+                    child: const Text('Clock in'))),
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .66,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 75, 157, 224)),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.hovered)) {
+                            return const Color.fromARGB(255, 24, 111, 182)
+                                .withOpacity(0.04);
+                          }
+
+                          if (states.contains(MaterialState.focused) ||
+                              states.contains(MaterialState.pressed)) {
+                            return const Color.fromARGB(255, 17, 70, 114)
+                                .withOpacity(0.12);
+                          }
+
+                          return null; // Defer to the widget's default.
+                        },
+                      ),
+                    ),
+                    onPressed: () {}, //
+                    child: const Text('Unenroll'))),
           ],
         ));
   }
@@ -189,7 +217,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               width: displayWidth(context) * .70,
               padding: const EdgeInsets.all(10),
               child: const Text(
-                'Volunteer Opportunities',
+                'Currently Enrolled',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 25),
               ),
@@ -206,6 +234,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
           ],
         ),
       ),
+      /* */
       drawer: Drawer(
           child: ListView(
         padding: const EdgeInsets.all(8),
@@ -231,7 +260,10 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserRegistration()));
             },
             child: const Text('Volunteer Opportunities'),
           ),
@@ -241,10 +273,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
+              Navigator.pop(context);
             },
             child: const Text('Currently Enrolled'),
           ),

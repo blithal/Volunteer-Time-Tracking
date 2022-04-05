@@ -8,6 +8,7 @@ import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
 import 'package:volunteer_time_tracking/models/user.dart';
+import 'Event.dart';
 import 'services/remote_service.dart';
 
 class UserHome extends StatelessWidget {
@@ -265,7 +266,7 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UserAccount(
+                                    builder: (context) => Event(
                                           currUserId: widget.currUserId,
                                         )));
                           },

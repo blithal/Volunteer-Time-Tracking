@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:volunteer_time_tracking/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:volunteer_time_tracking/models/login_info.dart';
@@ -71,6 +74,27 @@ class RemoteService {
         body: {"userId": userId, "username": username, "password": password});
     if (response.statusCode == 201) {
       return true;
+    }
+  }
+
+  Future<bool?> createEvent(String name, String description, DateTime startDate,
+      String startTime) async {
+    var client = http.Client();
+
+    var formatter = new DateFormat("yyyy-MM-dd");
+    var uri = Uri.parse("http://127.0.0.1:8000/events/events");
+    var body = jsonEncode({
+      "name": name,
+      "description": description,
+      "startDate": formatter.format(startDate).toString(),
+      "startTime": startTime
+    });
+    var response = await client
+        .post(uri, body: body, headers: {"Content-Type": "application/json"});
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

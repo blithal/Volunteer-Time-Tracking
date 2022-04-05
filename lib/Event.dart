@@ -1,31 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
+import 'package:volunteer_time_tracking/user_home.dart';
+import 'package:intl/intl.dart';
 
 class Event extends StatelessWidget {
-  const Event({Key? key}) : super(key: key);
+  Event({Key? key, required this.currUserId}) : super(key: key);
 
+  String currUserId;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Create Event',
       home: Scaffold(
-        body: const MyStatefulWidget(),
+        body: MyStatefulWidget(
+          currUserId: currUserId,
+        ),
       ),
     );
   }
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+  MyStatefulWidget({Key? key, required this.currUserId}) : super(key: key);
+
+  String currUserId;
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  bool eventCreateFailed = false;
+  DateTime? date;
+  var formatter = new DateFormat("yyyy-MM-dd");
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController startDate = TextEditingController();
   TextEditingController startTime = TextEditingController();
+
+  createEvent() async {
+    var success = await RemoteService()
+        .createEvent(name.text, description.text, date!, startTime.text);
+    if (success!) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UserHome(
+                    userId: widget.currUserId,
+                  )));
+    } else {
+      setState(() {
+        eventCreateFailed = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +100,35 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ),
             Container(
               padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: startDate,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'start date',
-                ),
-              ),
+              child: TextFormField(
+                  readOnly: true,
+                  controller: startDate,
+                  onTap: () async {
+                    date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now().subtract(Duration(days: 7)),
+                        lastDate: DateTime.now().add(Duration(days: 360)));
+                    if (date == null) {
+                      date = DateTime.now();
+                    } else {
+                      startDate.text = formatter.format(date!);
+                    }
+                  }
+                  // controller: startDate,
+                  // decoration: const InputDecoration(
+                  //   border: OutlineInputBorder(),
+                  //   labelText: 'start date',
+                  // ),
+                  // initialDate: DateTime.now(),
+                  // firstDate: DateTime.parse("20200101"),
+                  // lastDate: DateTime.parse("20251212"),
+                  // helpText: "Start Date",
+                  ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
-                obscureText: true,
                 controller: startTime,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -97,9 +142,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: ElevatedButton(
                   child: const Text('Create Event'),
                   onPressed: () {
-                    Navigator.pop(context);
+                    createEvent();
                   },
                 )),
+            if (eventCreateFailed)
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'The event failed to be created.',
+                  style: TextStyle(
+                      fontSize: 15, color: Color.fromARGB(255, 17, 70, 114)),
+                ),
+              ),
           ],
         ));
   }

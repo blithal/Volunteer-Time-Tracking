@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:volunteer_time_tracking/user_home.dart';
 
@@ -23,8 +26,7 @@ class MyApp extends StatelessWidget {
       // routes: {
       //   '/': (context) => Home(),
       // },
-      home: const MyHomePage(
-          title: 'Fayetteville Public Library Volunteer System - Login'),
+      home: const MyHomePage(title: 'Volunteer System Login'),
     );
   }
 }
@@ -73,7 +75,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Image(image: AssetImage('graphics/library_logo_name.png')),
+            Text(widget.title,
+                style: GoogleFonts.mulish(
+                    textStyle: const TextStyle(
+                        fontSize: 25,
+                        color: Color.fromARGB(255, 100, 105, 111)))),
+          ],
+        ),
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
@@ -85,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Login',
                 style: TextStyle(
                   fontSize: 25,
+                  color: Color.fromARGB(255, 100, 105, 111),
                 ),
               ),
             ),

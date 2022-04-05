@@ -1,5 +1,8 @@
 import 'dart:html';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/ClockInClockOut.dart';
+import 'package:volunteer_time_tracking/UserSettings.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
@@ -220,7 +223,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const UserCompleted()));
+                                        const ClockInClockOut()));
                           },
                         ),
                         const Text(
@@ -278,7 +281,13 @@ class _UserHomePage extends State<UserHomePage> {
                           iconSize: 50,
                           color: Colors.white,
                           icon: const Icon(Icons.settings),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UserSettings()));
+                          },
                         ),
                         const Text(
                           'Settings',

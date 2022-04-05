@@ -5,9 +5,13 @@ import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
+import 'package:volunteer_time_tracking/models/user.dart';
+import 'services/remote_service.dart';
 
 class UserHome extends StatelessWidget {
-  const UserHome({Key? key}) : super(key: key);
+  const UserHome({Key? key, required this.userId}) : super(key: key);
+
+  final String userId;
 
   // This widget is the root of your application.
   @override
@@ -17,17 +21,20 @@ class UserHome extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UserHomePage(
-          title:
-              'Fayetteville Public Library Volunteer System - User Home Page'),
+      home: UserHomePage(
+        title: 'Fayetteville Public Library Volunteer System - User Home Page',
+        currUserId: userId,
+      ),
     );
   }
 }
 
 class UserHomePage extends StatefulWidget {
-  const UserHomePage({Key? key, required this.title}) : super(key: key);
+  const UserHomePage({Key? key, required this.title, required this.currUserId})
+      : super(key: key);
 
   final String title;
+  final String currUserId;
 
   @override
   State<UserHomePage> createState() => _UserHomePage();
@@ -92,8 +99,9 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserRegistration()));
+                                    builder: (context) => UserRegistration(
+                                          currUserId: widget.currUserId,
+                                        )));
                           },
                         ),
                         const Text(
@@ -123,8 +131,9 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserEnrolled()));
+                                    builder: (context) => UserEnrolled(
+                                          currUserId: widget.currUserId,
+                                        )));
                           },
                         ),
                         const Text(
@@ -156,8 +165,9 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserCompleted()));
+                                    builder: (context) => UserCompleted(
+                                          currUserId: widget.currUserId,
+                                        )));
                           },
                         ),
                         const Text(
@@ -187,7 +197,9 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const UserAccount()));
+                                    builder: (context) => UserAccount(
+                                          currUserId: widget.currUserId,
+                                        )));
                           },
                         ),
                         const Text(
@@ -219,8 +231,9 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserCompleted()));
+                                    builder: (context) => UserCompleted(
+                                          currUserId: widget.currUserId,
+                                        )));
                           },
                         ),
                         const Text(
@@ -250,7 +263,9 @@ class _UserHomePage extends State<UserHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const UserAccount()));
+                                    builder: (context) => UserAccount(
+                                          currUserId: widget.currUserId,
+                                        )));
                           },
                         ),
                         const Text(
@@ -350,7 +365,9 @@ class _UserHomePage extends State<UserHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
+                      builder: (context) => UserRegistration(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Volunteer Opportunities'),
           ),
@@ -363,7 +380,9 @@ class _UserHomePage extends State<UserHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Currently Enrolled'),
           ),
@@ -376,7 +395,9 @@ class _UserHomePage extends State<UserHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Volunteer History'),
           ),
@@ -386,8 +407,12 @@ class _UserHomePage extends State<UserHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserAccount()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserAccount(
+                            currUserId: widget.currUserId,
+                          )));
             },
             icon: const Icon(
               Icons.account_circle,

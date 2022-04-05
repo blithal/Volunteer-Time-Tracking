@@ -4,7 +4,7 @@ import 'dart:io';
 import 'main.dart';
 import 'package:flutter/material.dart';
 import 'services/remote_service.dart';
-import 'user.dart';
+import 'models/user.dart';
 import './services/remote_service.dart';
 
 class SignUp extends StatelessWidget {

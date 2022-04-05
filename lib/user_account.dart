@@ -4,11 +4,13 @@ import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
-import 'package:volunteer_time_tracking/user.dart';
+import 'package:volunteer_time_tracking/models/user.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class UserAccount extends StatelessWidget {
-  const UserAccount({Key? key}) : super(key: key);
+  const UserAccount({Key? key, required this.currUserId}) : super(key: key);
+
+  final String currUserId;
 
   // This widget is the root of your application.
   @override
@@ -18,17 +20,21 @@ class UserAccount extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UserAccountPage(
+      home: UserAccountPage(
           title:
-              'Fayetteville Public Library Volunteer System - User Account Page'),
+              'Fayetteville Public Library Volunteer System - User Account Page',
+          currUserId: currUserId),
     );
   }
 }
 
 class UserAccountPage extends StatefulWidget {
-  const UserAccountPage({Key? key, required this.title}) : super(key: key);
+  const UserAccountPage(
+      {Key? key, required this.title, required this.currUserId})
+      : super(key: key);
 
   final String title;
+  final String currUserId;
 
   @override
   State<UserAccountPage> createState() => _UserAccountPage();
@@ -36,6 +42,7 @@ class UserAccountPage extends StatefulWidget {
 
 class _UserAccountPage extends State<UserAccountPage> {
   List<User>? users;
+  User? user = User.defaultUser();
   var isLoaded = false;
   var username = "";
   var password = "";
@@ -47,8 +54,14 @@ class _UserAccountPage extends State<UserAccountPage> {
   }
 
   getData() async {
-    users = await RemoteService().getUsers();
-    if (users != null) {
+    // users = await RemoteService().getUsers();
+    // if (users != null) {
+    //   setState(() {
+    //     isLoaded = true;
+    //   });
+    // }
+    user = await RemoteService().getUser(widget.currUserId);
+    if (user?.id != -1) {
       setState(() {
         isLoaded = true;
       });
@@ -104,7 +117,7 @@ class _UserAccountPage extends State<UserAccountPage> {
                   width: displayWidth(context) * .25,
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    users![1].firstName + " " + users![1].lastName,
+                    user!.firstName + " " + user!.lastName,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25),
                   ),
@@ -136,7 +149,7 @@ class _UserAccountPage extends State<UserAccountPage> {
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Text(
-                    users![1].email,
+                    user!.email,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 17),
                   ),
@@ -170,7 +183,7 @@ class _UserAccountPage extends State<UserAccountPage> {
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Text(
-                    users![1].phone,
+                    user!.phone,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 17),
                   ),
@@ -251,8 +264,12 @@ class _UserAccountPage extends State<UserAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(
+                            userId: widget.currUserId,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -269,7 +286,9 @@ class _UserAccountPage extends State<UserAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
+                      builder: (context) => UserRegistration(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Volunteer Opportunities'),
           ),
@@ -282,7 +301,9 @@ class _UserAccountPage extends State<UserAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Currently Enrolled'),
           ),
@@ -295,7 +316,9 @@ class _UserAccountPage extends State<UserAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Volunteer History'),
           ),

@@ -1,7 +1,7 @@
 import 'package:http/http.dart';
-import 'package:volunteer_time_tracking/user.dart';
+import 'package:volunteer_time_tracking/models/user.dart';
 import 'package:http/http.dart' as http;
-import 'package:volunteer_time_tracking/login_info.dart';
+import 'package:volunteer_time_tracking/models/login_info.dart';
 
 class RemoteService {
   Future<List<User>?> getUsers() async {
@@ -12,6 +12,24 @@ class RemoteService {
     if (response.statusCode == 200) {
       var json = response.body;
       return userFromJson(json);
+    }
+  }
+
+  Future<User?> getUser(String userId) async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = response.body;
+      List<User> users = userFromJson(json);
+      User user = User.defaultUser();
+      users.forEach((u) {
+        if (u.id.toString() == userId) {
+          user = u;
+        }
+      });
+      return user;
     }
   }
 

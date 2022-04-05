@@ -8,8 +8,10 @@ import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 
 class UserRegistration extends StatelessWidget {
-  const UserRegistration({Key? key}) : super(key: key);
+  const UserRegistration({Key? key, required this.currUserId})
+      : super(key: key);
 
+  final String currUserId;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -19,17 +21,22 @@ class UserRegistration extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UserRegistrationPage(
-          title:
-              'Fayetteville Public Library Volunteer System - User Account Page'),
+      home: UserRegistrationPage(
+        title:
+            'Fayetteville Public Library Volunteer System - User Account Page',
+        currUserId: currUserId,
+      ),
     );
   }
 }
 
 class UserRegistrationPage extends StatefulWidget {
-  const UserRegistrationPage({Key? key, required this.title}) : super(key: key);
+  const UserRegistrationPage(
+      {Key? key, required this.title, required this.currUserId})
+      : super(key: key);
 
   final String title;
+  final String currUserId;
 
   @override
   State<UserRegistrationPage> createState() => _UserRegistrationPage();
@@ -216,8 +223,12 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(
+                            userId: widget.currUserId,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -244,7 +255,9 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Currently Enrolled'),
           ),
@@ -257,7 +270,9 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.currUserId,
+                          )));
             },
             child: const Text('Volunteer History'),
           ),
@@ -267,8 +282,12 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserAccount()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserAccount(
+                            currUserId: widget.currUserId,
+                          )));
             },
             icon: const Icon(
               Icons.account_circle,

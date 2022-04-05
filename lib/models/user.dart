@@ -21,6 +21,16 @@ class User {
     required this.phone,
   });
 
+  User.defaultUser({
+    this.id = -1,
+    this.firstName = "",
+    this.isAdmin = false,
+    this.isActive = false,
+    this.email = "",
+    this.lastName = "",
+    this.phone = "",
+  });
+
   int id;
   String firstName;
   bool isAdmin;

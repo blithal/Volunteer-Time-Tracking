@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
-import 'package:volunteer_time_tracking/test.dart';
 import 'services/remote_service.dart';
-import 'user.dart';
-import 'login_info.dart';
+import 'models/user.dart';
+import 'models/login_info.dart';
+import 'user_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
       logins!.forEach((LoginInfo login) {
         if (login.username == usernameController.text &&
             login.password == passwordController.text) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const UserAccount()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => UserHome(userId: login.userId)));
         } else {
           setState(() {
             invalidLogin = true;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/user.dart';
 
 // void main() => runApp(MaterialApp(
 //       home: Test(),
@@ -6,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class ClockInClockOut extends StatefulWidget {
   // widget itself creates a state object
-  const ClockInClockOut({Key? key}) : super(key: key);
+  ClockInClockOut({Key? key, required this.currUserId}) : super(key: key);
 
+  String currUserId;
   @override
   _ClockInClockOutState createState() =>
       _ClockInClockOutState(); // create a state object, and link it to this widget

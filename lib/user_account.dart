@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/UserSettings.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
@@ -232,7 +233,12 @@ class _UserAccountPage extends State<UserAccountPage> {
                           },
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const UserSettings()));
+                      },
                       child: const Text('Edit account details'))),
             ],
           ),

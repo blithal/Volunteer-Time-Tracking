@@ -7,6 +7,8 @@ import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
 
+import 'UserSettings.dart';
+
 class UserCompleted extends StatelessWidget {
   const UserCompleted({Key? key}) : super(key: key);
 
@@ -275,7 +277,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserSettings()));
+            },
             icon: const Icon(
               Icons.settings,
               size: 20,

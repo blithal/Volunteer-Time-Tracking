@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/UserSettings.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
@@ -323,7 +324,12 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserSettings()));
+            },
             icon: const Icon(
               Icons.settings,
               size: 20,

@@ -409,7 +409,12 @@ class _UserHomePage extends State<UserHomePage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserSettings()));
+            },
             icon: const Icon(
               Icons.settings,
               size: 20,

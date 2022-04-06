@@ -27,6 +27,20 @@ class UserCompleted extends StatelessWidget {
   }
 }
 
+class EventCompleted {
+  String event, date, description, orginizer, start, end, address, timeRecorded;
+  EventCompleted({
+    required this.event,
+    required this.date,
+    required this.description,
+    required this.orginizer,
+    required this.start,
+    required this.end,
+    required this.address,
+    required this.timeRecorded,
+  });
+}
+
 class UserCompletedPage extends StatefulWidget {
   const UserCompletedPage({Key? key, required this.title}) : super(key: key);
 
@@ -38,6 +52,36 @@ class UserCompletedPage extends StatefulWidget {
 
 class _UserCompletedPage extends State<UserCompletedPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<EventCompleted> eventsCompleted = [
+    EventCompleted(
+        event: "test1",
+        date: "1-1-22",
+        description: "test description 1",
+        orginizer: "john doe",
+        start: "8:00am",
+        end: "9:00pm",
+        address: "0000 N Empty St Fayetteville, Arkansas 72701",
+        timeRecorded: "0h 0m 0s"),
+    EventCompleted(
+        event: "test2",
+        date: "1-2-22",
+        description: "test description 2",
+        orginizer: "jane doe",
+        start: "8:10am",
+        end: "9:10pm",
+        address: "0001 N Empty St Fayetteville, Arkansas 72701",
+        timeRecorded: "0h 0m 0s"),
+    EventCompleted(
+        event: "test3",
+        date: "1-3-22",
+        description: "test description 3",
+        orginizer: "Kagen Crouch",
+        start: "8:20am",
+        end: "9:20pm",
+        address: "0002 N Empty St Fayetteville, Arkansas 72701",
+        timeRecorded: "0h 0m 0s"),
+  ];
 
   Widget volunteerCard(
       String name,
@@ -188,15 +232,26 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               ),
             ),
             const SizedBox(height: 10) /*Spacing for user*/,
-            volunteerCard(
-                "Title",
-                "01-01-22",
-                "This is an example description. This is to be used just as a placeholder for a real description for volunteer opportunities. The placeholder also tests the width constrainst of the text box.",
-                "John Doe",
-                "8:00am",
-                "4:00pm",
-                "0000 N Empty St Fayetteville, Arkansas 72701",
-                "0h 0m 0s"),
+            Column(
+              children: eventsCompleted.map((eventone) {
+                return Container(
+                  child: ListTile(
+                      title: Container(
+                          child: volunteerCard(
+                              eventone.event,
+                              eventone.date,
+                              eventone.description,
+                              eventone.orginizer,
+                              eventone.start,
+                              eventone.end,
+                              eventone.address,
+                              eventone.timeRecorded))),
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  color: Colors.green[100],
+                );
+              }).toList(),
+            )
           ],
         ),
       ),

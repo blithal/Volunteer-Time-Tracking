@@ -37,8 +37,48 @@ class UserEnrolledPage extends StatefulWidget {
   State<UserEnrolledPage> createState() => _UserEnrolledPage();
 }
 
+class EventEnrolled {
+  String event, date, description, orginizer, start, end, address;
+  EventEnrolled({
+    required this.event,
+    required this.date,
+    required this.description,
+    required this.orginizer,
+    required this.start,
+    required this.end,
+    required this.address,
+  });
+}
+
 class _UserEnrolledPage extends State<UserEnrolledPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<EventEnrolled> eventsEnrolled = [
+    EventEnrolled(
+        event: "test1",
+        date: "1-1-22",
+        description: "test description 1",
+        orginizer: "john doe",
+        start: "8:00am",
+        end: "9:00pm",
+        address: "0000 N Empty St Fayetteville, Arkansas 72701"),
+    EventEnrolled(
+        event: "test2",
+        date: "1-2-22",
+        description: "test description 2",
+        orginizer: "jane doe",
+        start: "8:10am",
+        end: "9:10pm",
+        address: "0001 N Empty St Fayetteville, Arkansas 72701"),
+    EventEnrolled(
+        event: "test3",
+        date: "1-3-22",
+        description: "test description 3",
+        orginizer: "Kagen Crouch",
+        start: "8:20am",
+        end: "9:20pm",
+        address: "0002 N Empty St Fayetteville, Arkansas 72701"),
+  ];
 
   Widget volunteerCard(String name, String date, String description,
       String organizerName, String startTime, String endTime, String loca) {
@@ -225,18 +265,29 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
               ),
             ),
             const SizedBox(height: 10) /*Spacing for user*/,
-            volunteerCard(
-                "Title",
-                "01-01-22",
-                "This is an example description. This is to be used just as a placeholder for a real description for volunteer opportunities. The placeholder also tests the width constrainst of the text box.",
-                "John Doe",
-                "8:00am",
-                "4:00pm",
-                "0000 N Empty St Fayetteville, Arkansas 72701"),
+            Column(
+              children: eventsEnrolled.map((eventone) {
+                return Container(
+                  child: ListTile(
+                      title: Container(
+                          child: volunteerCard(
+                              eventone.event,
+                              eventone.date,
+                              eventone.description,
+                              eventone.orginizer,
+                              eventone.start,
+                              eventone.end,
+                              eventone.address))),
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  color: Colors.green[100],
+                );
+              }).toList(),
+            )
           ],
         ),
       ),
-      /* */
+      /*Naviagtion Bar*/
       drawer: Drawer(
           child: ListView(
         padding: const EdgeInsets.all(8),

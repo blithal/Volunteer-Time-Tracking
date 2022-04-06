@@ -38,18 +38,20 @@ class UserRegistrationPage extends StatefulWidget {
 
 class Event {
   String event, date, description, orginizer, start, end, address;
-  Event(
-      {required this.event,
-      required this.date,
-      required this.description,
-      required this.orginizer,
-      required this.start,
-      required this.end,
-      required this.address});
+  Event({
+    required this.event,
+    required this.date,
+    required this.description,
+    required this.orginizer,
+    required this.start,
+    required this.end,
+    required this.address,
+  });
 }
 
 class _UserRegistrationPage extends State<UserRegistrationPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   List<Event> events = [
     Event(
         event: "test1",
@@ -76,6 +78,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
         end: "9:20pm",
         address: "0002 N Empty St Fayetteville, Arkansas 72701"),
   ];
+
   Widget volunteerCard(String name, String date, String description,
       String organizerName, String startTime, String endTime, String loca) {
     return Container(
@@ -237,9 +240,15 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
               children: events.map((eventone) {
                 return Container(
                   child: ListTile(
-                    title: Text(eventone.event),
-                    subtitle: Text("Address: " + eventone.date),
-                  ),
+                      title: Container(
+                          child: volunteerCard(
+                              eventone.event,
+                              eventone.date,
+                              eventone.description,
+                              eventone.orginizer,
+                              eventone.start,
+                              eventone.end,
+                              eventone.address))),
                   margin: const EdgeInsets.all(5),
                   padding: const EdgeInsets.all(5),
                   color: Colors.green[100],

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:volunteer_time_tracking/user.dart';
+import 'package:volunteer_time_tracking/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {

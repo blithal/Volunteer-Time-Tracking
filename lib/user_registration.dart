@@ -42,9 +42,9 @@ class UserRegistrationPage extends StatefulWidget {
   State<UserRegistrationPage> createState() => _UserRegistrationPage();
 }
 
-class Event {
+class EventsInfo {
   String event, date, description, orginizer, start, end, address;
-  Event(
+  EventsInfo(
       {required this.event,
       required this.date,
       required this.description,
@@ -56,8 +56,8 @@ class Event {
 
 class _UserRegistrationPage extends State<UserRegistrationPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Event> events = [
-    Event(
+  List<EventsInfo> events = [
+    EventsInfo(
         event: "test1",
         date: "1-1-22",
         description: "test description 1",
@@ -65,7 +65,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
         start: "8:00am",
         end: "9:00pm",
         address: "0000 N Empty St Fayetteville, Arkansas 72701"),
-    Event(
+    EventsInfo(
         event: "test2",
         date: "1-2-22",
         description: "test description 2",
@@ -73,7 +73,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
         start: "8:10am",
         end: "9:10pm",
         address: "0001 N Empty St Fayetteville, Arkansas 72701"),
-    Event(
+    EventsInfo(
         event: "test3",
         date: "1-3-22",
         description: "test description 3",

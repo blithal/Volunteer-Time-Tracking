@@ -8,6 +8,6 @@ class info(models.Model):
     description = models.CharField(max_length = 500)
     startDate = models.DateField((""), auto_now=False, auto_now_add=False)
     startTime = models.CharField(max_length=256)
-    completed = models.BooleanField()
+    completed = models.BooleanField(default=False)
 class Meta:
     db_table = "events"

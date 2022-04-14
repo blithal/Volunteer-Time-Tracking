@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/ClockInClockOut.dart';
 import 'package:volunteer_time_tracking/UserSettings.dart';
 import 'package:volunteer_time_tracking/main.dart';
@@ -17,9 +18,7 @@ class UserHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'User Home Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: const UserHomePage(
           title:
               'Fayetteville Public Library Volunteer System - User Home Page'),
@@ -81,9 +80,8 @@ class _UserHomePage extends State<UserHomePage> {
                     width: displayWidth(context) * .30,
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        color: Color.fromARGB(255, 126, 148, 203)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -113,7 +111,7 @@ class _UserHomePage extends State<UserHomePage> {
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
+                      color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -146,7 +144,7 @@ class _UserHomePage extends State<UserHomePage> {
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
+                      color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -177,7 +175,7 @@ class _UserHomePage extends State<UserHomePage> {
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
+                      color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -205,11 +203,11 @@ class _UserHomePage extends State<UserHomePage> {
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 /*Button to Volunteer History*/
                 Container(
-                    width: displayWidth(context) * .30,
+                    width: displayWidth(context) * .62,
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
+                      color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -233,36 +231,7 @@ class _UserHomePage extends State<UserHomePage> {
                         )
                       ],
                     )),
-                const SizedBox(width: 20),
                 /*Button to Account Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          icon: const Icon(Icons.circle),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const UserAccount()));
-                          },
-                        ),
-                        const Text(
-                          'Example',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
               ]),
               const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -272,7 +241,7 @@ class _UserHomePage extends State<UserHomePage> {
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
+                      color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -303,7 +272,7 @@ class _UserHomePage extends State<UserHomePage> {
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
+                      color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
+import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
+import 'package:volunteer_time_tracking/user_completed.dart';
+import 'package:volunteer_time_tracking/user_enrolled.dart';
+import 'package:volunteer_time_tracking/user_home.dart';
+import 'package:volunteer_time_tracking/user_registration.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
+import 'package:volunteer_time_tracking/user.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class UserSettings extends StatelessWidget {
   const UserSettings({Key? key}) : super(key: key);
@@ -7,36 +17,18 @@ class UserSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Demo User Settings'),
+      title:
+          'User Account Settings Page - Fayetteville Public Library Volunteer System',
+      theme: VolunteerTheme.lightTheme,
+      home: const MyHomePage(
+          title:
+              'Fayetteville Public Library Volunteer System - User Account Settings Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -44,131 +36,240 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 0;
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     // This call to setState tells the Flutter framework that something has
-  //     // changed in this State, which causes it to rerun the build method below
-  //     // so that the display can reflect the updated values. If we changed
-  //     // _counter without calling setState(), then the build method would not be
-  //     // called again, and so nothing would appear to happen.
-  //     _counter++;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     bool notificationsEnabled = false;
 
     onPasswordChangeButtonPressed() {
       setState(() {});
     }
 
+    Size displaySize(BuildContext context) {
+      return MediaQuery.of(context).size;
+    }
+
+    double displayHeight(BuildContext context) {
+      return displaySize(context).height;
+    }
+
+    double displayWidth(BuildContext context) {
+      return displaySize(context).width;
+    }
+
     return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-        ),
-        body: Center(
-            child: Column(children: <Widget>[
-          Row(
-            children: [Text("Receive notifications"), MyStatefulCheckbox()],
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Visibility(
+        //visible: isLoaded,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: const Text('Settings', style: TextStyle(fontSize: 25)),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Receieve Notifications',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 17),
+                ),
+              ),
+              SizedBox(width: displayWidth(context) * .02),
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const MyStatefulCheckbox()),
+              const Text("Password",
+                  textAlign: TextAlign.center, style: TextStyle(fontSize: 17)),
+              Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Old Password',
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'New Password',
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Confirm New Password',
+                  ),
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  width: displayWidth(context) * .5,
+                  child: TextButton(
+                      onPressed: () {}, child: const Text('Change Password'))),
+              const Text(
+                "Email",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 17),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                  ),
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  width: displayWidth(context) * .5,
+                  child: TextButton(
+                      onPressed: () {}, child: const Text('Save Email'))),
+              const Text(
+                "Phone Number",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 17),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                  ),
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  width: displayWidth(context) * .5,
+                  child: TextButton(
+                      onPressed: () {},
+                      child: const Text('Save Phone Number'))),
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  width: displayWidth(context) * .5,
+                  child: TextButton(
+                      onPressed: () {}, child: const Text('Save All'))),
+            ],
           ),
-          Row(children: [
-            Text("Change password: "),
-            SizedBox(
-                width: 200,
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Old password',
-                  ),
-                )),
-            SizedBox(
-                width: 200,
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'New password',
-                  ),
-                )),
-            SizedBox(
-                width: 200,
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Confirm new password',
-                  ),
-                )),
-            const SizedBox(height: 30),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {},
-              child: const Text('Change password'),
+        ),
+        replacement: const Center(child: CircularProgressIndicator()),
+      ),
+      drawer: Drawer(
+          child: ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
             ),
-          ]),
-          Row(children: [
-            Text("Add email:"),
-            SizedBox(
-                width: 200,
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Email',
-                  ),
-                )),
-            const SizedBox(height: 30),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {},
-              child: const Text('Save email'),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserHome()));
+            },
+            icon: const Icon(
+              Icons.home,
+              size: 20,
             ),
-          ]),
-          Row(children: [
-            Text("Add phone number"),
-            SizedBox(
-                width: 200,
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Phone number',
-                  ),
-                )),
-            const SizedBox(height: 30),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {},
-              child: const Text('Save phone number'),
-            ),
-          ]),
-          const SizedBox(height: 30),
+            label: const Text('Home'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
             style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+              textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
-            child: const Text('Save All'),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserRegistration()));
+            },
+            child: const Text('Volunteer Opportunities'),
           ),
-        ])));
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserEnrolled()));
+            },
+            child: const Text('Currently Enrolled'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserCompleted()));
+            },
+            child: const Text('Volunteer History'),
+          ),
+          const SizedBox(height: 25) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              MaterialPageRoute(builder: (context) => const UserAccount());
+            },
+            icon: const Icon(
+              Icons.account_circle,
+              size: 20,
+            ),
+            label: const Text('Account'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.settings,
+              size: 20,
+            ),
+            label: const Text('Settings'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyApp()));
+            },
+            icon: const Icon(
+              Icons.logout,
+              size: 20,
+            ),
+            label: const Text('Logout'),
+          ),
+        ],
+      )),
+    );
   }
 }
 

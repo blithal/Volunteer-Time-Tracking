@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
-import 'package:volunteer_time_tracking/user_account.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 
 void main() {
@@ -19,9 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       // initialRoute: '/',
       // routes: {
       //   '/': (context) => Home(),
@@ -78,15 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Image(image: AssetImage('graphics/library_logo_name.png')),
-            Text(widget.title,
-                style: GoogleFonts.mulish(
-                    textStyle: const TextStyle(
-                        fontSize: 25,
-                        color: Color.fromARGB(255, 100, 105, 111)))),
+            Image.asset('graphics/library_logo_name.png',
+                height: 60, width: 150.0),
+            const SizedBox(width: 10),
+            Text(widget.title),
           ],
         ),
-        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
@@ -94,13 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Color.fromARGB(255, 100, 105, 111),
-                ),
-              ),
+              child: const Text('Login', style: TextStyle(fontSize: 25)),
             ),
             Container(
               padding: const EdgeInsets.all(10),
@@ -108,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextField(
                 controller: usernameController,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
                   labelText: 'Username',
                 ),
               ),
@@ -128,24 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.all(10),
                 width: displayWidth(context) * .5,
                 child: TextButton(
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return Colors.blue.withOpacity(0.04);
-                          }
-
-                          if (states.contains(MaterialState.focused) ||
-                              states.contains(MaterialState.pressed)) {
-                            return Colors.blue.withOpacity(0.12);
-                          }
-
-                          return null; // Defer to the widget's default.
-                        },
-                      ),
-                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -157,37 +126,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.all(10),
                 width: displayWidth(context) * .5,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 75, 157, 224)),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return const Color.fromARGB(255, 24, 111, 182)
-                                .withOpacity(0.04);
-                          }
-
-                          if (states.contains(MaterialState.focused) ||
-                              states.contains(MaterialState.pressed)) {
-                            return const Color.fromARGB(255, 17, 70, 114)
-                                .withOpacity(0.12);
-                          }
-
-                          return null; // Defer to the widget's default.
-                        },
-                      ),
-                    ),
-                    onPressed: () {
-                      //postData();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UserHome()),
-                      );
-                    }, // verify login creditionals (change later)
-                    child: const Text('Login'))),
+                  onPressed: () {
+                    //postData();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const UserHome()),
+                    );
+                  }, // verify login creditionals (change later)
+                  child: const Text(
+                    'Login',
+                  ),
+                )),
           ],
         ),
       ),

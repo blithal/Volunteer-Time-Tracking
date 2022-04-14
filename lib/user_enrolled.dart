@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
@@ -18,9 +19,7 @@ class UserEnrolled extends StatelessWidget {
     return MaterialApp(
       title:
           'User Enrolled Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: const UserEnrolledPage(
           title:
               'Fayetteville Public Library Volunteer System - User Enrolled Page'),
@@ -87,7 +86,7 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          color: const Color.fromARGB(255, 167, 206, 238),
+          color: const Color.fromARGB(255, 100, 105, 111),
           border: Border.all(color: Colors.grey),
         ),
         child: Column(
@@ -97,22 +96,23 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
                 Container(
                   width: displayWidth(context) * .50,
                   padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 238, 237, 167),
-                  ),
+                  decoration: const BoxDecoration(),
                   child: Text(
                     name,
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 17),
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
                   ),
                 ),
                 Container(
                   width: displayWidth(context) * .50,
                   padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 0, 46, 70),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: Text(
                     "Organizer: " + organizerName,
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ]),
@@ -122,24 +122,28 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
                   width: displayWidth(context) * .15,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 238, 167),
-                  ),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10))),
                   child: Text(
                     date,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
                 Container(
                   width: displayWidth(context) * .15,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 238, 167),
-                  ),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10))),
                   child: Text(
                     startTime + "-" + endTime,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ]),
@@ -149,12 +153,12 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
                 "Location: " + loca,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 13),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             const SizedBox(height: 10),
@@ -162,70 +166,24 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
-                description,
+                "Information: " + description,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             Container(
                 padding: const EdgeInsets.all(10),
                 width: displayWidth(context) * .66,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 75, 157, 224)),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return const Color.fromARGB(255, 24, 111, 182)
-                                .withOpacity(0.04);
-                          }
-
-                          if (states.contains(MaterialState.focused) ||
-                              states.contains(MaterialState.pressed)) {
-                            return const Color.fromARGB(255, 17, 70, 114)
-                                .withOpacity(0.12);
-                          }
-
-                          return null; // Defer to the widget's default.
-                        },
-                      ),
-                    ),
-                    onPressed: () {}, //
-                    child: const Text('Clock in'))),
+                    onPressed: () {}, child: const Text('Clock in'))),
             Container(
                 padding: const EdgeInsets.all(10),
                 width: displayWidth(context) * .66,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 75, 157, 224)),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return const Color.fromARGB(255, 24, 111, 182)
-                                .withOpacity(0.04);
-                          }
-
-                          if (states.contains(MaterialState.focused) ||
-                              states.contains(MaterialState.pressed)) {
-                            return const Color.fromARGB(255, 17, 70, 114)
-                                .withOpacity(0.12);
-                          }
-
-                          return null; // Defer to the widget's default.
-                        },
-                      ),
-                    ),
-                    onPressed: () {}, //
-                    child: const Text('Unenroll'))),
+                    onPressed: () {}, child: const Text('Unenroll'))),
           ],
         ));
   }
@@ -280,7 +238,6 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
                               eventone.address))),
                   margin: const EdgeInsets.all(5),
                   padding: const EdgeInsets.all(5),
-                  color: Colors.green[100],
                 );
               }).toList(),
             )

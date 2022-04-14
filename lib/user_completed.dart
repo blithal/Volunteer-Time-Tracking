@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
@@ -17,9 +18,7 @@ class UserCompleted extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'User History Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: const UserCompletedPage(
           title:
               'Fayetteville Public Library Volunteer System - User History Page'),
@@ -97,8 +96,8 @@ class _UserCompletedPage extends State<UserCompletedPage> {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          color: const Color.fromARGB(255, 167, 206, 238),
-          border: Border.all(color: Colors.grey),
+          color: const Color.fromARGB(255, 100, 105, 111),
+          border: Border.all(color: const Color.fromARGB(255, 113, 200, 184)),
         ),
         child: Column(
           children: [
@@ -107,22 +106,23 @@ class _UserCompletedPage extends State<UserCompletedPage> {
                 Container(
                   width: displayWidth(context) * .50,
                   padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 238, 237, 167),
-                  ),
+                  decoration: const BoxDecoration(),
                   child: Text(
                     name,
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 17),
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
                   ),
                 ),
                 Container(
                   width: displayWidth(context) * .50,
                   padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 0, 46, 70),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: Text(
                     "Organizer: " + organizerName,
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ]),
@@ -132,24 +132,28 @@ class _UserCompletedPage extends State<UserCompletedPage> {
                   width: displayWidth(context) * .15,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 238, 167),
-                  ),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10))),
                   child: Text(
                     date,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
                 Container(
                   width: displayWidth(context) * .15,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 238, 167),
-                  ),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10))),
                   child: Text(
                     startTime + "-" + endTime,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ]),
@@ -159,12 +163,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
                 "Location: " + loca,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 13),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             const SizedBox(height: 10),
@@ -172,12 +176,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
-                description,
+                "Information: " + description,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             const SizedBox(height: 10),
@@ -185,12 +189,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
                 "Time Recorded: " + timeRecorded,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             )
           ],
@@ -248,7 +252,6 @@ class _UserCompletedPage extends State<UserCompletedPage> {
                               eventone.timeRecorded))),
                   margin: const EdgeInsets.all(5),
                   padding: const EdgeInsets.all(5),
-                  color: Colors.green[100],
                 );
               }).toList(),
             )

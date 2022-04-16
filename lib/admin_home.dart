@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/admin_settings.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
+import 'package:volunteer_time_tracking/admin_view_events.dart';
+import 'package:volunteer_time_tracking/admin_view_users.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
@@ -88,16 +90,14 @@ class _AdminHomePage extends State<AdminHomePage> {
                           color: Colors.white,
                           icon: const Icon(Icons.event),
                           onPressed: () {
-                            /*Navigator.push(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserCompleted()));
-                          */
+                                    builder: (context) => const ViewEvents()));
                           },
                         ),
                         const Text(
-                          'View Events',
+                          'Events',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 17, color: Colors.white),
                         )
@@ -117,19 +117,17 @@ class _AdminHomePage extends State<AdminHomePage> {
                       children: <Widget>[
                         IconButton(
                           iconSize: 50,
-                          icon: const Icon(Icons.event_note),
+                          icon: const Icon(Icons.accessibility),
                           color: Colors.white,
                           onPressed: () {
-                            /*
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const UserAccount()));
-                          */
+                                    builder: (context) => const ViewUsers()));
                           },
                         ),
                         const Text(
-                          'Edit Events',
+                          'Users',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 17, color: Colors.white),
                         )
@@ -152,19 +150,16 @@ class _AdminHomePage extends State<AdminHomePage> {
                         IconButton(
                           iconSize: 50,
                           color: Colors.white,
-                          icon: const Icon(Icons.create),
+                          icon: const Icon(Icons.people),
                           onPressed: () {
-                            /*
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserCompleted()));
-                          */
+                                    builder: (context) => const ViewAdmins()));
                           },
                         ),
                         const Text(
-                          'Create Report',
+                          'Admins',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 17, color: Colors.white),
                         )
@@ -196,138 +191,7 @@ class _AdminHomePage extends State<AdminHomePage> {
                           },
                         ),
                         const Text(
-                          'View Reports',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer Opportunites*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        color: Color.fromARGB(255, 126, 148, 203)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.accessibility),
-                          onPressed: () {
-                            /*
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserRegistration()));
-                          */
-                          },
-                        ),
-                        const Text(
-                          'View Users',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Currently Enrolled Opportunites*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.account_circle),
-                          onPressed: () {
-                            /*
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserEnrolled()));
-                          */
-                          },
-                        ),
-                        const Text(
-                          'Edit Users',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Account Settings Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.people_alt),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ViewAdmins()));
-                          },
-                        ),
-                        const Text(
-                          'Veiw Admins',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Sign Out Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.perm_identity),
-                          onPressed: () {
-                            /*
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyApp()));
-                          */
-                          },
-                        ),
-                        const Text(
-                          'Edit Admins',
+                          'Reports',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 17, color: Colors.white),
                         )
@@ -460,14 +324,10 @@ class _AdminHomePage extends State<AdminHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
-            */
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ViewEvents()));
             },
-            child: const Text('View Events'),
+            child: const Text('Events'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
@@ -475,74 +335,10 @@ class _AdminHomePage extends State<AdminHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
-            */
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ViewUsers()));
             },
-            child: const Text('Edit Events'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
-            */
-            },
-            child: const Text('Create Report'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AdminAccount()));
-            */
-            },
-            child: const Text('View Reports'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserSettings()));
-            */
-            },
-            child: const Text('View Users'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
-            */
-            },
-            child: const Text('Edit Users'),
+            child: const Text('Users'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
@@ -553,7 +349,7 @@ class _AdminHomePage extends State<AdminHomePage> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const ViewAdmins()));
             },
-            child: const Text('View Admins'),
+            child: const Text('Admins'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
@@ -562,13 +358,11 @@ class _AdminHomePage extends State<AdminHomePage> {
             ),
             onPressed: () {
               /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserAccount()));
             */
             },
-            child: const Text('Edit Admins'),
+            child: const Text('Reports'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(

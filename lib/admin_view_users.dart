@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
+import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/admin_view_events.dart';
-import 'package:volunteer_time_tracking/admin_view_users.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_settings.dart';
 import 'package:collection/collection.dart';
 
-class ViewAdmins extends StatelessWidget {
-  const ViewAdmins({Key? key}) : super(key: key);
+class ViewUsers extends StatelessWidget {
+  const ViewUsers({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title:
-          'Current Admins Page - Fayetteville Public Library Volunteer System',
+          'Current Users Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const ViewAdminsPage(
+      home: const ViewUsersPage(
           title:
-              'Fayetteville Public Library Volunteer System - Current Admins Page'),
+              'Fayetteville Public Library Volunteer System - Current Users Page'),
     );
   }
 }
 
-class ViewAdminsPage extends StatefulWidget {
-  const ViewAdminsPage({Key? key, required this.title}) : super(key: key);
+class ViewUsersPage extends StatefulWidget {
+  const ViewUsersPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ViewAdminsPage> createState() => _ViewAdminsPage();
+  State<ViewUsersPage> createState() => _ViewUsersPage();
 }
 
-class _ViewAdminsPage extends State<ViewAdminsPage> {
-  final List<Map> _admins = [
+class _ViewUsersPage extends State<ViewUsersPage> {
+  final List<Map> _users = [
     {
       'isActive': 'False',
       'firstName': 'John',
@@ -79,7 +79,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
   @override
   void initState() {
     super.initState();
-    _selected = List<bool>.generate(_admins.length, (int index) => false);
+    _selected = List<bool>.generate(_users.length, (int index) => false);
   }
 
   bool? _isEditMode = false;
@@ -113,9 +113,9 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins.sort((a, b) => b['firstName'].compareTo(a['firstName']));
+              _users.sort((a, b) => b['firstName'].compareTo(a['firstName']));
             } else {
-              _admins.sort((a, b) => a['firstName'].compareTo(b['firstName']));
+              _users.sort((a, b) => a['firstName'].compareTo(b['firstName']));
             }
             _isSortAsc = !_isSortAsc;
           });
@@ -127,9 +127,9 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins.sort((a, b) => b['lastName'].compareTo(a['lastName']));
+              _users.sort((a, b) => b['lastName'].compareTo(a['lastName']));
             } else {
-              _admins.sort((a, b) => a['lastName'].compareTo(b['lastName']));
+              _users.sort((a, b) => a['lastName'].compareTo(b['lastName']));
             }
             _isSortAsc = !_isSortAsc;
           });
@@ -141,9 +141,9 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins.sort((a, b) => b['email'].compareTo(a['email']));
+              _users.sort((a, b) => b['email'].compareTo(a['email']));
             } else {
-              _admins.sort((a, b) => a['email'].compareTo(b['email']));
+              _users.sort((a, b) => a['email'].compareTo(b['email']));
             }
             _isSortAsc = !_isSortAsc;
           });
@@ -155,10 +155,10 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins
+              _users
                   .sort((a, b) => b['phoneNumber'].compareTo(a['phoneNumber']));
             } else {
-              _admins
+              _users
                   .sort((a, b) => a['phoneNumber'].compareTo(b['phoneNumber']));
             }
             _isSortAsc = !_isSortAsc;
@@ -169,8 +169,8 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
   }
 
   List<DataRow> _createRows() {
-    return _admins
-        .mapIndexed((index, admins) => DataRow(
+    return _users
+        .mapIndexed((index, users) => DataRow(
             color: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
               // All rows will have the same selected color.
@@ -184,11 +184,11 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               return null; // Use default value for other states and odd rows.
             }),
             cells: [
-              DataCell(Text(admins['isActive'].toString())),
-              _createTitleCell(admins['firstName']),
-              _createTitleCell(admins['lastName']),
-              _createTitleCell(admins['email']),
-              _createTitleCell(admins['phoneNumber'])
+              DataCell(Text(users['isActive'].toString())),
+              _createTitleCell(users['firstName']),
+              _createTitleCell(users['lastName']),
+              _createTitleCell(users['email']),
+              _createTitleCell(users['phoneNumber'])
             ],
             selected: _selected[index],
             onSelectChanged: (bool? selected) {
@@ -199,11 +199,11 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
         .toList();
   }
 
-  DataCell _createTitleCell(adminFirstName) {
+  DataCell _createTitleCell(usersValue) {
     return DataCell(_isEditMode == true
         ? TextFormField(
-            initialValue: adminFirstName, style: const TextStyle(fontSize: 14))
-        : Text(adminFirstName));
+            initialValue: usersValue, style: const TextStyle(fontSize: 14))
+        : Text(usersValue));
   }
 
   Row _createCheckboxField() {
@@ -239,7 +239,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
                 width: displayWidth(context) * .80,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'Admins',
+                  "Users",
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: 25),
                 ),
@@ -291,8 +291,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewUsers()));
+              Navigator.pop(context);
             },
             child: const Text('Users'),
           ),
@@ -302,7 +301,8 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
             },
             child: const Text('Admins'),
           ),

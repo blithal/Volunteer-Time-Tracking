@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
-import 'package:volunteer_time_tracking/admin_view_events.dart';
+import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
@@ -8,68 +8,78 @@ import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_settings.dart';
 import 'package:collection/collection.dart';
 
-class ViewAdmins extends StatelessWidget {
-  const ViewAdmins({Key? key}) : super(key: key);
+class ViewEvents extends StatelessWidget {
+  const ViewEvents({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title:
-          'Current Admins Page - Fayetteville Public Library Volunteer System',
+          'Current Events Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const ViewAdminsPage(
+      home: const ViewEventsPage(
           title:
-              'Fayetteville Public Library Volunteer System - Current Admins Page'),
+              'Fayetteville Public Library Volunteer System - Current Events Page'),
     );
   }
 }
 
-class ViewAdminsPage extends StatefulWidget {
-  const ViewAdminsPage({Key? key, required this.title}) : super(key: key);
+class ViewEventsPage extends StatefulWidget {
+  const ViewEventsPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ViewAdminsPage> createState() => _ViewAdminsPage();
+  State<ViewEventsPage> createState() => _ViewEventsPage();
 }
 
-class _ViewAdminsPage extends State<ViewAdminsPage> {
-  final List<Map> _admins = [
+class _ViewEventsPage extends State<ViewEventsPage> {
+  final List<Map> _events = [
     {
-      'isActive': 'False',
-      'firstName': 'John',
-      'lastName': 'Doe',
-      'email': 'johndoe@gmail.com',
-      'phoneNumber': '111-111-1111'
+      'title': 'Community Clean Up',
+      'organizer': 'John Doe',
+      'date': '1/2/22',
+      'startTime': '1:00pm',
+      'endTime': '2:00pm',
+      'address': '113 W Mountain St, Fayetteville, AR 72701',
+      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
     },
     {
-      'isActive': 'False',
-      'firstName': 'Jane',
-      'lastName': 'Doe',
-      'email': 'janedoe@gmail.com',
-      'phoneNumber': '511-111-1111'
+      'title': 'Community Clean Up',
+      'organizer': 'John Doe',
+      'date': '1/2/22',
+      'startTime': '1:00pm',
+      'endTime': '2:00pm',
+      'address': '113 W Mountain St, Fayetteville, AR 72701',
+      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
     },
     {
-      'isActive': 'False',
-      'firstName': 'Joe',
-      'lastName': 'Doe',
-      'email': 'joedoe@gmail.com',
-      'phoneNumber': '411-111-1111'
+      'title': 'Community Clean Up',
+      'organizer': 'John Doe',
+      'date': '1/2/22',
+      'startTime': '1:00pm',
+      'endTime': '2:00pm',
+      'address': '113 W Mountain St, Fayetteville, AR 72701',
+      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
     },
     {
-      'isActive': 'False',
-      'firstName': 'Peet',
-      'lastName': 'Doe',
-      'email': 'peetdoe@gmail.com',
-      'phoneNumber': '311-111-1111'
+      'title': 'Community Clean Up',
+      'organizer': 'John Doe',
+      'date': '1/2/22',
+      'startTime': '1:00pm',
+      'endTime': '2:00pm',
+      'address': '113 W Mountain St, Fayetteville, AR 72701',
+      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
     },
     {
-      'isActive': 'False',
-      'firstName': 'Allice',
-      'lastName': 'Doe',
-      'email': 'Allicedoe@gmail.com',
-      'phoneNumber': '211-111-1111'
+      'title': 'Community Clean Up',
+      'organizer': 'John Doe',
+      'date': '1/2/22',
+      'startTime': '1:00pm',
+      'endTime': '2:00pm',
+      'address': '113 W Mountain St, Fayetteville, AR 72701',
+      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
     },
   ];
   List<bool> _selected = [];
@@ -79,7 +89,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
   @override
   void initState() {
     super.initState();
-    _selected = List<bool>.generate(_admins.length, (int index) => false);
+    _selected = List<bool>.generate(_events.length, (int index) => false);
   }
 
   bool? _isEditMode = false;
@@ -96,70 +106,114 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
     return displaySize(context).width;
   }
 
-  DataTable _createDataTable() {
-    return DataTable(
-        columns: _createColumns(),
-        rows: _createRows(),
-        sortColumnIndex: _currentSortColumn,
-        sortAscending: _isSortAsc);
+  Scrollbar _createDataTable() {
+    return Scrollbar(
+        child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+                columns: _createColumns(),
+                rows: _createRows(),
+                sortColumnIndex: _currentSortColumn,
+                sortAscending: _isSortAsc)));
   }
 
   List<DataColumn> _createColumns() {
     return [
-      const DataColumn(label: Text('isActive')),
       DataColumn(
-        label: Text('First Name'),
+        label: Text('Title'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins.sort((a, b) => b['firstName'].compareTo(a['firstName']));
+              _events.sort((a, b) => b['title'].compareTo(a['title']));
             } else {
-              _admins.sort((a, b) => a['firstName'].compareTo(b['firstName']));
+              _events.sort((a, b) => a['title'].compareTo(b['title']));
             }
             _isSortAsc = !_isSortAsc;
           });
         },
       ),
       DataColumn(
-        label: Text('Last Name'),
+        label: Text('Organizer'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins.sort((a, b) => b['lastName'].compareTo(a['lastName']));
+              _events.sort((a, b) => b['organizer'].compareTo(a['organizer']));
             } else {
-              _admins.sort((a, b) => a['lastName'].compareTo(b['lastName']));
+              _events.sort((a, b) => a['organizer'].compareTo(b['organizer']));
             }
             _isSortAsc = !_isSortAsc;
           });
         },
       ),
       DataColumn(
-        label: Text('Email'),
+        label: Text('Date'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins.sort((a, b) => b['email'].compareTo(a['email']));
+              _events.sort((a, b) => b['date'].compareTo(a['date']));
             } else {
-              _admins.sort((a, b) => a['email'].compareTo(b['email']));
+              _events.sort((a, b) => a['date'].compareTo(b['date']));
             }
             _isSortAsc = !_isSortAsc;
           });
         },
       ),
       DataColumn(
-        label: Text('Phone Number'),
+        label: Text('Start Time'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
             if (_isSortAsc) {
-              _admins
-                  .sort((a, b) => b['phoneNumber'].compareTo(a['phoneNumber']));
+              _events.sort((a, b) => b['startTime'].compareTo(a['startTime']));
             } else {
-              _admins
-                  .sort((a, b) => a['phoneNumber'].compareTo(b['phoneNumber']));
+              _events.sort((a, b) => a['startTime'].compareTo(b['startTime']));
+            }
+            _isSortAsc = !_isSortAsc;
+          });
+        },
+      ),
+      DataColumn(
+        label: Text('End Time'),
+        onSort: (columnIndex, _) {
+          setState(() {
+            _currentSortColumn = columnIndex;
+            if (_isSortAsc) {
+              _events.sort((a, b) => b['endTime'].compareTo(a['endTime']));
+            } else {
+              _events.sort((a, b) => a['endTime'].compareTo(b['endTime']));
+            }
+            _isSortAsc = !_isSortAsc;
+          });
+        },
+      ),
+      DataColumn(
+        label: Text('Address'),
+        onSort: (columnIndex, _) {
+          setState(() {
+            _currentSortColumn = columnIndex;
+            if (_isSortAsc) {
+              _events.sort((a, b) => b['address'].compareTo(a['address']));
+            } else {
+              _events.sort((a, b) => a['address'].compareTo(b['address']));
+            }
+            _isSortAsc = !_isSortAsc;
+          });
+        },
+      ),
+      DataColumn(
+        label: Text('Participants'),
+        onSort: (columnIndex, _) {
+          setState(() {
+            _currentSortColumn = columnIndex;
+            if (_isSortAsc) {
+              _events.sort(
+                  (a, b) => b['participants'].compareTo(a['participants']));
+            } else {
+              _events.sort(
+                  (a, b) => a['participants'].compareTo(b['participants']));
             }
             _isSortAsc = !_isSortAsc;
           });
@@ -169,8 +223,8 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
   }
 
   List<DataRow> _createRows() {
-    return _admins
-        .mapIndexed((index, admins) => DataRow(
+    return _events
+        .mapIndexed((index, events) => DataRow(
             color: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
               // All rows will have the same selected color.
@@ -184,11 +238,13 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               return null; // Use default value for other states and odd rows.
             }),
             cells: [
-              DataCell(Text(admins['isActive'].toString())),
-              _createTitleCell(admins['firstName']),
-              _createTitleCell(admins['lastName']),
-              _createTitleCell(admins['email']),
-              _createTitleCell(admins['phoneNumber'])
+              _createTitleCell(events['title']),
+              _createTitleCell(events['organizer']),
+              _createTitleCell(events['date']),
+              _createTitleCell(events['startTime']),
+              _createTitleCell(events['endTime']),
+              _createTitleCell(events['address']),
+              _createTitleCell(events['participants'])
             ],
             selected: _selected[index],
             onSelectChanged: (bool? selected) {
@@ -199,11 +255,11 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
         .toList();
   }
 
-  DataCell _createTitleCell(adminFirstName) {
+  DataCell _createTitleCell(eventsValue) {
     return DataCell(_isEditMode == true
         ? TextFormField(
-            initialValue: adminFirstName, style: const TextStyle(fontSize: 14))
-        : Text(adminFirstName));
+            initialValue: eventsValue, style: const TextStyle(fontSize: 14))
+        : Text(eventsValue));
   }
 
   Row _createCheckboxField() {
@@ -239,7 +295,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
                 width: displayWidth(context) * .80,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'Admins',
+                  "Events",
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: 25),
                 ),
@@ -248,7 +304,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
                 child: ListView(
                   children: [_createDataTable(), _createCheckboxField()],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -280,8 +336,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewEvents()));
+              Navigator.pop(context);
             },
             child: const Text('Events'),
           ),
@@ -302,7 +357,8 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
             },
             child: const Text('Admins'),
           ),

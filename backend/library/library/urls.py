@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# from rest_framework.authtoken import views
+from rest_framework.authtoken import views
 # from api import urls
 
 # urlpatterns = [
@@ -23,43 +23,26 @@ from django.urls import path, include
 #     path('api/', include('api.urls', namespace='api')),
 #     path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
 # ]
-from user import views
+from user import viewsUser
 from userTime import viewsTime
-from account import viewsAccount
-from login import viewsLogin
 from rest_framework import routers
-from account import urls
-from login import urls
-from user import userurls
-from userTime import urls
-from loginInfo import urls
-from events import urls
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register('userdetails', views.user)
-router.register('logindetails', views.logininfo)
+router.register('userdetails', viewsUser.user)
+router.register('logindetails', viewsUser.logininfo)
 
 router2 = routers.DefaultRouter(trailing_slash=False)
 router2.register('userTimedetails', viewsTime.views)
 
-#router3 = routers.DefaultRouter(trailing_slash=False)
-##router3.register('accountdetails', viewsAccount.terminationViews)
-
-#router4 = routers.DefaultRouter(trailing_slash=False)
-#router4.register('logindetails', viewsLogin.activityViews)
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    #path('user/', include('user.userurls')),
-    #path('timeInfo/', include('userTime.urls')),
     path('login/', include('login.urls')),
     path('account/', include('account.urls')),
     path('loginInfo/', include('loginInfo.urls')),
     path('user/', include(router.urls)),
-    #path('', include(router.urls)),
     path('userTime/', include(router2.urls)),
     path('events/', include('events.urls')),
-    #path('', include(router3.urls)),
-    #path('', include(router4.urls))
+    path('api/', include ('api.urls', namespace='api')),
+    path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
 ]

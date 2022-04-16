@@ -97,4 +97,26 @@ class RemoteService {
       return false;
     }
   }
+
+  Future<String?> createUserToken(String username, String firstName,
+      String lastName, String email, String password) async {
+    var client = http.Client();
+    var uri = Uri.parse("http://127.0.0.1:8000/api/user/");
+    var body = jsonEncode({
+      "username": username,
+      "first_name": firstName,
+      "last_name": lastName,
+      "email": email,
+      "password": password
+    });
+    var response = await client
+        .post(uri, body: body, headers: {"Content-Type": "application/json"});
+    if (response.statusCode == 201) {
+      return "success";
+    }
+    if (response.statusCode == 400) {
+      var temp = jsonDecode(response.body);
+      return temp.toString();
+    }
+  }
 }

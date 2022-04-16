@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
+from rest_framework import permissions
 from django.contrib.auth.models import User
 
 class UserRecordView(APIView):
@@ -11,8 +12,9 @@ class UserRecordView(APIView):
     users. GET request returns the registered users whereas
     a POST request allows to create a new user.
     """
-    permission_classes = [IsAdminUser]
-    http_method_names = ['get', 'head']
+    #permission_classes = [IsAdminUser]
+    permission_classes = [permissions.AllowAny]
+    #http_method_names = ['get', 'head']
 
     def get(self, format=None):
         users = User.objects.all()

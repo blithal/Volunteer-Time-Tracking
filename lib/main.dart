@@ -83,50 +83,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // void _showDialog() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (BuildContext context) {
-  //       return new AlertDialog(
-  //         title: new Text('Please try again.'),
-  //         content: new SingleChildScrollView(
-  //           child: new ListBody(
-  //             children: [
-  //               new Text('Invalid username or password.'),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: [
-  //           new TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: new Text('Ok')),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  // void _showMainPage() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Image(image: AssetImage('graphics/library_logo_name.png')),
-            Text(widget.title,
-                style: GoogleFonts.mulish(
-                    textStyle: const TextStyle(
-                        fontSize: 25,
-                        color: Color.fromARGB(255, 100, 105, 111)))),
-          ],
-        ),
-        backgroundColor: Colors.white,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // children: [
+            //   const Image(image: AssetImage('graphics/library_logo_name.png')),
+            //   Text(widget.title,
+            //       style: GoogleFonts.mulish(
+            //           textStyle: const TextStyle(
+            //               fontSize: 25,
+            //               color: Color.fromARGB(255, 100, 105, 111)))),
+            // ],
+            ),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(

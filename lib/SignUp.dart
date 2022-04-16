@@ -92,6 +92,15 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  createLoginToken() async {
+    await RemoteService().createUserToken(
+        usernameController.text,
+        firstNameController.text,
+        lastNameController.text,
+        emailController.text,
+        passwordController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -196,7 +205,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     onPressed: () {
-                      validateUser();
+                      createLoginToken();
                     }, // verify login creditionals (change later)
                     child: const Text('Create Account'))),
             if (userExists)

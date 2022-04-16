@@ -5,6 +5,7 @@ import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:http/http.dart' as http;
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
+import 'package:volunteer_time_tracking/admin_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -135,6 +136,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   }, // verify login creditionals (change later)
                   child: const Text(
                     'Login',
+                  ),
+                )),
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: ElevatedButton(
+                  onPressed: () {
+                    //postData();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AdminHome()),
+                    );
+                  }, // verify login creditionals (change later)
+                  child: const Text(
+                    'Admin Login *REMOVE LATER*',
                   ),
                 )),
           ],

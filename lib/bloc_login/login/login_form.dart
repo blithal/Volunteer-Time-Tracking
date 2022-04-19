@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_time_tracking/bloc_login/login/bloc/login_bloc.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/user_home.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -31,8 +32,8 @@ class _LoginFormState extends State<LoginForm> {
           ));
         }
         if (state is LoginSuccess) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => MyApp(key: null)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => UserHome(user: state.user, key: null)));
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

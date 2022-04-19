@@ -6,11 +6,12 @@ import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 
 class UserEnrolled extends StatelessWidget {
   const UserEnrolled({Key? key, required this.currUserId}) : super(key: key);
 
-  final String currUserId;
+  final User currUserId;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class UserEnrolledPage extends StatefulWidget {
       : super(key: key);
 
   final String title;
-  final String currUserId;
+  final User currUserId;
 
   @override
   State<UserEnrolledPage> createState() => _UserEnrolledPage();
@@ -255,7 +256,7 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserHome(
-                            userId: widget.currUserId,
+                            user: widget.currUserId,
                           )));
             },
             icon: const Icon(
@@ -314,7 +315,7 @@ class _UserEnrolledPage extends State<UserEnrolledPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserAccount(
-                            currUserId: widget.currUserId,
+                            currUser: widget.currUserId,
                           )));
             },
             icon: const Icon(

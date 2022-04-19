@@ -4,7 +4,7 @@ import 'dart:io';
 import 'main.dart';
 import 'package:flutter/material.dart';
 import 'services/remote_service.dart';
-import 'models/user.dart';
+import 'models/userInfo.dart';
 import './services/remote_service.dart';
 
 class SignUp extends StatelessWidget {
@@ -31,7 +31,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  List<User>? users;
+  List<UserInfo>? users;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -55,42 +55,42 @@ class _SignUpPageState extends State<SignUpPage> {
     return displaySize(context).width;
   }
 
-  validateUser() async {
-    users = await RemoteService().getUsers();
-    if (users != null) {
-      users!.forEach((User user) {
-        if (user.email == emailController.text) {
-          setState(() {
-            userExists = true;
-          });
-        }
-      });
-      if (!userExists) {
-        users = await RemoteService().createUser(firstNameController.text,
-            lastNameController.text, emailController.text);
-        users!.forEach((User user) async {
-          print("searching...");
-          if (user.email == emailController.text) {
-            print("found");
-            await addUser(user);
-          }
-        });
-      } else {
-        setState(() {
-          userExists = true;
-        });
-      }
-    }
-  }
+  // validateUser() async {
+  //   users = await RemoteService().getUsers();
+  //   if (users != null) {
+  //     users!.forEach((UserInfo user) {
+  //       if (user.email == emailController.text) {
+  //         setState(() {
+  //           userExists = true;
+  //         });
+  //       }
+  //     });
+  //     if (!userExists) {
+  //       users = await RemoteService().createUser(firstNameController.text,
+  //           lastNameController.text, emailController.text);
+  //       users!.forEach((UserInfo user) async {
+  //         print("searching...");
+  //         if (user.email == emailController.text) {
+  //           print("found");
+  //           await addUser(user);
+  //         }
+  //       });
+  //     } else {
+  //       setState(() {
+  //         userExists = true;
+  //       });
+  //     }
+  //   }
+  // }
 
-  addUser(User user) async {
-    await RemoteService().createLogin(
-        user.id.toString(), usernameController.text, passwordController.text);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MyApp()),
-    );
-  }
+  // addUser(UserInfo user) async {
+  //   await RemoteService().createLogin(
+  //       user.id.toString(), usernameController.text, passwordController.text);
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => const MyApp()),
+  //   );
+  // }
 
   createLoginToken() async {
     await RemoteService().createUserToken(
@@ -206,7 +206,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     onPressed: () {
                       createLoginToken();
-                    }, // verify login creditionals (change later)
+                    },
                     child: const Text('Create Account'))),
             if (userExists)
               Container(

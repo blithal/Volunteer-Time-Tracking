@@ -2,80 +2,101 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:volunteer_time_tracking/models/user.dart';
+import 'package:volunteer_time_tracking/models/userInfo.dart';
 import 'package:http/http.dart' as http;
 import 'package:volunteer_time_tracking/models/login_info.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 
 class RemoteService {
-  Future<List<User>?> getUsers() async {
+  Future<List<UserInfo>?> getUsersInfo(User user) async {
     var client = http.Client();
 
     var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
-    var response = await client.get(uri);
+    var response = await client.get(uri, headers: {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      "Authorization": user.token
+    });
     if (response.statusCode == 200) {
       var json = response.body;
-      return userFromJson(json);
+      return userInfoFromJson(json);
     }
   }
 
-  Future<User?> getUser(String userId) async {
+  Future<UserInfo?> getUserInfo(User user) async {
     var client = http.Client();
 
     var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
-    var response = await client.get(uri);
+    var response = await client.get(uri, headers: {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      "Authorization": user.token
+    });
     if (response.statusCode == 200) {
       var json = response.body;
-      List<User> users = userFromJson(json);
-      User user = User.defaultUser();
+      List<UserInfo> users = userInfoFromJson(json);
+      UserInfo? temp = null;
       users.forEach((u) {
-        if (u.id.toString() == userId) {
-          user = u;
+        if (u.id == user.id) {
+          temp = u;
         }
       });
-      return user;
+      return temp;
     }
+
+    // var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
+    // var response = await client.get(uri);
+    // if (response.statusCode == 200) {
+    //   var json = response.body;
+    //   List<UserInfo> users = userFromJson(json);
+    //   UserInfo user = UserInfo.defaultUser();
+    //   users.forEach((u) {
+    //     if (u.id.toString() == userId) {
+    //       user = u;
+    //     }
+    //   });
+    //   return user;
+    // }
   }
 
-  Future<List<LoginInfo>?> getLogins() async {
-    var client = http.Client();
+  // Future<List<LoginInfo>?> getLogins() async {
+  //   var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/logindetails?format=json");
-    var response = await client.get(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return loginInfoFromJson(json);
-    }
-  }
+  //   var uri = Uri.parse("http://127.0.0.1:8000/logindetails?format=json");
+  //   var response = await client.get(uri);
+  //   if (response.statusCode == 200) {
+  //     var json = response.body;
+  //     return loginInfoFromJson(json);
+  //   }
+  // }
 
-  Future<List<User>?> createUser(
-      String firstName, String lastName, String email) async {
-    var client = http.Client();
+  // Future<List<User>?> createUser(
+  //     String firstName, String lastName, String email) async {
+  //   var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/userdetails");
-    var response = await client.post(uri,
-        body: {"firstName": firstName, "lastName": lastName, "email": email});
-    if (response.statusCode == 201) {
-      return getUsers();
-    }
-  }
+  //   var uri = Uri.parse("http://127.0.0.1:8000/userdetails");
+  //   var response = await client.post(uri,
+  //       body: {"firstName": firstName, "lastName": lastName, "email": email});
+  //   if (response.statusCode == 201) {
+  //     return getUsers();
+  //   }
+  // }
 
-  Future<bool?> createLogin(
-      String userId, String username, String password) async {
-    var client = http.Client();
+  // Future<bool?> createLogin(
+  //     String userId, String username, String password) async {
+  //   var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/logindetails");
-    print("creating login...\nUserId: " +
-        userId +
-        "\nUsername: " +
-        username +
-        "\nPassword: " +
-        password);
-    var response = await client.post(uri,
-        body: {"userId": userId, "username": username, "password": password});
-    if (response.statusCode == 201) {
-      return true;
-    }
-  }
+  //   var uri = Uri.parse("http://127.0.0.1:8000/logindetails");
+  //   print("creating login...\nUserId: " +
+  //       userId +
+  //       "\nUsername: " +
+  //       username +
+  //       "\nPassword: " +
+  //       password);
+  //   var response = await client.post(uri,
+  //       body: {"userId": userId, "username": username, "password": password});
+  //   if (response.statusCode == 201) {
+  //     return true;
+  //   }
+  // }
 
   Future<bool?> createEvent(String name, String description, DateTime startDate,
       String startTime) async {

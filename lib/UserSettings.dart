@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 
 class UserSettings extends StatelessWidget {
   UserSettings({Key? key, required this.currUserId}) : super(key: key);
 
-  String currUserId;
+  User currUserId;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-  final String currUserId;
+  final User currUserId;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

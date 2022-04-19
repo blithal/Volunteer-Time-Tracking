@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:intl/intl.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 
 class Event extends StatelessWidget {
   Event({Key? key, required this.currUserId}) : super(key: key);
 
-  String currUserId;
+  User currUserId;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +24,7 @@ class Event extends StatelessWidget {
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key? key, required this.currUserId}) : super(key: key);
 
-  String currUserId;
+  User currUserId;
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
@@ -46,7 +47,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           context,
           MaterialPageRoute(
               builder: (context) => UserHome(
-                    userId: widget.currUserId,
+                    user: widget.currUserId,
                   )));
     } else {
       setState(() {

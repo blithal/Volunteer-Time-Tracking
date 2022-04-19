@@ -8,14 +8,14 @@ import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
-import 'package:volunteer_time_tracking/models/user.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'Event.dart';
 import 'services/remote_service.dart';
 
 class UserHome extends StatelessWidget {
-  const UserHome({Key? key, required this.userId}) : super(key: key);
+  const UserHome({Key? key, required this.user}) : super(key: key);
 
-  final String userId;
+  final User user;
 
   // This widget is the root of your application.
   @override
@@ -27,18 +27,18 @@ class UserHome extends StatelessWidget {
       ),
       home: UserHomePage(
         title: 'Fayetteville Public Library Volunteer System - User Home Page',
-        currUserId: userId,
+        user: user,
       ),
     );
   }
 }
 
 class UserHomePage extends StatefulWidget {
-  const UserHomePage({Key? key, required this.title, required this.currUserId})
+  const UserHomePage({Key? key, required this.title, required this.user})
       : super(key: key);
 
   final String title;
-  final String currUserId;
+  final User user;
 
   @override
   State<UserHomePage> createState() => _UserHomePage();
@@ -104,7 +104,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserRegistration(
-                                          currUserId: widget.currUserId,
+                                          currUserId: widget.user,
                                         )));
                           },
                         ),
@@ -136,7 +136,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserEnrolled(
-                                          currUserId: widget.currUserId,
+                                          currUserId: widget.user,
                                         )));
                           },
                         ),
@@ -170,7 +170,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserCompleted(
-                                          currUserId: widget.currUserId,
+                                          currUserId: widget.user,
                                         )));
                           },
                         ),
@@ -202,7 +202,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserAccount(
-                                          currUserId: widget.currUserId,
+                                          currUser: widget.user,
                                         )));
                           },
                         ),
@@ -236,7 +236,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ClockInClockOut(
-                                          currUserId: widget.currUserId,
+                                          currUserId: widget.user,
                                         )));
                           },
                         ),
@@ -268,7 +268,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Event(
-                                          currUserId: widget.currUserId,
+                                          currUserId: widget.user,
                                         )));
                           },
                         ),
@@ -302,7 +302,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserSettings(
-                                          currUserId: widget.currUserId,
+                                          currUserId: widget.user,
                                         )));
                           },
                         ),
@@ -377,7 +377,7 @@ class _UserHomePage extends State<UserHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserRegistration(
-                            currUserId: widget.currUserId,
+                            currUserId: widget.user,
                           )));
             },
             child: const Text('Volunteer Opportunities'),
@@ -392,7 +392,7 @@ class _UserHomePage extends State<UserHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserEnrolled(
-                            currUserId: widget.currUserId,
+                            currUserId: widget.user,
                           )));
             },
             child: const Text('Currently Enrolled'),
@@ -407,7 +407,7 @@ class _UserHomePage extends State<UserHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserCompleted(
-                            currUserId: widget.currUserId,
+                            currUserId: widget.user,
                           )));
             },
             child: const Text('Volunteer History'),
@@ -422,7 +422,7 @@ class _UserHomePage extends State<UserHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserAccount(
-                            currUserId: widget.currUserId,
+                            currUser: widget.user,
                           )));
             },
             icon: const Icon(

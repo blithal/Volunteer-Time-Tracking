@@ -25,51 +25,55 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Clock In / Clock Out'),
-        centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            isActive = !isActive;
-            if (isActive) {
-              // button has just been toggled on (clock in occurred)
-              timeElapsed = new Duration();
-              startClockTime = DateTime.now();
-            } else {
-              // button has just been toggled off (clock out occurred)
-              finishClockTime = DateTime.now();
-              timeElapsed = startClockTime.difference(finishClockTime);
-            }
-          });
-        },
-        child: Icon(Icons.access_alarm_outlined),
-        backgroundColor: isActive ? Colors.red : Colors.green,
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Text('Clock-in time: ' + '$startClockTime'),
-            Text('Clock-out time: ' + '$finishClockTime'),
-            Text('Time Elapsed: ' + '$timeElapsed'),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Manually enter hours of volunteer service',
-              ),
-              controller: myController,
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {});
-              },
-              child: Text('Submit hours'),
-            ),
-            Text(myController.text + ' hours of service logged!'),
-          ],
+        appBar: AppBar(
+          title: Text('Clock In / Clock Out'),
+          centerTitle: true,
         ),
-      ),
-    ); // return a widget tree
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              isActive = !isActive;
+              if (isActive) {
+                // button has just been toggled on (clock in occurred)
+                timeElapsed = new Duration();
+                startClockTime = DateTime.now();
+              } else {
+                // button has just been toggled off (clock out occurred)
+                finishClockTime = DateTime.now();
+                timeElapsed = startClockTime.difference(finishClockTime);
+              }
+            });
+          },
+          child: Icon(Icons.access_alarm_outlined),
+          backgroundColor: isActive ? Colors.red : Colors.green,
+        ),
+        body: Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Text('Clock-in time: ' + '$startClockTime'),
+                    Text('Clock-out time: ' + '$finishClockTime'),
+                    Text('Time Elapsed: ' + '$timeElapsed'),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Manually enter hours of volunteer service',
+                      ),
+                      controller: myController,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: Text('Submit hours'),
+                    ),
+                    Text(myController.text + ' hours of service logged!'),
+                  ],
+                ),
+              ),
+            ))); // return a widget tree
   }
 }

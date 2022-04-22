@@ -192,67 +192,71 @@ class _ViewEventsPage extends State<ViewEventsPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-          child: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Container(
-              width: displayWidth(context) * .70,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Current Events',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 25),
-              ),
-            ),
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditEvent(event: nullEvent[0]),
-                        ));
-                  }, // verify login creditionals (change later)
-                  child: const Text(
-                    'Create New Event',
-                  ),
-                )),
-            const SizedBox(height: 10) /*Spacing for user*/,
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: events.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                    title: volunteerCard(
-                      events[index].event,
-                      events[index].date,
-                      events[index].description,
-                      events[index].organizer,
-                      events[index].start,
-                      events[index].end,
-                      events[index].address,
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .70,
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      'Current Events',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 25),
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditEvent(event: events[index]),
+                  ),
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    EditEvent(event: nullEvent[0]),
+                              ));
+                        }, // verify login creditionals (change later)
+                        child: const Text(
+                          'Create New Event',
                         ),
-                      );
-                    });
-              },
-            )
-          ],
-        ),
-      )),
+                      )),
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: events.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                          title: volunteerCard(
+                            events[index].event,
+                            events[index].date,
+                            events[index].description,
+                            events[index].organizer,
+                            events[index].start,
+                            events[index].end,
+                            events[index].address,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    EditEvent(event: events[index]),
+                              ),
+                            );
+                          });
+                    },
+                  )
+                ],
+              ),
+            )),
+      ),
       /*Page Navagation*/
       drawer: Drawer(
           child: ListView(

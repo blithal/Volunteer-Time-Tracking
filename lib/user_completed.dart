@@ -220,45 +220,49 @@ class _UserCompletedPage extends State<UserCompletedPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Container(
-              width: displayWidth(context) * .70,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Volunteer History',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 25),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .70,
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      'Volunteer History',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Column(
+                    children: eventsCompleted.map((eventone) {
+                      return Container(
+                        child: ListTile(
+                            title: Container(
+                                child: volunteerCard(
+                                    eventone.event,
+                                    eventone.date,
+                                    eventone.description,
+                                    eventone.orginizer,
+                                    eventone.start,
+                                    eventone.end,
+                                    eventone.address,
+                                    eventone.timeRecorded))),
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
+                      );
+                    }).toList(),
+                  )
+                ],
               ),
             ),
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Column(
-              children: eventsCompleted.map((eventone) {
-                return Container(
-                  child: ListTile(
-                      title: Container(
-                          child: volunteerCard(
-                              eventone.event,
-                              eventone.date,
-                              eventone.description,
-                              eventone.orginizer,
-                              eventone.start,
-                              eventone.end,
-                              eventone.address,
-                              eventone.timeRecorded))),
-                  margin: const EdgeInsets.all(5),
-                  padding: const EdgeInsets.all(5),
-                );
-              }).toList(),
-            )
-          ],
-        ),
-      ),
-
+          )),
       /* Page Navagation */
       drawer: Drawer(
           child: ListView(

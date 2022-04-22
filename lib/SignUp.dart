@@ -52,83 +52,87 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset('graphics/library_logo_name.png',
-                height: 60, width: 150.0),
-            const SizedBox(width: 10),
-            Text(widget.title),
-          ],
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset('graphics/library_logo_name.png',
+                  height: 60, width: 150.0),
+              const SizedBox(width: 10),
+              Text(widget.title),
+            ],
+          ),
         ),
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          Container(
-              alignment: Alignment.center,
+        body: Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 25),
+              child: Center(
+                  child: Column(
+                children: <Widget>[
+                  Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 25),
+                      )),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .5,
+                    child: TextField(
+                      controller: firstName,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'First Name',
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .5,
+                    child: TextField(
+                      controller: lastName,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Last Name',
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .5,
+                    child: TextField(
+                      controller: userName,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'User Name',
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .5,
+                    child: TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                    ),
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: ElevatedButton(
+                        child: const Text('Sign Up'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )),
+                ],
               )),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: displayWidth(context) * .5,
-            child: TextField(
-              controller: firstName,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'First Name',
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: displayWidth(context) * .5,
-            child: TextField(
-              controller: lastName,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Last Name',
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: displayWidth(context) * .5,
-            child: TextField(
-              controller: userName,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'User Name',
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: displayWidth(context) * .5,
-            child: TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-          ),
-          Container(
-              padding: const EdgeInsets.all(10),
-              width: displayWidth(context) * .5,
-              child: ElevatedButton(
-                child: const Text('Sign Up'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )),
-        ],
-      )),
-    );
+            )));
   }
 }

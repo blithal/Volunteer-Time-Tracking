@@ -72,91 +72,98 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset('graphics/library_logo_name.png',
-                height: 60, width: 150.0),
-            const SizedBox(width: 10),
-            Text(widget.title),
-          ],
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset('graphics/library_logo_name.png',
+                  height: 60, width: 150.0),
+              const SizedBox(width: 10),
+              Text(widget.title),
+            ],
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
+        body: Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(10),
-              child: const Text('Login', style: TextStyle(fontSize: 25)),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              width: displayWidth(context) * .5,
-              child: TextField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child:
+                          const Text('Login', style: TextStyle(fontSize: 25)),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: TextField(
+                        controller: usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: TextField(
+                        controller: passwordController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                      ),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SignUp()),
+                              );
+                            },
+                            child: const Text('Create an account'))),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            //postData();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const UserHome()),
+                            );
+                          }, // verify login creditionals (change later)
+                          child: const Text(
+                            'Login',
+                          ),
+                        )),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            //postData();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AdminHome()),
+                            );
+                          }, // verify login creditionals (change later)
+                          child: const Text(
+                            'Admin Login *REMOVE LATER*',
+                          ),
+                        )),
+                  ],
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              width: displayWidth(context) * .5,
-              child: TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignUp()),
-                      );
-                    },
-                    child: const Text('Create an account'))),
-            Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: ElevatedButton(
-                  onPressed: () {
-                    //postData();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const UserHome()),
-                    );
-                  }, // verify login creditionals (change later)
-                  child: const Text(
-                    'Login',
-                  ),
-                )),
-            Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: ElevatedButton(
-                  onPressed: () {
-                    //postData();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AdminHome()),
-                    );
-                  }, // verify login creditionals (change later)
-                  child: const Text(
-                    'Admin Login *REMOVE LATER*',
-                  ),
-                )),
-          ],
-        ),
-      ),
-    );
+            )));
   }
 }

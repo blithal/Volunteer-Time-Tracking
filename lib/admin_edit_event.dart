@@ -61,272 +61,354 @@ class _EditEventPage extends State<EditEventPage> {
         title: Text(widget.title),
       ),
       body: Center(
-        //child: SingleChildScrollView(
-        //padding: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Container(
-              width: displayWidth(context) * .70,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Edit Event',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25),
-              ),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 10) /*Spacing for user*/,
+                Container(
+                  width: displayWidth(context) * .70,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Edit Event',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25),
+                  ),
+                ),
+                const SizedBox(height: 10) /*Spacing for user*/,
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'ID: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.id,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New ID',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'Title: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.event,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New Title',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'Date: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.date,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New Date',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'Description: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.description,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New Description',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'Organizer: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.organizer,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New Organizer',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'Start Time: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.start,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New Start Time',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'End Time: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.end,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New EndTime',
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 126, 148, 203),
+                    ),
+                    child: const Text(
+                      'Address: ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .20,
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                    ),
+                    child: Text(
+                      "Previous: " + widget.event.address,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10) /*Spacing for user*/,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: displayWidth(context) * .20,
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        labelText: 'New Address',
+                      ),
+                    ),
+                  ),
+                ]),
+                Container(
+                    width: displayWidth(context) * .50,
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ViewEvents()));
+                        },
+                        child: const Text('Cancel'))),
+                Container(
+                    width: displayWidth(context) * .50,
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () {}, child: const Text('Save'))),
+              ],
             ),
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'ID: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous:" + widget.event.id,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New ID',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Title: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.event,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Title',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Date: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.date,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Date',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Description: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.description,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Description',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Organizer: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.organizer,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Organizer',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Start Time: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.start,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Start Time',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'End Time: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.end,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New EndTime',
-                  ),
-                ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Address: ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                width: displayWidth(context) * .20,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Previous: " + widget.event.address,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .20,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Address',
-                  ),
-                ),
-              ),
-            ]),
-            Container(
-                width: displayWidth(context) * .50,
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ViewEvents()));
-                    },
-                    child: const Text('Cancel'))),
-            Container(
-                width: displayWidth(context) * .50,
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(
-                    onPressed: () {}, child: const Text('Save'))),
-          ],
+          ),
         ),
       ),
       /*Page Navagation*/

@@ -60,6 +60,20 @@ class _ViewEventsPage extends State<ViewEventsPage> {
     ),
   );
 
+  final nullEvent = List.generate(
+    1,
+    (i) => const Event(
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+    ),
+  );
+
   Widget volunteerCard(String name, String date, String description,
       String organizerName, String startTime, String endTime, String loca) {
     return Container(
@@ -194,6 +208,22 @@ class _ViewEventsPage extends State<ViewEventsPage> {
                 style: TextStyle(fontSize: 25),
               ),
             ),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .5,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditEvent(event: nullEvent[0]),
+                        ));
+                  }, // verify login creditionals (change later)
+                  child: const Text(
+                    'Create New Event',
+                  ),
+                )),
             const SizedBox(height: 10) /*Spacing for user*/,
             ListView.builder(
               scrollDirection: Axis.vertical,

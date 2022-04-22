@@ -1,12 +1,14 @@
+import 'dart:html';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:volunteer_time_tracking/admin_account.dart';
+import 'package:volunteer_time_tracking/admin_edit_event.dart';
+import 'package:volunteer_time_tracking/admin_settings.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
+import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
-import 'package:volunteer_time_tracking/admin_home.dart';
-import 'package:volunteer_time_tracking/admin_settings.dart';
-import 'package:collection/collection.dart';
+import 'package:volunteer_time_tracking/admin_account.dart';
 
 class ViewEvents extends StatelessWidget {
   const ViewEvents({Key? key}) : super(key: key);
@@ -34,65 +36,128 @@ class ViewEventsPage extends StatefulWidget {
   State<ViewEventsPage> createState() => _ViewEventsPage();
 }
 
+class Event {
+  final String id, event, date, description, organizer, start, end, address;
+
+  const Event(this.id, this.event, this.date, this.description, this.organizer,
+      this.start, this.end, this.address);
+}
+
 class _ViewEventsPage extends State<ViewEventsPage> {
-  final List<Map> _events = [
-    {
-      'title': 'Community Clean Up',
-      'organizer': 'John Doe',
-      'date': '1/2/22',
-      'startTime': '1:00pm',
-      'endTime': '2:00pm',
-      'address': '113 W Mountain St, Fayetteville, AR 72701',
-      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
-    },
-    {
-      'title': 'Community Clean Up',
-      'organizer': 'John Doe',
-      'date': '1/2/22',
-      'startTime': '1:00pm',
-      'endTime': '2:00pm',
-      'address': '113 W Mountain St, Fayetteville, AR 72701',
-      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
-    },
-    {
-      'title': 'Community Clean Up',
-      'organizer': 'John Doe',
-      'date': '1/2/22',
-      'startTime': '1:00pm',
-      'endTime': '2:00pm',
-      'address': '113 W Mountain St, Fayetteville, AR 72701',
-      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
-    },
-    {
-      'title': 'Community Clean Up',
-      'organizer': 'John Doe',
-      'date': '1/2/22',
-      'startTime': '1:00pm',
-      'endTime': '2:00pm',
-      'address': '113 W Mountain St, Fayetteville, AR 72701',
-      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
-    },
-    {
-      'title': 'Community Clean Up',
-      'organizer': 'John Doe',
-      'date': '1/2/22',
-      'startTime': '1:00pm',
-      'endTime': '2:00pm',
-      'address': '113 W Mountain St, Fayetteville, AR 72701',
-      'participants': 'John Doe, Jane Doe, Bob Builder, Frank West'
-    },
-  ];
-  List<bool> _selected = [];
-  int _currentSortColumn = 0;
-  bool _isSortAsc = true;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  @override
-  void initState() {
-    super.initState();
-    _selected = List<bool>.generate(_events.length, (int index) => false);
+  final events = List.generate(
+    10,
+    (i) => Event(
+      '$i',
+      'Title $i',
+      '$i-1/22',
+      'This is a test description for event number $i.',
+      'Organizer $i',
+      '$i:00am',
+      '$i:00am',
+      '$i MakeBelieve Place, Fayetteville AR',
+    ),
+  );
+
+  Widget volunteerCard(String name, String date, String description,
+      String organizerName, String startTime, String endTime, String loca) {
+    return Container(
+        //width: displayWidth(context) * .2,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          color: const Color.fromARGB(255, 100, 105, 111),
+          border: Border.all(color: const Color.fromARGB(255, 113, 200, 184)),
+        ),
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Column(children: [
+                Container(
+                  width: displayWidth(context) * .50,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(),
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  width: displayWidth(context) * .50,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 0, 46, 70),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Text(
+                    "Organizer: " + organizerName,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ]),
+              const SizedBox(width: 10),
+              Column(children: [
+                Container(
+                  width: displayWidth(context) * .15,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10))),
+                  child: Text(
+                    date,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  width: displayWidth(context) * .15,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10))),
+                  child: Text(
+                    startTime + "-" + endTime,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ]),
+            ]),
+            const SizedBox(height: 10),
+            Container(
+              width: displayWidth(context) * .66,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: Text(
+                "Location: " + loca,
+                textAlign: TextAlign.left,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: displayWidth(context) * .66,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: Text(
+                "Information: " + description,
+                textAlign: TextAlign.left,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+              ),
+            ),
+          ],
+        ));
   }
-
-  bool? _isEditMode = false;
 
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
@@ -106,210 +171,58 @@ class _ViewEventsPage extends State<ViewEventsPage> {
     return displaySize(context).width;
   }
 
-  Scrollbar _createDataTable() {
-    return Scrollbar(
-        child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-                columns: _createColumns(),
-                rows: _createRows(),
-                sortColumnIndex: _currentSortColumn,
-                sortAscending: _isSortAsc)));
-  }
-
-  List<DataColumn> _createColumns() {
-    return [
-      DataColumn(
-        label: Text('Title'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort((a, b) => b['title'].compareTo(a['title']));
-            } else {
-              _events.sort((a, b) => a['title'].compareTo(b['title']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-      DataColumn(
-        label: Text('Organizer'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort((a, b) => b['organizer'].compareTo(a['organizer']));
-            } else {
-              _events.sort((a, b) => a['organizer'].compareTo(b['organizer']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-      DataColumn(
-        label: Text('Date'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort((a, b) => b['date'].compareTo(a['date']));
-            } else {
-              _events.sort((a, b) => a['date'].compareTo(b['date']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-      DataColumn(
-        label: Text('Start Time'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort((a, b) => b['startTime'].compareTo(a['startTime']));
-            } else {
-              _events.sort((a, b) => a['startTime'].compareTo(b['startTime']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-      DataColumn(
-        label: Text('End Time'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort((a, b) => b['endTime'].compareTo(a['endTime']));
-            } else {
-              _events.sort((a, b) => a['endTime'].compareTo(b['endTime']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-      DataColumn(
-        label: Text('Address'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort((a, b) => b['address'].compareTo(a['address']));
-            } else {
-              _events.sort((a, b) => a['address'].compareTo(b['address']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-      DataColumn(
-        label: Text('Participants'),
-        onSort: (columnIndex, _) {
-          setState(() {
-            _currentSortColumn = columnIndex;
-            if (_isSortAsc) {
-              _events.sort(
-                  (a, b) => b['participants'].compareTo(a['participants']));
-            } else {
-              _events.sort(
-                  (a, b) => a['participants'].compareTo(b['participants']));
-            }
-            _isSortAsc = !_isSortAsc;
-          });
-        },
-      ),
-    ];
-  }
-
-  List<DataRow> _createRows() {
-    return _events
-        .mapIndexed((index, events) => DataRow(
-            color: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              // All rows will have the same selected color.
-              if (states.contains(MaterialState.selected)) {
-                return Theme.of(context).primaryColor.withOpacity(0.08);
-              }
-              // Even rows will have a grey color.
-              if (index.isEven) {
-                return Colors.grey.withOpacity(0.3);
-              }
-              return null; // Use default value for other states and odd rows.
-            }),
-            cells: [
-              _createTitleCell(events['title']),
-              _createTitleCell(events['organizer']),
-              _createTitleCell(events['date']),
-              _createTitleCell(events['startTime']),
-              _createTitleCell(events['endTime']),
-              _createTitleCell(events['address']),
-              _createTitleCell(events['participants'])
-            ],
-            selected: _selected[index],
-            onSelectChanged: (bool? selected) {
-              setState(() {
-                _selected[index] = selected!;
-              });
-            }))
-        .toList();
-  }
-
-  DataCell _createTitleCell(eventsValue) {
-    return DataCell(_isEditMode == true
-        ? TextFormField(
-            initialValue: eventsValue, style: const TextStyle(fontSize: 14))
-        : Text(eventsValue));
-  }
-
-  Row _createCheckboxField() {
-    return Row(
-      children: [
-        Checkbox(
-          value: _isEditMode,
-          onChanged: (value) {
-            setState(() {
-              _isEditMode = value;
-            });
-          },
-        ),
-        const Text('Edit'),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Visibility(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Container(
-                width: displayWidth(context) * .80,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  "Events",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 25),
-                ),
+      body: Center(
+          child: SingleChildScrollView(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 10) /*Spacing for user*/,
+            Container(
+              width: displayWidth(context) * .70,
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                'Current Events',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 25),
               ),
-              Expanded(
-                child: ListView(
-                  children: [_createDataTable(), _createCheckboxField()],
-                ),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                    title: volunteerCard(
+                      events[index].event,
+                      events[index].date,
+                      events[index].description,
+                      events[index].organizer,
+                      events[index].start,
+                      events[index].end,
+                      events[index].address,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditEvent(event: events[index]),
+                        ),
+                      );
+                    });
+              },
+            )
+          ],
         ),
-        replacement: const Center(child: CircularProgressIndicator()),
-      ),
+      )),
       /*Page Navagation*/
       drawer: Drawer(
           child: ListView(

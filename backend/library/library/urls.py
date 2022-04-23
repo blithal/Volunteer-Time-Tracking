@@ -26,6 +26,7 @@ from user import userurls
 from userTime import urls
 from loginInfo import urls
 from events import urls
+from report import urls
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register('userdetails', views.user)
@@ -49,6 +50,7 @@ urlpatterns = [
     #path('', include(router.urls)),
     path('userTime/', include(router2.urls)),
     path('events/', include('events.urls')),
+    path('report/', include('report.urls')),
     #path('', include(router3.urls)),
     #path('', include(router4.urls))
 ]

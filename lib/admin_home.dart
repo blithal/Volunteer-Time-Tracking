@@ -56,249 +56,264 @@ class _AdminHomePage extends State<AdminHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Visibility(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Container(
-                width: displayWidth(context) * .70,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Welcome Admin',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer History*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Visibility(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    Container(
+                      width: displayWidth(context) * .70,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Welcome Admin',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25),
+                      ),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.event),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ViewEvents()));
-                          },
-                        ),
-                        const Text(
-                          'Events',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Account Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          icon: const Icon(Icons.accessibility),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ViewUsers()));
-                          },
-                        ),
-                        const Text(
-                          'Users',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer History*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.people),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ViewAdmins()));
-                          },
-                        ),
-                        const Text(
-                          'Admins',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Account Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          icon: const Icon(Icons.report),
-                          color: Colors.white,
-                          onPressed: () {
-                            /*
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      /*Button to Volunteer History*/
+                      Container(
+                          width: displayWidth(context) * .30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                color: Colors.white,
+                                icon: const Icon(Icons.event),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewEvents()));
+                                },
+                              ),
+                              const Text(
+                                'Events',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                      const SizedBox(width: 20),
+                      /*Button to Account Page*/
+                      Container(
+                          width: displayWidth(context) * .30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                icon: const Icon(Icons.accessibility),
+                                color: Colors.white,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewUsers()));
+                                },
+                              ),
+                              const Text(
+                                'Users',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                    ]),
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      /*Button to Volunteer History*/
+                      Container(
+                          width: displayWidth(context) * .30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                color: Colors.white,
+                                icon: const Icon(Icons.people),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewAdmins()));
+                                },
+                              ),
+                              const Text(
+                                'Admins',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                      const SizedBox(width: 20),
+                      /*Button to Account Page*/
+                      Container(
+                          width: displayWidth(context) * .30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                icon: const Icon(Icons.report),
+                                color: Colors.white,
+                                onPressed: () {
+                                  /*
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const UserAccount()));
                           */
-                          },
-                        ),
-                        const Text(
-                          'Reports',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Account Settings Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.badge),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AdminAccount()));
-                          },
-                        ),
-                        const Text(
-                          'Admin Profile',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Sign Out Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.settings),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AdminSettings()));
-                          },
-                        ),
-                        const Text(
-                          'Profile Settings',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer History*/
-                Container(
-                    width: displayWidth(context) * .62,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.logout),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyApp()));
-                          },
-                        ),
-                        const Text(
-                          'Logout',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                /*Button to Account Page*/
-              ]),
-            ],
-          ),
-        ),
-      ),
+                                },
+                              ),
+                              const Text(
+                                'Reports',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                    ]),
+                    const SizedBox(height: 10),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      /*Button to Account Settings Page*/
+                      Container(
+                          width: displayWidth(context) * .30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                color: Colors.white,
+                                icon: const Icon(Icons.badge),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AdminAccount()));
+                                },
+                              ),
+                              const Text(
+                                'Admin Profile',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                      const SizedBox(width: 20),
+                      /*Button to Sign Out Page*/
+                      Container(
+                          width: displayWidth(context) * .30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                color: Colors.white,
+                                icon: const Icon(Icons.settings),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AdminSettings()));
+                                },
+                              ),
+                              const Text(
+                                'Profile Settings',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                    ]),
+                    const SizedBox(height: 10),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      /*Button to Volunteer History*/
+                      Container(
+                          width: displayWidth(context) * .62,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Color.fromARGB(255, 126, 148, 203),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 50,
+                                color: Colors.white,
+                                icon: const Icon(Icons.logout),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const MyApp()));
+                                },
+                              ),
+                              const Text(
+                                'Logout',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              )
+                            ],
+                          )),
+                      /*Button to Account Page*/
+                    ]),
+                  ],
+                ),
+              ),
+            ),
+          )),
       /*Page Navagation*/
       drawer: Drawer(
           child: ListView(

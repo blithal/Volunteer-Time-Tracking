@@ -56,100 +56,108 @@ class _AdminSettingsState extends State<AdminSettingsPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Visibility(
-        //visible: isLoaded,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: const Text('Settings', style: TextStyle(fontSize: 25)),
-              ),
-              const SizedBox(height: 10),
-              const Text("Password",
-                  textAlign: TextAlign.left, style: TextStyle(fontSize: 17)),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Old Password',
-                  ),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Visibility(
+              //visible: isLoaded,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text('Settings',
+                          style: TextStyle(fontSize: 25)),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text("Password",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 17)),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Old Password',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          labelText: 'New Password',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Confirm New Password',
+                        ),
+                      ),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: TextButton(
+                            onPressed: () {},
+                            child: const Text('Change Password'))),
+                    const Text(
+                      "Email",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                        ),
+                      ),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: TextButton(
+                            onPressed: () {}, child: const Text('Save Email'))),
+                    const Text(
+                      "Phone Number",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: displayWidth(context) * .5,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Phone Number',
+                        ),
+                      ),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: TextButton(
+                            onPressed: () {},
+                            child: const Text('Save Phone Number'))),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: TextButton(
+                            onPressed: () {}, child: const Text('Save All'))),
+                  ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'New Password',
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Confirm New Password',
-                  ),
-                ),
-              ),
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  width: displayWidth(context) * .5,
-                  child: TextButton(
-                      onPressed: () {}, child: const Text('Change Password'))),
-              const Text(
-                "Email",
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 17),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                  ),
-                ),
-              ),
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  width: displayWidth(context) * .5,
-                  child: TextButton(
-                      onPressed: () {}, child: const Text('Save Email'))),
-              const Text(
-                "Phone Number",
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 17),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                width: displayWidth(context) * .5,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                  ),
-                ),
-              ),
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  width: displayWidth(context) * .5,
-                  child: TextButton(
-                      onPressed: () {},
-                      child: const Text('Save Phone Number'))),
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  width: displayWidth(context) * .5,
-                  child: TextButton(
-                      onPressed: () {}, child: const Text('Save All'))),
-            ],
-          ),
-        ),
-        replacement: const Center(child: CircularProgressIndicator()),
-      ),
+              replacement: const Center(child: CircularProgressIndicator()),
+            ),
+          )),
       drawer: Drawer(
           child: ListView(
         padding: const EdgeInsets.all(8),

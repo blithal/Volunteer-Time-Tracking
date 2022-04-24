@@ -202,7 +202,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserAccount(
-                                          currUser: widget.user,
+                                          user: widget.user,
                                         )));
                           },
                         ),
@@ -302,7 +302,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UserSettings(
-                                          currUserId: widget.user,
+                                          user: widget.user,
                                         )));
                           },
                         ),
@@ -422,7 +422,7 @@ class _UserHomePage extends State<UserHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserAccount(
-                            currUser: widget.user,
+                            user: widget.user,
                           )));
             },
             icon: const Icon(

@@ -280,7 +280,7 @@ class _UserCompletedPage extends State<UserCompletedPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserAccount(
-                            currUser: widget.currUserId,
+                            user: widget.currUserId,
                           )));
             },
             icon: const Icon(

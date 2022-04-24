@@ -71,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool _isObscure = true;
     return Scaffold(
         appBar: AppBar(
           title: Row(
@@ -110,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.all(10),
                       width: displayWidth(context) * .5,
                       child: TextField(
+                        obscureText: _isObscure,
                         controller: passwordController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),

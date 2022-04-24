@@ -437,8 +437,7 @@ class _EditEventPage extends State<EditEventPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewEvents()));
+              Navigator.pop(context);
             },
             child: const Text('Events'),
           ),

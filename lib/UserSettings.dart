@@ -6,11 +6,12 @@ import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
-import 'package:volunteer_time_tracking/user.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class UserSettings extends StatelessWidget {
-  const UserSettings({Key? key}) : super(key: key);
+  UserSettings({Key? key, required this.user}) : super(key: key);
+  User user;
 
   // This widget is the root of your application.
   @override
@@ -19,17 +20,20 @@ class UserSettings extends StatelessWidget {
       title:
           'User Account Settings Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const UserSettingsPage(
-          title:
-              'Fayetteville Public Library Volunteer System - User Account Settings Page'),
+      home: UserSettingsPage(
+        title:
+            'Fayetteville Public Library Volunteer System - User Account Settings Page',
+        user: user,
+      ),
     );
   }
 }
 
 class UserSettingsPage extends StatefulWidget {
-  const UserSettingsPage({Key? key, required this.title}) : super(key: key);
+  UserSettingsPage({Key? key, required this.title, required this.user})
+      : super(key: key);
   final String title;
-
+  User user;
   @override
   State<UserSettingsPage> createState() => _UserSettingsState();
 }
@@ -183,8 +187,12 @@ class _UserSettingsState extends State<UserSettingsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(
+                            user: widget.user,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -201,7 +209,9 @@ class _UserSettingsState extends State<UserSettingsPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
+                      builder: (context) => UserRegistration(
+                            currUserId: widget.user,
+                          )));
             },
             child: const Text('Volunteer Opportunities'),
           ),
@@ -214,7 +224,9 @@ class _UserSettingsState extends State<UserSettingsPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.user,
+                          )));
             },
             child: const Text('Currently Enrolled'),
           ),
@@ -227,7 +239,9 @@ class _UserSettingsState extends State<UserSettingsPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.user,
+                          )));
             },
             child: const Text('Volunteer History'),
           ),
@@ -237,8 +251,12 @@ class _UserSettingsState extends State<UserSettingsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserAccount()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserAccount(
+                            user: widget.user,
+                          )));
             },
             icon: const Icon(
               Icons.account_circle,

@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/UserSettings.dart';
+import 'package:volunteer_time_tracking/models/userInfo.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/user_registration.dart';
-import 'package:volunteer_time_tracking/user.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class UserAccount extends StatelessWidget {
-  const UserAccount({Key? key}) : super(key: key);
-
+  UserAccount({Key? key, required this.user}) : super(key: key);
+  User user;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'User Account Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const UserAccountPage(
-          title:
-              'Fayetteville Public Library Volunteer System - User Account Page'),
+      home: UserAccountPage(
+        title:
+            'Fayetteville Public Library Volunteer System - User Account Page',
+        user: user,
+      ),
     );
   }
 }
 
 class UserAccountPage extends StatefulWidget {
-  const UserAccountPage({Key? key, required this.title}) : super(key: key);
+  UserAccountPage({Key? key, required this.title, required this.user})
+      : super(key: key);
 
   final String title;
+  User user;
 
   @override
   State<UserAccountPage> createState() => _UserAccountPage();
 }
 
 class _UserAccountPage extends State<UserAccountPage> {
-  List<User>? users;
+  UserInfo userInfo = UserInfo.defaultUser();
   var isLoaded = false;
 
   @override
@@ -45,8 +50,8 @@ class _UserAccountPage extends State<UserAccountPage> {
   }
 
   getData() async {
-    users = await RemoteService().getUsers();
-    if (users != null) {
+    userInfo = await RemoteService().getUserInfo(widget.user);
+    if (userInfo.id != -1) {
       setState(() {
         isLoaded = true;
       });
@@ -105,7 +110,7 @@ class _UserAccountPage extends State<UserAccountPage> {
                         width: displayWidth(context) * .25,
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          users![1].firstName + " " + users![1].lastName,
+                          userInfo.firstName + " " + userInfo.lastName,
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 25),
                         ),
@@ -139,7 +144,7 @@ class _UserAccountPage extends State<UserAccountPage> {
                           color: Color.fromARGB(255, 113, 200, 184),
                         ),
                         child: Text(
-                          users![1].email,
+                          userInfo.email,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 17, color: Colors.white),
@@ -176,7 +181,7 @@ class _UserAccountPage extends State<UserAccountPage> {
                           color: Color.fromARGB(255, 113, 200, 184),
                         ),
                         child: Text(
-                          users![1].phone,
+                          userInfo.phone,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 17, color: Colors.white),
@@ -229,8 +234,9 @@ class _UserAccountPage extends State<UserAccountPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const UserSettings()));
+                                      builder: (context) => UserSettings(
+                                            user: widget.user,
+                                          )));
                             },
                             child: const Text('Edit account details'))),
                   ],
@@ -249,8 +255,12 @@ class _UserAccountPage extends State<UserAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(
+                            user: widget.user,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -267,7 +277,9 @@ class _UserAccountPage extends State<UserAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
+                      builder: (context) => UserRegistration(
+                            currUserId: widget.user,
+                          )));
             },
             child: const Text('Volunteer Opportunities'),
           ),
@@ -280,7 +292,9 @@ class _UserAccountPage extends State<UserAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.user,
+                          )));
             },
             child: const Text('Currently Enrolled'),
           ),
@@ -293,7 +307,9 @@ class _UserAccountPage extends State<UserAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.user,
+                          )));
             },
             child: const Text('Volunteer History'),
           ),

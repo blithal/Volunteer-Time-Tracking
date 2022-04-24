@@ -2,13 +2,33 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/SignUp.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/bloc/login_bloc.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc_login/bloc/authentication_bloc.dart';
+import 'bloc_login/model/user.dart';
+import 'bloc_login/repository/user_repository.dart';
+import 'services/remote_service.dart';
+import 'models/userInfo.dart';
+import 'models/login_info.dart';
+import 'user_home.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 
 void main() {
-  runApp(const MyApp());
+  final userRepository = UserRepository();
+  final User user = User(id: -1, username: "", token: "");
+  // runApp(const MyApp());
+  runApp(BlocProvider<AuthenticationBloc>(
+    create: (context) {
+      return AuthenticationBloc(userRepository: userRepository, user: user)
+        ..add(AppStarted());
+    },
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,14 +37,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login Page - Fayetteville Public Library Volunteer System',
-      theme: VolunteerTheme.lightTheme,
-      // initialRoute: '/',
-      // routes: {
-      //   '/': (context) => Home(),
-      // },
-      home: const MyHomePage(title: 'Volunteer System Login'),
+    return MediaQuery(
+      data: new MediaQueryData(),
+      child: MaterialApp(
+        theme: VolunteerTheme.lightTheme,
+        home: Scaffold(
+            body: BlocProvider(
+                create: (context) {
+                  return LoginBloc(
+                    userRepository: new UserRepository(),
+                    authenticationBloc:
+                        BlocProvider.of<AuthenticationBloc>(context),
+                  );
+                },
+                child: const MyHomePage(
+                  title: "Login Page",
+                ))
+            //home: const MyHomePage(title: 'Volunteer System Login'),
+            ),
+      ),
     );
   }
 }
@@ -38,6 +69,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<UserInfo>? users;
+  List<LoginInfo>? logins;
+  bool isLoaded = false;
+  bool invalidLogin = false;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -56,116 +91,117 @@ class _MyHomePageState extends State<MyHomePage> {
     return displaySize(context).width;
   }
 
-  postData() async {
-    try {
-      var response = await http
-          .post(Uri.parse("http://127.0.0.1:8000/userdetails"), body: {
-        "firstName": usernameController.text,
-        "lastName": passwordController.text,
-      });
-      return response.body;
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    bool _isObscure = true;
-    return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset('graphics/library_logo_name.png',
-                  height: 60, width: 150.0),
-              const SizedBox(width: 10),
-              Text(widget.title),
-            ],
-          ),
-        ),
-        body: Align(
-            alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child:
-                          const Text('Login', style: TextStyle(fontSize: 25)),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      width: displayWidth(context) * .5,
-                      child: TextField(
-                        controller: usernameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      width: displayWidth(context) * .5,
-                      child: TextField(
-                        obscureText: _isObscure,
-                        controller: passwordController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Password',
-                        ),
-                      ),
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        width: displayWidth(context) * .5,
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SignUp()),
-                              );
-                            },
-                            child: const Text('Create an account'))),
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        width: displayWidth(context) * .5,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            //postData();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const UserHome()),
-                            );
-                          }, // verify login creditionals (change later)
+    _onLoginButtonPressed() {
+      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
+          username: usernameController.text,
+          password: passwordController.text));
+    }
+
+    return BlocListener<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is LoginFailure) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${state.error}'),
+          backgroundColor: Colors.red,
+        ));
+      }
+      if (state is LoginSuccess) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UserHome(user: state.user, key: widget.key)));
+      }
+    }, child: BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Scaffold(
+            appBar: AppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.asset('graphics/library_logo_name.png',
+                      height: 60, width: 150.0),
+                  const SizedBox(width: 10),
+                  Text(widget.title),
+                ],
+              ),
+            ),
+            body: Align(
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(10),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.all(10),
                           child: const Text(
                             'Login',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Color.fromARGB(255, 100, 105, 111),
+                            ),
                           ),
-                        )),
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        width: displayWidth(context) * .5,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            //postData();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AdminHome()),
-                            );
-                          }, // verify login creditionals (change later)
-                          child: const Text(
-                            'Admin Login *REMOVE LATER*',
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          width: displayWidth(context) * .5,
+                          child: TextField(
+                            controller: usernameController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Username',
+                            ),
                           ),
-                        )),
-                  ],
-                ),
-              ),
-            )));
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          width: displayWidth(context) * .5,
+                          child: TextField(
+                            controller: passwordController,
+                            obscureText: true,
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Password',
+                            ),
+                          ),
+                        ),
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            width: displayWidth(context) * .5,
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const SignUp()),
+                                  );
+                                },
+                                child: const Text('Create an account'))),
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            width: displayWidth(context) * .5,
+                            child: ElevatedButton(
+                                onPressed: state is! LoginLoading
+                                    ? _onLoginButtonPressed()
+                                    : null,
+                                child: const Text('Login'))),
+                        if (invalidLogin)
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: const Text(
+                              'Invalid username or password.',
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 17, 70, 114)),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                )));
+      },
+    ));
   }
 }

@@ -15,13 +15,35 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from user import views
+#from rest_framework.authtoken import views
+from CustomToken import views
+# from api import urls
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('api/', include('api.urls', namespace='api')),
+#     path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+# ]
+from user import viewsUser
+from userTime import viewsTime
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register('userdetails', views.user)
+router.register('userdetails', viewsUser.user)
+router.register('logindetails', viewsUser.logininfo)
+
+router2 = routers.DefaultRouter(trailing_slash=False)
+router2.register('userTimedetails', viewsTime.views)
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('login/', include('login.urls')),
+    path('account/', include('account.urls')),
+    path('loginInfo/', include('loginInfo.urls')),
+    path('user/', include(router.urls)),
+    path('userTime/', include(router2.urls)),
+    path('events/', include('events.urls')),
+    path('api/', include ('api.urls', namespace='api')),
+    path('api-token-auth/', views.CustomObtainAuthToken.as_view(), name='api-token-auth'),
 ]

@@ -6,7 +6,6 @@ import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
-import 'package:volunteer_time_tracking/user.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class AdminSettings extends StatelessWidget {

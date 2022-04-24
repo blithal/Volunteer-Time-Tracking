@@ -4,8 +4,9 @@ import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_settings.dart';
-import 'package:volunteer_time_tracking/user.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
+import 'package:volunteer_time_tracking/models/userInfo.dart';
 
 class AdminAccount extends StatelessWidget {
   const AdminAccount({Key? key}) : super(key: key);
@@ -34,23 +35,23 @@ class AdminAccountPage extends StatefulWidget {
 }
 
 class _AdminAccountPage extends State<AdminAccountPage> {
-  List<User>? users;
+  List<UserInfo>? users;
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
   }
 
-  getData() async {
-    users = await RemoteService().getUsers();
-    if (users != null) {
-      setState(() {
-        isLoaded = true;
-      });
-    }
-  }
+  // getData() async {
+  //   users = await RemoteService().getUsersInfo();
+  //   if (users != null) {
+  //     setState(() {
+  //       isLoaded = true;
+  //     });
+  //   }
+  // }
 
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;

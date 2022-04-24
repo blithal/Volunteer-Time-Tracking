@@ -13,9 +13,9 @@ class UserRepository {
     required String password,
   }) async {
     UserLogin userLogin = UserLogin(username: username, password: password);
-    Token token = await getToken(userLogin);
-    User user = User(id: 0, username: username, token: token.token);
-    return user;
+    User token = await getToken(userLogin);
+    //User user = User(id: 0, username: username, token: token.token);
+    return token;
   }
 
   // Future<void> persistToken({required User user}) async {

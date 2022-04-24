@@ -2,8 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/bloc_login/login/bloc/login_bloc.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
+import 'package:volunteer_time_tracking/bloc_login/permissions/permission_page.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
 
 class LoginForm extends StatefulWidget {
@@ -17,10 +21,25 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    bool admin = false;
     _onLoginButtonPressed() {
       BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
           username: _usernameController.text,
           password: _passwordController.text));
+    }
+
+    checkIfAdmin(User user) async {
+      admin = await RemoteService().isUserAdmin(user);
+      if (admin) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AdminHome()));
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UserHome(
+                  key: widget.key,
+                  user: user,
+                )));
+      }
     }
 
     return BlocListener<LoginBloc, LoginState>(
@@ -32,8 +51,7 @@ class _LoginFormState extends State<LoginForm> {
           ));
         }
         if (state is LoginSuccess) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UserHome(user: state.user, key: null)));
+          checkIfAdmin(state.user);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

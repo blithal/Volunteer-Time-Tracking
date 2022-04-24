@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from user.models import info, login
 from .serializers import userSerializer, loginSerializer
 from rest_framework import viewsets
-
+from rest_framework import permissions
 
 # Create your views here.
 class user(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny]
     queryset = info.objects.all()
     serializer_class = userSerializer
     

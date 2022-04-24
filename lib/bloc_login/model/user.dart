@@ -20,6 +20,9 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) =>
       User(id: json["id"], username: json['username'], token: json['token']);
 
+  factory User.fromJsonIdToken(Map<String, dynamic> json) =>
+      User(id: json["id"], username: "", token: json['token']);
+
   Map<String, dynamic> toJson() =>
       {"id": this.id, "username": this.username, "token": this.token};
 }

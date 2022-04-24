@@ -22,24 +22,26 @@ class RemoteService {
     }
   }
 
-  Future<UserInfo?> getUserInfo(User user) async {
+  Future<UserInfo> getUserInfo(User user) async {
     var client = http.Client();
 
     var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
     var response = await client.get(uri, headers: {
-      "Content-Type": 'application/x-www-form-urlencoded',
+      "Content-Type": 'application/octet-stream',
       "Authorization": user.token
     });
     if (response.statusCode == 200) {
       var json = response.body;
       List<UserInfo> users = userInfoFromJson(json);
-      UserInfo? temp = null;
+      UserInfo temp = UserInfo.defaultUser();
       users.forEach((u) {
         if (u.id == user.id) {
           temp = u;
         }
       });
       return temp;
+    } else {
+      return UserInfo.defaultUser();
     }
 
     // var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
@@ -138,6 +140,15 @@ class RemoteService {
     if (response.statusCode == 400) {
       var temp = jsonDecode(response.body);
       return temp.toString();
+    }
+  }
+
+  Future<bool> isUserAdmin(User user) async {
+    UserInfo info = await getUserInfo(user);
+    if (info.isAdmin) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

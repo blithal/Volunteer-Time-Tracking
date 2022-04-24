@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken import views
+#from rest_framework.authtoken import views
+from CustomToken import views
 # from api import urls
 
 # urlpatterns = [
@@ -44,5 +45,5 @@ urlpatterns = [
     path('userTime/', include(router2.urls)),
     path('events/', include('events.urls')),
     path('api/', include ('api.urls', namespace='api')),
-    path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+    path('api-token-auth/', views.CustomObtainAuthToken.as_view(), name='api-token-auth'),
 ]

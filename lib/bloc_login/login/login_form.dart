@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volunteer_time_tracking/SignUp.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/bloc_login/login/bloc/login_bloc.dart';
 import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
@@ -42,6 +43,18 @@ class _LoginFormState extends State<LoginForm> {
       }
     }
 
+    Size displaySize(BuildContext context) {
+      return MediaQuery.of(context).size;
+    }
+
+    double displayHeight(BuildContext context) {
+      return displaySize(context).height;
+    }
+
+    double displayWidth(BuildContext context) {
+      return displaySize(context).width;
+    }
+
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
@@ -56,59 +69,81 @@ class _LoginFormState extends State<LoginForm> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return Container(
-            child: Form(
-              child: Padding(
-                padding: EdgeInsets.all(40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'username', icon: Icon(Icons.person)),
-                      controller: _usernameController,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'password', icon: Icon(Icons.security)),
-                      controller: _passwordController,
-                      obscureText: true,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.width * 0.22,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 30.0),
-                        child: ElevatedButton(
-                          onPressed: state is! LoginLoading
-                              ? _onLoginButtonPressed
-                              : null,
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                              fontSize: 24.0,
+          return Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(10),
+                  child: Form(
+                    child: Padding(
+                      padding: EdgeInsets.all(40.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Color.fromARGB(255, 100, 105, 111),
+                              ),
                             ),
                           ),
-                          // shape: StadiumBorder(
-                          //   side: BorderSide(
-                          //     color: Colors.black,
-                          //     width: 2,
-                          //   ),
-                          // ),
-                        ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            width: displayWidth(context) * .5,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  labelText: 'Username',
+                                  icon: Icon(Icons.person)),
+                              controller: _usernameController,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            width: displayWidth(context) * .5,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  icon: Icon(Icons.security)),
+                              controller: _passwordController,
+                              obscureText: true,
+                            ),
+                          ),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              width: displayWidth(context) * .5,
+                              child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const SignUp()),
+                                    );
+                                  },
+                                  child: const Text('Create an account'))),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            width: displayWidth(context) * .5,
+                            child: ElevatedButton(
+                              onPressed: state is! LoginLoading
+                                  ? _onLoginButtonPressed
+                                  : null,
+                              child: Text(
+                                'Login',
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: state is LoginLoading
+                                ? CircularProgressIndicator()
+                                : null,
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      child: state is LoginLoading
-                          ? CircularProgressIndicator()
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+                  )));
         },
       ),
     );

@@ -260,7 +260,7 @@ class _UserHomePage extends State<UserHomePage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ClockInClockOut(
-                                                      currUserId: widget.user,
+                                                      user: widget.user,
                                                     )));
                                       },
                                     ),
@@ -456,8 +456,11 @@ class _UserHomePage extends State<UserHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyApp()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginPage(userRepository: UserRepository())));
             },
             icon: const Icon(
               Icons.logout,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/UserSettings.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
 import 'package:volunteer_time_tracking/models/userInfo.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
@@ -11,8 +13,8 @@ import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class UserAccount extends StatelessWidget {
-  UserAccount({Key? key, required this.user}) : super(key: key);
-  User user;
+  const UserAccount({Key? key, required this.user}) : super(key: key);
+  final User user;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,11 +31,11 @@ class UserAccount extends StatelessWidget {
 }
 
 class UserAccountPage extends StatefulWidget {
-  UserAccountPage({Key? key, required this.title, required this.user})
+  const UserAccountPage({Key? key, required this.title, required this.user})
       : super(key: key);
 
   final String title;
-  User user;
+  final User user;
 
   @override
   State<UserAccountPage> createState() => _UserAccountPage();
@@ -81,7 +83,7 @@ class _UserAccountPage extends State<UserAccountPage> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(10),
             child: Visibility(
-              visible: isLoaded,
+              visible: true,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -332,7 +334,14 @@ class _UserAccountPage extends State<UserAccountPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserSettings(
+                            user: widget.user,
+                          )));
+            },
             icon: const Icon(
               Icons.settings,
               size: 20,
@@ -345,8 +354,12 @@ class _UserAccountPage extends State<UserAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyApp()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LoginPage(
+                            userRepository: UserRepository(),
+                          )));
             },
             icon: const Icon(
               Icons.logout,

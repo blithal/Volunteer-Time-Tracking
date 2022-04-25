@@ -9,7 +9,8 @@ import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/models/userInfo.dart';
 
 class AdminAccount extends StatelessWidget {
-  const AdminAccount({Key? key}) : super(key: key);
+  AdminAccount({Key? key, required this.user}) : super(key: key);
+  User user;
 
   // This widget is the root of your application.
   @override
@@ -18,17 +19,21 @@ class AdminAccount extends StatelessWidget {
       title:
           'Admin Account Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const AdminAccountPage(
-          title:
-              'Fayetteville Public Library Volunteer System - Admin Account Page'),
+      home: AdminAccountPage(
+        title:
+            'Fayetteville Public Library Volunteer System - Admin Account Page',
+        user: user,
+      ),
     );
   }
 }
 
 class AdminAccountPage extends StatefulWidget {
-  const AdminAccountPage({Key? key, required this.title}) : super(key: key);
+  AdminAccountPage({Key? key, required this.title, required this.user})
+      : super(key: key);
 
   final String title;
+  User user;
 
   @override
   State<AdminAccountPage> createState() => _AdminAccountPage();
@@ -199,8 +204,9 @@ class _AdminAccountPage extends State<AdminAccountPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AdminSettings()));
+                                      builder: (context) => AdminSettings(
+                                            user: widget.user,
+                                          )));
                             },
                             child: const Text('Edit account details'))),
                   ],
@@ -220,8 +226,12 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AdminHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AdminHome(
+                            user: widget.user,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -318,8 +328,12 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewAdmins(
+                            user: widget.user,
+                          )));
             },
             child: const Text('View Admins'),
           ),
@@ -357,7 +371,9 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminSettings()));
+                      builder: (context) => AdminSettings(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Profile Settings'),
           ),

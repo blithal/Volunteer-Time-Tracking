@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
@@ -7,8 +8,8 @@ import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/services/remote_service.dart';
 
 class AdminSettings extends StatelessWidget {
-  const AdminSettings({Key? key}) : super(key: key);
-
+  AdminSettings({Key? key, required this.user}) : super(key: key);
+  User user;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -16,17 +17,19 @@ class AdminSettings extends StatelessWidget {
       title:
           'Admin Account Settings Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const AdminSettingsPage(
+      home: AdminSettingsPage(
           title:
-              'Fayetteville Public Library Volunteer System - Admin Account Settings Page'),
+              'Fayetteville Public Library Volunteer System - Admin Account Settings Page',
+          user: user),
     );
   }
 }
 
 class AdminSettingsPage extends StatefulWidget {
-  const AdminSettingsPage({Key? key, required this.title}) : super(key: key);
+  AdminSettingsPage({Key? key, required this.title, required this.user})
+      : super(key: key);
   final String title;
-
+  User user;
   @override
   State<AdminSettingsPage> createState() => _AdminSettingsState();
 }
@@ -168,8 +171,12 @@ class _AdminSettingsState extends State<AdminSettingsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AdminHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AdminHome(
+                            user: widget.user,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -273,8 +280,12 @@ class _AdminSettingsState extends State<AdminSettingsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewAdmins(
+                            user: widget.user,
+                          )));
             },
             child: const Text('View Admins'),
           ),
@@ -302,7 +313,9 @@ class _AdminSettingsState extends State<AdminSettingsPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminAccount()));
+                      builder: (context) => AdminAccount(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Admin Profile'),
           ),

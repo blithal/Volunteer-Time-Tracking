@@ -8,9 +8,11 @@ class eventsSerializer(serializers.ModelSerializer):
         model = info
         fields = [
           'id',
+          'organizer',
           'name',
           'description',
           'startDate',
           'startTime',
+          'location',
           'completed'
         ]

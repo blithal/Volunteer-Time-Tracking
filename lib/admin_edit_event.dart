@@ -6,14 +6,18 @@ import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_view_events.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
+import 'package:volunteer_time_tracking/models/eventInfo.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
 
 class EditEvent extends StatelessWidget {
-  const EditEvent({Key? key, required this.event}) : super(key: key);
+  EditEvent({Key? key, required this.event, required this.user})
+      : super(key: key);
+  User user;
 
-  final Event event;
+  final EventInfo event;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -23,17 +27,20 @@ class EditEvent extends StatelessWidget {
       home: EditEventPage(
         title: 'Fayetteville Public Library Volunteer System - Edit Event Page',
         event: event,
+        user: user,
       ),
     );
   }
 }
 
 class EditEventPage extends StatefulWidget {
-  const EditEventPage({Key? key, required this.event, required this.title})
+  EditEventPage(
+      {Key? key, required this.event, required this.title, required this.user})
       : super(key: key);
 
-  final Event event;
+  final EventInfo event;
   final String title;
+  User user;
   @override
   State<EditEventPage> createState() => _EditEventPage();
 }
@@ -101,7 +108,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.id,
+                      "Previous: " + widget.event.id.toString(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -140,7 +147,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.event,
+                      "Previous: " + widget.event.name,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -179,7 +186,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.date,
+                      "Previous: " + widget.event.startDate.toString(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -296,7 +303,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.start,
+                      "Previous: " + widget.event.startTime,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -335,7 +342,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.end,
+                      "Previous: " + widget.event.location,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -374,7 +381,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.address,
+                      "Previous: " + widget.event.completed.toString(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -398,7 +405,9 @@ class _EditEventPage extends State<EditEventPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const ViewEvents()));
+                                  builder: (context) => ViewEvents(
+                                        user: widget.user,
+                                      )));
                         },
                         child: const Text('Cancel'))),
                 Container(
@@ -422,8 +431,12 @@ class _EditEventPage extends State<EditEventPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AdminHome()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AdminHome(
+                            user: widget.user,
+                          )));
             },
             icon: const Icon(
               Icons.home,
@@ -437,8 +450,12 @@ class _EditEventPage extends State<EditEventPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewEvents()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewEvents(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Events'),
           ),
@@ -448,8 +465,12 @@ class _EditEventPage extends State<EditEventPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewUsers()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewUsers(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Users'),
           ),
@@ -459,8 +480,12 @@ class _EditEventPage extends State<EditEventPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewAdmins(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Admins'),
           ),
@@ -486,7 +511,9 @@ class _EditEventPage extends State<EditEventPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminAccount()));
+                      builder: (context) => AdminAccount(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Admin Profile'),
           ),
@@ -499,7 +526,9 @@ class _EditEventPage extends State<EditEventPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminSettings()));
+                      builder: (context) => AdminSettings(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Profile Settings'),
           ),

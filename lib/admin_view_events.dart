@@ -6,12 +6,17 @@ import 'package:volunteer_time_tracking/admin_settings.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
+import 'package:volunteer_time_tracking/bloc_login/common/common.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
+import 'package:volunteer_time_tracking/models/eventInfo.dart';
 
 class ViewEvents extends StatelessWidget {
-  const ViewEvents({Key? key}) : super(key: key);
+  ViewEvents({Key? key, required this.user}) : super(key: key);
+  User user;
 
   // This widget is the root of your application.
   @override
@@ -20,62 +25,82 @@ class ViewEvents extends StatelessWidget {
       title:
           'Current Events Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const ViewEventsPage(
-          title:
-              'Fayetteville Public Library Volunteer System - Current Events Page'),
+      home: ViewEventsPage(
+        title:
+            'Fayetteville Public Library Volunteer System - Current Events Page',
+        user: user,
+      ),
     );
   }
 }
 
 class ViewEventsPage extends StatefulWidget {
-  const ViewEventsPage({Key? key, required this.title}) : super(key: key);
+  ViewEventsPage({Key? key, required this.title, required this.user})
+      : super(key: key);
 
   final String title;
+  User user;
 
   @override
   State<ViewEventsPage> createState() => _ViewEventsPage();
 }
 
-class Event {
-  final String id, event, date, description, organizer, start, end, address;
+// class Event {
+//   final String id, event, date, description, organizer, start, end, address;
 
-  const Event(this.id, this.event, this.date, this.description, this.organizer,
-      this.start, this.end, this.address);
-}
+//   const Event(this.id, this.event, this.date, this.description, this.organizer,
+//       this.start, this.end, this.address);
+// }
 
 class _ViewEventsPage extends State<ViewEventsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<EventInfo>? events = null;
+  bool eventsLoaded = false;
 
-  final events = List.generate(
-    10,
-    (i) => Event(
-      '$i',
-      'Title $i',
-      '$i-1/22',
-      'This is a test description for event number $i.',
-      'Organizer $i',
-      '$i:00am',
-      '$i:00am',
-      '$i MakeBelieve Place, Fayetteville AR',
-    ),
-  );
+  @override
+  void initState() {
+    super.initState();
+    loadEvents();
+  }
 
-  final nullEvent = List.generate(
-    1,
-    (i) => const Event(
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-    ),
-  );
+  loadEvents() async {
+    events = await RemoteService().GetEvents();
+    if (events != null) {
+      setState(() {
+        eventsLoaded = true;
+      });
+    }
+  }
+
+  // final events = List.generate(
+  //   10,
+  //   (i) => Event(
+  //     '$i',
+  //     'Title $i',
+  //     '$i-1/22',
+  //     'This is a test description for event number $i.',
+  //     'Organizer $i',
+  //     '$i:00am',
+  //     '$i:00am',
+  //     '$i MakeBelieve Place, Fayetteville AR',
+  //   ),
+  // );
+
+  // final nullEvent = List.generate(
+  //   1,
+  //   (i) => Event(
+  //     -1,
+  //     '',
+  //     '',
+  //     '',
+  //     DateTime.now(),
+  //     '',
+  //     false,
+  //   ),
+  // );
 
   Widget volunteerCard(String name, String date, String description,
-      String organizerName, String startTime, String endTime, String loca) {
+      String organizerName, String startTime, String loca, bool completed) {
     return Container(
         //width: displayWidth(context) * .2,
         padding: const EdgeInsets.all(10),
@@ -136,7 +161,7 @@ class _ViewEventsPage extends State<ViewEventsPage> {
                           bottomRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10))),
                   child: Text(
-                    startTime + "-" + endTime,
+                    startTime,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
@@ -187,184 +212,208 @@ class _ViewEventsPage extends State<ViewEventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: SingleChildScrollView(
-            padding: const EdgeInsets.all(10),
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(height: 10) /*Spacing for user*/,
-                  Container(
-                    width: displayWidth(context) * .70,
-                    padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Current Events',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  const SizedBox(height: 10) /*Spacing for user*/,
-                  Container(
+    if (!eventsLoaded) {
+      return Scaffold();
+    } else {
+      return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    Container(
+                      width: displayWidth(context) * .70,
                       padding: const EdgeInsets.all(10),
-                      width: displayWidth(context) * .5,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditEvent(event: nullEvent[0]),
-                              ));
-                        }, // verify login creditionals (change later)
-                        child: const Text(
-                          'Create New Event',
-                        ),
-                      )),
-                  const SizedBox(height: 10) /*Spacing for user*/,
-                  ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: events.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                          title: volunteerCard(
-                            events[index].event,
-                            events[index].date,
-                            events[index].description,
-                            events[index].organizer,
-                            events[index].start,
-                            events[index].end,
-                            events[index].address,
-                          ),
-                          onTap: () {
+                      child: const Text(
+                        'Current Events',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .5,
+                        child: ElevatedButton(
+                          onPressed: () {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditEvent(event: events[index]),
-                              ),
-                            );
-                          });
-                    },
-                  )
-                ],
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditEvent(
+                                    event: EventInfo.defaultEvent(),
+                                    user: widget.user,
+                                  ),
+                                ));
+                          }, // verify login creditionals (change later)
+                          child: const Text(
+                            'Create New Event',
+                          ),
+                        )),
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: events?.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            title: volunteerCard(
+                              events![index].name,
+                              events![index].startDate.toString(),
+                              events![index].description,
+                              events![index].organizer,
+                              events![index].startTime,
+                              events![index].location,
+                              events![index].completed,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditEvent(
+                                    event: events![index],
+                                    user: widget.user,
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                    )
+                  ],
+                ),
+              )),
+        ),
+        /*Page Navagation*/
+        drawer: Drawer(
+            child: ListView(
+          padding: const EdgeInsets.all(8),
+          children: <Widget>[
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
               ),
-            )),
-      ),
-      /*Page Navagation*/
-      drawer: Drawer(
-          child: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminHome(
+                              user: widget.user,
+                            )));
+              },
+              icon: const Icon(
+                Icons.home,
+                size: 20,
+              ),
+              label: const Text('Home'),
             ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AdminHome()));
-            },
-            icon: const Icon(
-              Icons.home,
-              size: 20,
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Events'),
             ),
-            label: const Text('Home'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewUsers(
+                              user: widget.user,
+                            )));
+              },
+              child: const Text('Users'),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Events'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewAdmins(
+                              user: widget.user,
+                            )));
+              },
+              child: const Text('Admins'),
             ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewUsers()));
-            },
-            child: const Text('Users'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
-            },
-            child: const Text('Admins'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                /*
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const UserAccount()));
             */
-            },
-            child: const Text('Reports'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+              },
+              child: const Text('Reports'),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AdminAccount()));
-            },
-            child: const Text('Admin Profile'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminAccount(
+                              user: widget.user,
+                            )));
+              },
+              child: const Text('Admin Profile'),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AdminSettings()));
-            },
-            child: const Text('Profile Settings'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminSettings(
+                              user: widget.user,
+                            )));
+              },
+              child: const Text('Profile Settings'),
             ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyApp()));
-            },
-            icon: const Icon(
-              Icons.logout,
-              size: 20,
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyApp()));
+              },
+              icon: const Icon(
+                Icons.logout,
+                size: 20,
+              ),
+              label: const Text('Logout'),
             ),
-            label: const Text('Logout'),
-          ),
-        ],
-      )),
-    );
+          ],
+        )),
+      );
+    }
   }
 }

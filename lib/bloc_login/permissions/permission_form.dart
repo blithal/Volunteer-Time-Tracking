@@ -28,6 +28,7 @@ class _PermissionFormState extends State<PermissionForm> {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AdminHome(
                     key: widget.key,
+                    user: state.user,
                   )));
         }
         if (state is PermissionIsNotAdmin) {

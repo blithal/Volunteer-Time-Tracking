@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'clockinclockout_eventsdropdown.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 
@@ -122,6 +123,8 @@ class CustomPicker extends CommonPickerModel {
 // }
 
 class ClockInClockOut extends StatefulWidget {
+  ClockInClockOut({Key? key, required this.user}) : super(key: key);
+  User user;
   @override
   State<ClockInClockOut> createState() => _ClockInClockOutState();
 }

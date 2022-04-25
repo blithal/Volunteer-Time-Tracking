@@ -2,6 +2,8 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/models/eventInfo.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
@@ -43,46 +45,52 @@ class UserRegistrationPage extends StatefulWidget {
   State<UserRegistrationPage> createState() => _UserRegistrationPage();
 }
 
-class EventsInfo {
-  String event, date, description, orginizer, start, end, address;
-  EventsInfo(
-      {required this.event,
-      required this.date,
-      required this.description,
-      required this.orginizer,
-      required this.start,
-      required this.end,
-      required this.address});
-}
+// class EventsInfo {
+//   String event, date, description, orginizer, start, end, address;
+//   EventsInfo(
+//       {required this.event,
+//       required this.date,
+//       required this.description,
+//       required this.orginizer,
+//       required this.start,
+//       required this.end,
+//       required this.address});
+// }
 
 class _UserRegistrationPage extends State<UserRegistrationPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<EventsInfo> events = [
-    EventsInfo(
-        event: "test1",
-        date: "1-1-22",
-        description: "test description 1",
-        orginizer: "john doe",
-        start: "8:00am",
-        end: "9:00pm",
-        address: "0000 N Empty St Fayetteville, Arkansas 72701"),
-    EventsInfo(
-        event: "test2",
-        date: "1-2-22",
-        description: "test description 2",
-        orginizer: "jane doe",
-        start: "8:10am",
-        end: "9:10pm",
-        address: "0001 N Empty St Fayetteville, Arkansas 72701"),
-    EventsInfo(
-        event: "test3",
-        date: "1-3-22",
-        description: "test description 3",
-        orginizer: "Kagen Crouch",
-        start: "8:20am",
-        end: "9:20pm",
-        address: "0002 N Empty St Fayetteville, Arkansas 72701"),
-  ];
+  List<EventInfo>? events;
+
+  loadEvents() async {
+    events = await RemoteService().GetEvents();
+  }
+
+  // List<EventsInfo> events = [
+  //   EventsInfo(
+  //       event: "test1",
+  //       date: "1-1-22",
+  //       description: "test description 1",
+  //       orginizer: "john doe",
+  //       start: "8:00am",
+  //       end: "9:00pm",
+  //       address: "0000 N Empty St Fayetteville, Arkansas 72701"),
+  //   EventsInfo(
+  //       event: "test2",
+  //       date: "1-2-22",
+  //       description: "test description 2",
+  //       orginizer: "jane doe",
+  //       start: "8:10am",
+  //       end: "9:10pm",
+  //       address: "0001 N Empty St Fayetteville, Arkansas 72701"),
+  //   EventsInfo(
+  //       event: "test3",
+  //       date: "1-3-22",
+  //       description: "test description 3",
+  //       orginizer: "Kagen Crouch",
+  //       start: "8:20am",
+  //       end: "9:20pm",
+  //       address: "0002 N Empty St Fayetteville, Arkansas 72701"),
+  // ];
   Widget volunteerCard(String name, String date, String description,
       String organizerName, String startTime, String endTime, String loca) {
     return Container(
@@ -219,6 +227,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    loadEvents();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -241,18 +250,18 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
             ),
             const SizedBox(height: 10) /*Spacing for user*/,
             Column(
-              children: events.map((eventone) {
-                return Container(
-                  child: ListTile(
-                    title: Text(eventone.event),
-                    subtitle: Text("Address: " + eventone.date),
-                  ),
-                  margin: const EdgeInsets.all(5),
-                  padding: const EdgeInsets.all(5),
-                  color: Colors.green[100],
-                );
-              }).toList(),
-            )
+                // children: events.map((eventone) {
+                //   return Container(
+                //     child: ListTile(
+                //       title: Text(eventone.event),
+                //       subtitle: Text("Address: " + eventone.date),
+                //     ),
+                //     margin: const EdgeInsets.all(5),
+                //     padding: const EdgeInsets.all(5),
+                //     color: Colors.green[100],
+                //   );
+                // }).toList(),
+                )
           ],
         ),
       ),

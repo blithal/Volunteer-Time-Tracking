@@ -5,30 +5,35 @@ import 'package:volunteer_time_tracking/admin_settings.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/admin_view_events.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({Key? key}) : super(key: key);
+  AdminHome({Key? key, required this.user}) : super(key: key);
 
+  User user;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Admin Home Page - Fayetteville Public Library Volunteer System',
       theme: VolunteerTheme.lightTheme,
-      home: const AdminHomePage(
-          title:
-              'Fayetteville Public Library Volunteer System - Admin Home Page'),
+      home: AdminHomePage(
+        title: 'Fayetteville Public Library Volunteer System - Admin Home Page',
+        user: user,
+      ),
     );
   }
 }
 
 class AdminHomePage extends StatefulWidget {
-  const AdminHomePage({Key? key, required this.title}) : super(key: key);
+  AdminHomePage({Key? key, required this.title, required this.user})
+      : super(key: key);
 
   final String title;
+  User user;
 
   @override
   State<AdminHomePage> createState() => _AdminHomePage();
@@ -97,8 +102,9 @@ class _AdminHomePage extends State<AdminHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ViewEvents()));
+                                          builder: (context) => ViewEvents(
+                                                user: widget.user,
+                                              )));
                                 },
                               ),
                               const Text(
@@ -129,8 +135,9 @@ class _AdminHomePage extends State<AdminHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ViewUsers()));
+                                          builder: (context) => ViewUsers(
+                                                user: widget.user,
+                                              )));
                                 },
                               ),
                               const Text(
@@ -163,8 +170,9 @@ class _AdminHomePage extends State<AdminHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ViewAdmins()));
+                                          builder: (context) => ViewAdmins(
+                                                user: widget.user,
+                                              )));
                                 },
                               ),
                               const Text(
@@ -230,8 +238,9 @@ class _AdminHomePage extends State<AdminHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AdminAccount()));
+                                          builder: (context) => AdminAccount(
+                                                user: widget.user,
+                                              )));
                                 },
                               ),
                               const Text(
@@ -262,8 +271,9 @@ class _AdminHomePage extends State<AdminHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AdminSettings()));
+                                          builder: (context) => AdminSettings(
+                                                user: widget.user,
+                                              )));
                                 },
                               ),
                               const Text(
@@ -339,8 +349,12 @@ class _AdminHomePage extends State<AdminHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewEvents()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewEvents(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Events'),
           ),
@@ -350,8 +364,12 @@ class _AdminHomePage extends State<AdminHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewUsers()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewUsers(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Users'),
           ),
@@ -361,8 +379,12 @@ class _AdminHomePage extends State<AdminHomePage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewAdmins()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewAdmins(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Admins'),
           ),
@@ -388,7 +410,9 @@ class _AdminHomePage extends State<AdminHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminAccount()));
+                      builder: (context) => AdminAccount(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Admin Profile'),
           ),
@@ -401,7 +425,9 @@ class _AdminHomePage extends State<AdminHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminSettings()));
+                      builder: (context) => AdminSettings(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Profile Settings'),
           ),

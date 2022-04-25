@@ -31,8 +31,10 @@ class _LoginFormState extends State<LoginForm> {
     checkIfAdmin(User user) async {
       admin = await RemoteService().isUserAdmin(user);
       if (admin) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AdminHome()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AdminHome(
+                  user: user,
+                )));
       } else {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => UserHome(

@@ -236,7 +236,7 @@ class _UserHomePage extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ClockInClockOut(
-                                          currUserId: widget.user,
+                                          user: widget.user,
                                         )));
                           },
                         ),

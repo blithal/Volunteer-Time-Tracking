@@ -193,8 +193,12 @@ class _AdminSettingsState extends State<AdminSettingsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewEvents()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewEvents(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Events'),
           ),
@@ -204,8 +208,12 @@ class _AdminSettingsState extends State<AdminSettingsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ViewUsers()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewUsers(
+                            user: widget.user,
+                          )));
             },
             child: const Text('Users'),
           ),

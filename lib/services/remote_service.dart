@@ -13,7 +13,7 @@ class RemoteService {
   Future<List<UserInfo>?> getUsersInfo(User user) async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
+    var uri = Uri.parse("http://127.0.0.1:8000/api/user?format=json");
     var response = await client.get(uri, headers: {
       "Content-Type": 'application/x-www-form-urlencoded',
       "Authorization": user.token
@@ -27,7 +27,7 @@ class RemoteService {
   Future<UserInfo> getUserInfo(User user) async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
+    var uri = Uri.parse("http://127.0.0.1:8000/api/user?format=json");
     var response = await client.get(uri, headers: {
       "Content-Type": 'application/octet-stream',
       "Authorization": user.token

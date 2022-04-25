@@ -23,17 +23,16 @@ class EventInfo {
       this.organizer = "",
       this.name = "",
       this.description = "",
-      DateTime? creationStartDate,
+      this.startDate = "",
       this.startTime = "",
       this.location = "",
-      this.completed = false})
-      : startDate = creationStartDate ?? DateTime.now();
+      this.completed = false});
 
   int id;
   String organizer;
   String name;
   String description;
-  DateTime startDate;
+  String startDate;
   String startTime;
   String location;
   bool completed;
@@ -43,7 +42,7 @@ class EventInfo {
         organizer: json["userId"],
         name: json["name"],
         description: json["description"],
-        startDate: DateTime.parse(json["startDate"]),
+        startDate: json["startDate"],
         startTime: json["startTime"],
         location: json["location"],
         completed: json["completed"],

@@ -405,6 +405,11 @@ class _EditEventPage extends State<EditEventPage> {
                     width: displayWidth(context) * .50,
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
+                        onPressed: () {}, child: const Text('Delete'))),
+                Container(
+                    width: displayWidth(context) * .50,
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
                         onPressed: () {}, child: const Text('Save'))),
               ],
             ),

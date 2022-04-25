@@ -8,6 +8,7 @@ import 'package:volunteer_time_tracking/bloc_login/splash/splash.dart';
 import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
 import 'package:volunteer_time_tracking/bloc_login/home/home.dart';
 import 'package:volunteer_time_tracking/bloc_login/common/common.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 
 import 'bloc_login/model/user.dart';
 
@@ -35,10 +36,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        brightness: Brightness.dark,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (user.id < 0) {

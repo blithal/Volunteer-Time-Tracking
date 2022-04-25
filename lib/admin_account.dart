@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
+import 'package:volunteer_time_tracking/admin_view_events.dart';
+import 'package:volunteer_time_tracking/admin_view_users.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
@@ -215,7 +217,6 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               replacement: const Center(child: CircularProgressIndicator()),
             ),
           )),
-      /*Page Navagation*/
       drawer: Drawer(
           child: ListView(
         padding: const EdgeInsets.all(8),
@@ -245,52 +246,10 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('View Events'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserEnrolled()));
-            */
-            },
-            child: const Text('Edit Events'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserCompleted()));
-            */
-            },
-            child: const Text('Create Report'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserAccount()));
-            */
+                  MaterialPageRoute(builder: (context) => const ViewEvents()));
             },
-            child: const Text('View Reports'),
+            child: const Text('Events'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
@@ -298,29 +257,10 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserSettings()));
-            */
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ViewUsers()));
             },
-            child: const Text('View Users'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
-            */
-            },
-            child: const Text('Edit Users'),
+            child: const Text('Users'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
@@ -335,7 +275,7 @@ class _AdminAccountPage extends State<AdminAccountPage> {
                             user: widget.user,
                           )));
             },
-            child: const Text('View Admins'),
+            child: const Text('Admins'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(
@@ -344,13 +284,11 @@ class _AdminAccountPage extends State<AdminAccountPage> {
             ),
             onPressed: () {
               /*
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserRegistration()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserAccount()));
             */
             },
-            child: const Text('Edit Admins'),
+            child: const Text('Reports'),
           ),
           const SizedBox(height: 10) /*Spacing for user*/,
           TextButton(

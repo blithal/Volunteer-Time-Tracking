@@ -122,7 +122,7 @@ class _LoginFormState extends State<LoginForm> {
                                           builder: (context) => const SignUp()),
                                     );
                                   },
-                                  child: const Text('Create an account'))),
+                                  child: const Text('Become a volunteer'))),
                           Container(
                             padding: const EdgeInsets.all(10),
                             width: displayWidth(context) * .5,

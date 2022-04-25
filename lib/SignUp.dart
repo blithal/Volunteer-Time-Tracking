@@ -1,5 +1,11 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:html';
 import 'dart:io';
+
+import 'package:volunteer_time_tracking/LoginPage.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 
 import 'main.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +20,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sign Up',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: const SignUpPage(title: "Create Account"),
     );
   }
@@ -49,48 +53,8 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   double displayWidth(BuildContext context) {
-    if (displaySize(context).width > 1000) {
-      return 1000;
-    }
     return displaySize(context).width;
   }
-
-  // validateUser() async {
-  //   users = await RemoteService().getUsers();
-  //   if (users != null) {
-  //     users!.forEach((UserInfo user) {
-  //       if (user.email == emailController.text) {
-  //         setState(() {
-  //           userExists = true;
-  //         });
-  //       }
-  //     });
-  //     if (!userExists) {
-  //       users = await RemoteService().createUser(firstNameController.text,
-  //           lastNameController.text, emailController.text);
-  //       users!.forEach((UserInfo user) async {
-  //         print("searching...");
-  //         if (user.email == emailController.text) {
-  //           print("found");
-  //           await addUser(user);
-  //         }
-  //       });
-  //     } else {
-  //       setState(() {
-  //         userExists = true;
-  //       });
-  //     }
-  //   }
-  // }
-
-  // addUser(UserInfo user) async {
-  //   await RemoteService().createLogin(
-  //       user.id.toString(), usernameController.text, passwordController.text);
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => const MyApp()),
-  //   );
-  // }
 
   createLoginToken() async {
     await RemoteService().createUserToken(
@@ -114,9 +78,9 @@ class _SignUpPageState extends State<SignUpPage> {
             Container(
               padding: const EdgeInsets.all(10),
               child: const Text(
-                'Create Account',
+                'Become a volunteer',
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                 ),
               ),
             ),
@@ -182,30 +146,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: const EdgeInsets.all(10),
                 width: displayWidth(context) * .5,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 75, 157, 224)),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return const Color.fromARGB(255, 24, 111, 182)
-                                .withOpacity(0.04);
-                          }
-
-                          if (states.contains(MaterialState.focused) ||
-                              states.contains(MaterialState.pressed)) {
-                            return const Color.fromARGB(255, 17, 70, 114)
-                                .withOpacity(0.12);
-                          }
-
-                          return null; // Defer to the widget's default.
-                        },
-                      ),
-                    ),
                     onPressed: () {
                       createLoginToken();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                LoginPage(userRepository: UserRepository())),
+                      );
                     },
                     child: const Text('Create Account'))),
             if (userExists)
@@ -213,8 +161,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: const EdgeInsets.all(10),
                 child: const Text(
                   'An account with that email already exists.',
-                  style: TextStyle(
-                      fontSize: 25, color: Color.fromARGB(255, 17, 70, 114)),
                 ),
               ),
           ],

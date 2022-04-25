@@ -3,7 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/ClockInClockOut.dart';
 import 'package:volunteer_time_tracking/UserSettings.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_completed.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
@@ -22,9 +25,7 @@ class UserHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'User Home Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: UserHomePage(
         title: 'Fayetteville Public Library Volunteer System - User Home Page',
         user: user,
@@ -66,288 +67,289 @@ class _UserHomePage extends State<UserHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Visibility(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Container(
-                width: displayWidth(context) * .70,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Welcome',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+              padding: const EdgeInsets.all(10),
+              child: Visibility(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(height: 10) /*Spacing for user*/,
+                      Container(
+                        width: displayWidth(context) * .70,
+                        padding: const EdgeInsets.all(10),
+                        child: const Text(
+                          'Welcome',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
+                      const SizedBox(height: 10) /*Spacing for user*/,
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            /*Button to Volunteer Opportunites*/
+                            Container(
+                                width: displayWidth(context) * .30,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                    color: Color.fromARGB(255, 126, 148, 203)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      color: Colors.white,
+                                      icon: const Icon(Icons.assignment),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserRegistration(
+                                                      currUserId: widget.user,
+                                                    )));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Volunteer Opportunites',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                            const SizedBox(width: 20),
+                            /*Button to Currently Enrolled Opportunites*/
+                            Container(
+                                width: displayWidth(context) * .30,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromARGB(255, 126, 148, 203),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      color: Colors.white,
+                                      icon: const Icon(Icons.assignment_late),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserEnrolled(
+                                                      currUserId: widget.user,
+                                                    )));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Currently Enrolled',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                          ]),
+                      const SizedBox(height: 10),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            /*Button to Volunteer History*/
+                            Container(
+                                width: displayWidth(context) * .30,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromARGB(255, 126, 148, 203),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      color: Colors.white,
+                                      icon: const Icon(Icons.history),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserCompleted(
+                                                      currUserId: widget.user,
+                                                    )));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Volunteer History',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                            const SizedBox(width: 20),
+                            /*Button to Account Page*/
+                            Container(
+                                width: displayWidth(context) * .30,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromARGB(255, 126, 148, 203),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      icon: const Icon(Icons.account_circle),
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserAccount(
+                                                      user: widget.user,
+                                                    )));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Account',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                          ]),
+                      const SizedBox(height: 10),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            /*Button to Volunteer History*/
+                            Container(
+                                width: displayWidth(context) * .62,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromARGB(255, 126, 148, 203),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      color: Colors.white,
+                                      icon: const Icon(Icons.alarm),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClockInClockOut(
+                                                      currUserId: widget.user,
+                                                    )));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Clock in',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                            /*Button to Account Page*/
+                          ]),
+                      const SizedBox(height: 10),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            /*Button to Account Settings Page*/
+                            Container(
+                                width: displayWidth(context) * .30,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromARGB(255, 126, 148, 203),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      color: Colors.white,
+                                      icon: const Icon(Icons.settings),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserSettings(
+                                                        user: widget.user)));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Settings',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                            const SizedBox(width: 20),
+                            /*Button to Sign Out Page*/
+                            Container(
+                                width: displayWidth(context) * .30,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromARGB(255, 126, 148, 203),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    IconButton(
+                                      iconSize: 50,
+                                      color: Colors.white,
+                                      icon: const Icon(Icons.logout),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => LoginPage(
+                                                    userRepository:
+                                                        UserRepository())));
+                                      },
+                                    ),
+                                    const Text(
+                                      'Sign Out',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                          ])
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer Opportunites*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.assignment),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserRegistration(
-                                          currUserId: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Volunteer Opportunites',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Currently Enrolled Opportunites*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.assignment_late),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserEnrolled(
-                                          currUserId: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Currently Enrolled',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer History*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.history),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserCompleted(
-                                          currUserId: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Volunteer History',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Account Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          icon: const Icon(Icons.account_circle),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserAccount(
-                                          user: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Account',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Volunteer History*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.alarm),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ClockInClockOut(
-                                          currUserId: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Clock in',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Account Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          icon: const Icon(Icons.circle),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Event(
-                                          currUserId: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Example',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ]),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                /*Button to Account Settings Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.settings),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserSettings(
-                                          user: widget.user,
-                                        )));
-                          },
-                        ),
-                        const Text(
-                          'Settings',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-                const SizedBox(width: 20),
-                /*Button to Sign Out Page*/
-                Container(
-                    width: displayWidth(context) * .30,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 75, 157, 224),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          iconSize: 50,
-                          color: Colors.white,
-                          icon: const Icon(Icons.logout),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyApp()));
-                          },
-                        ),
-                        const Text(
-                          'Sign Out',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        )
-                      ],
-                    )),
-              ])
-            ],
-          ),
-        ),
-      ),
+              ))),
       /*Page Navagation*/
       drawer: Drawer(
           child: ListView(
@@ -436,7 +438,12 @@ class _UserHomePage extends State<UserHomePage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserSettings(user: widget.user)));
+            },
             icon: const Icon(
               Icons.settings,
               size: 20,

@@ -39,7 +39,7 @@ class EventInfo {
 
   factory EventInfo.fromJson(Map<String, dynamic> json) => EventInfo(
         id: json["id"],
-        organizer: json["userId"],
+        organizer: json["organizer"],
         name: json["name"],
         description: json["description"],
         startDate: json["startDate"],

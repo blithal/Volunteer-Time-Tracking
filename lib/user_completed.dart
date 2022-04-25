@@ -1,7 +1,11 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/UserSettings.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
 import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/user_account.dart';
 import 'package:volunteer_time_tracking/user_enrolled.dart';
 import 'package:volunteer_time_tracking/user_home.dart';
@@ -17,9 +21,7 @@ class UserCompleted extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'User History Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: VolunteerTheme.lightTheme,
       home: UserCompletedPage(
         title:
             'Fayetteville Public Library Volunteer System - User History Page',
@@ -41,8 +43,52 @@ class UserCompletedPage extends StatefulWidget {
   State<UserCompletedPage> createState() => _UserCompletedPage();
 }
 
+class EventCompleted {
+  String event, date, description, orginizer, start, end, address, timeRecorded;
+  EventCompleted({
+    required this.event,
+    required this.date,
+    required this.description,
+    required this.orginizer,
+    required this.start,
+    required this.end,
+    required this.address,
+    required this.timeRecorded,
+  });
+}
+
 class _UserCompletedPage extends State<UserCompletedPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<EventCompleted> eventsCompleted = [
+    EventCompleted(
+        event: "test1",
+        date: "1-1-22",
+        description: "test description 1",
+        orginizer: "john doe",
+        start: "8:00am",
+        end: "9:00pm",
+        address: "0000 N Empty St Fayetteville, Arkansas 72701",
+        timeRecorded: "0h 0m 0s"),
+    EventCompleted(
+        event: "test2",
+        date: "1-2-22",
+        description: "test description 2",
+        orginizer: "jane doe",
+        start: "8:10am",
+        end: "9:10pm",
+        address: "0001 N Empty St Fayetteville, Arkansas 72701",
+        timeRecorded: "0h 0m 0s"),
+    EventCompleted(
+        event: "test3",
+        date: "1-3-22",
+        description: "test description 3",
+        orginizer: "Kagen Crouch",
+        start: "8:20am",
+        end: "9:20pm",
+        address: "0002 N Empty St Fayetteville, Arkansas 72701",
+        timeRecorded: "0h 0m 0s"),
+  ];
 
   Widget volunteerCard(
       String name,
@@ -58,8 +104,8 @@ class _UserCompletedPage extends State<UserCompletedPage> {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          color: const Color.fromARGB(255, 167, 206, 238),
-          border: Border.all(color: Colors.grey),
+          color: const Color.fromARGB(255, 100, 105, 111),
+          border: Border.all(color: const Color.fromARGB(255, 113, 200, 184)),
         ),
         child: Column(
           children: [
@@ -68,22 +114,23 @@ class _UserCompletedPage extends State<UserCompletedPage> {
                 Container(
                   width: displayWidth(context) * .50,
                   padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 238, 237, 167),
-                  ),
+                  decoration: const BoxDecoration(),
                   child: Text(
                     name,
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 17),
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
                   ),
                 ),
                 Container(
                   width: displayWidth(context) * .50,
                   padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 0, 46, 70),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: Text(
                     "Organizer: " + organizerName,
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ]),
@@ -93,24 +140,28 @@ class _UserCompletedPage extends State<UserCompletedPage> {
                   width: displayWidth(context) * .15,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 238, 167),
-                  ),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10))),
                   child: Text(
                     date,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
                 Container(
                   width: displayWidth(context) * .15,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 238, 167),
-                  ),
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10))),
                   child: Text(
                     startTime + "-" + endTime,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ]),
@@ -120,12 +171,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
                 "Location: " + loca,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 13),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             const SizedBox(height: 10),
@@ -133,12 +184,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
-                description,
+                "Information: " + description,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             const SizedBox(height: 10),
@@ -146,12 +197,12 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               width: displayWidth(context) * .66,
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 238, 184, 167),
-              ),
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Text(
                 "Time Recorded: " + timeRecorded,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             )
           ],
@@ -177,35 +228,49 @@ class _UserCompletedPage extends State<UserCompletedPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Container(
-              width: displayWidth(context) * .70,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Volunteer History',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 25),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .70,
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      'Volunteer History',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Column(
+                    children: eventsCompleted.map((eventone) {
+                      return Container(
+                        child: ListTile(
+                            title: Container(
+                                child: volunteerCard(
+                                    eventone.event,
+                                    eventone.date,
+                                    eventone.description,
+                                    eventone.orginizer,
+                                    eventone.start,
+                                    eventone.end,
+                                    eventone.address,
+                                    eventone.timeRecorded))),
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
+                      );
+                    }).toList(),
+                  )
+                ],
               ),
             ),
-            const SizedBox(height: 10) /*Spacing for user*/,
-            volunteerCard(
-                "Title",
-                "01-01-22",
-                "This is an example description. This is to be used just as a placeholder for a real description for volunteer opportunities. The placeholder also tests the width constrainst of the text box.",
-                "John Doe",
-                "8:00am",
-                "4:00pm",
-                "0000 N Empty St Fayetteville, Arkansas 72701",
-                "0h 0m 0s"),
-          ],
-        ),
-      ),
-
+          )),
       /* Page Navagation */
       drawer: Drawer(
           child: ListView(
@@ -294,7 +359,14 @@ class _UserCompletedPage extends State<UserCompletedPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserSettings(
+                            user: widget.currUserId,
+                          )));
+            },
             icon: const Icon(
               Icons.settings,
               size: 20,
@@ -307,8 +379,11 @@ class _UserCompletedPage extends State<UserCompletedPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyApp()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginPage(userRepository: UserRepository())));
             },
             icon: const Icon(
               Icons.logout,

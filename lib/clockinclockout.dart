@@ -82,45 +82,6 @@ class CustomPicker extends CommonPickerModel {
   }
 }
 
-// List<DropdownMenuItem<String>> get dropdownItems {
-//   List<DropdownMenuItem<String>> menuItems = [
-//     DropdownMenuItem(child: Text("USA"), value: "USA"),
-//     DropdownMenuItem(child: Text("Canada"), value: "Canada"),
-//     DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
-//     DropdownMenuItem(child: Text("England"), value: "England"),
-//   ];
-//   return menuItems;
-// }
-
-// class DropdownItem extends StatefulWidget {
-//   const DropdownItem({Key? key}) : super(key: key);
-
-//   @override
-//   _DropdownItemState createState() => _DropdownItemState();
-// }
-
-// class _DropdownItemState extends State<DropdownItem> {
-//   String selectedValue = "USA";
-//   @override
-//   Widget build(BuildContext context) {
-//     return DropdownButton(value: selectedValue, items: dropdownItems);
-//   }
-// }
-
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: new ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: new HomePage(),
-//     );
-//   }
-// }
-
 class ClockInClockOut extends StatefulWidget {
   @override
   State<ClockInClockOut> createState() => _ClockInClockOutState();
@@ -128,9 +89,11 @@ class ClockInClockOut extends StatefulWidget {
 
 class UserPickedValues {
   // values are written when user presses "Done" in the clock-in date picker
-  static DateTime datePicked = DateTime.now();
-  static DateTime clockInTime = DateTime.now();
-  static DateTime clockOutTime = DateTime.now();
+  static String eventName = "";
+  static int eventId = -1;
+  static DateTime? datePicked = null;
+  static DateTime? clockInTime = null;
+  static DateTime? clockOutTime = null;
 }
 
 Size displaySize(BuildContext context) {
@@ -148,7 +111,10 @@ double displayWidth(BuildContext context) {
 class _ClockInClockOutState extends State<ClockInClockOut> {
   void updatePage() {
     // purpose of this is to get the Event chosen text widget to update the screen with the event picked when the user chooses the event
-    setState(() {});
+    setState(() {
+      UserPickedValues.eventName = EventChosen.eventChosen;
+      UserPickedValues.eventId = EventChosen.eventChosenId;
+    });
   }
 
   DateTime getCurrentDate() {
@@ -193,7 +159,7 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
                         child: Text('Click to choose event'),
                         style: TextButton.styleFrom(primary: Colors.lightBlue),
                       ),
-                      Text('Event chosen: ${EventChosen.eventChosen}',
+                      Text('${EventChosen.eventChosen}',
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),
@@ -240,8 +206,11 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
                             'Choose Date',
                             style: TextStyle(color: Colors.lightBlue),
                           )),
-                      Text('${UserPickedValues.datePicked}',
-                          style: TextStyle(color: Colors.white)),
+                      if (UserPickedValues.datePicked != null) ...[
+                        //syntax for this found here: https://stackoverflow.com/questions/49713189/how-to-use-conditional-statement-within-child-attribute-of-a-flutter-widget-cen
+                        Text('${UserPickedValues.datePicked}',
+                            style: TextStyle(color: Colors.white)),
+                      ],
                       Text('      '), // whitespace
                     ],
                   ),
@@ -271,8 +240,10 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
                             'Choose Clock-In Time',
                             style: TextStyle(color: Colors.lightBlue),
                           )),
-                      Text('${UserPickedValues.clockInTime}',
-                          style: TextStyle(color: Colors.white)),
+                      if (UserPickedValues.clockInTime != null) ...[
+                        Text('${UserPickedValues.clockInTime}',
+                            style: TextStyle(color: Colors.white)),
+                      ]
                     ],
                   ),
                 ),
@@ -301,8 +272,10 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
                             'Choose Clock-Out Time',
                             style: TextStyle(color: Colors.lightBlue),
                           )),
-                      Text('${UserPickedValues.clockOutTime}',
-                          style: TextStyle(color: Colors.white)),
+                      if (UserPickedValues.clockOutTime != null) ...[
+                        Text('${UserPickedValues.clockOutTime}',
+                            style: TextStyle(color: Colors.white)),
+                      ]
                     ],
                   ),
                 ),
@@ -314,7 +287,9 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
                       color: Color.fromARGB(255, 113, 200, 184),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       child: Text('Submit'),
                       style: TextButton.styleFrom(primary: Colors.white)),
                 )

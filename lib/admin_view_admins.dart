@@ -96,19 +96,21 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
     return displaySize(context).width;
   }
 
-  DataTable _createDataTable() {
-    return DataTable(
-        columns: _createColumns(),
-        rows: _createRows(),
-        sortColumnIndex: _currentSortColumn,
-        sortAscending: _isSortAsc);
+  SingleChildScrollView _createDataTable() {
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+            columns: _createColumns(),
+            rows: _createRows(),
+            sortColumnIndex: _currentSortColumn,
+            sortAscending: _isSortAsc));
   }
 
   List<DataColumn> _createColumns() {
     return [
       const DataColumn(label: Text('isActive')),
       DataColumn(
-        label: Text('First Name'),
+        label: const Text('First Name'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
@@ -122,7 +124,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
         },
       ),
       DataColumn(
-        label: Text('Last Name'),
+        label: const Text('Last Name'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
@@ -136,7 +138,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
         },
       ),
       DataColumn(
-        label: Text('Email'),
+        label: const Text('Email'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
@@ -150,7 +152,7 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
         },
       ),
       DataColumn(
-        label: Text('Phone Number'),
+        label: const Text('Phone Number'),
         onSort: (columnIndex, _) {
           setState(() {
             _currentSortColumn = columnIndex;
@@ -163,6 +165,12 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
             }
             _isSortAsc = !_isSortAsc;
           });
+        },
+      ),
+      DataColumn(
+        label: const Text('Remove', textAlign: TextAlign.center),
+        onSort: (columnIndex, _) {
+          setState(() {});
         },
       ),
     ];
@@ -188,7 +196,13 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               _createTitleCell(admins['firstName']),
               _createTitleCell(admins['lastName']),
               _createTitleCell(admins['email']),
-              _createTitleCell(admins['phoneNumber'])
+              _createTitleCell(admins['phoneNumber']),
+              DataCell(ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'Delete',
+                ),
+              ))
             ],
             selected: _selected[index],
             onSelectChanged: (bool? selected) {
@@ -228,32 +242,36 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Visibility(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 10) /*Spacing for user*/,
-              Container(
-                width: displayWidth(context) * .80,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Admins',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 25),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Visibility(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(height: 10) /*Spacing for user*/,
+                    Container(
+                      width: displayWidth(context) * .80,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Admins',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    ListView(
+                      shrinkWrap: true,
+                      children: [_createDataTable(), _createCheckboxField()],
+                    )
+                  ],
                 ),
               ),
-              Expanded(
-                child: ListView(
-                  children: [_createDataTable(), _createCheckboxField()],
-                ),
-              )
-            ],
-          ),
-        ),
-        replacement: const Center(child: CircularProgressIndicator()),
-      ),
+              replacement: const Center(child: CircularProgressIndicator()),
+            ),
+          )),
       /*Page Navagation*/
       drawer: Drawer(
           child: ListView(

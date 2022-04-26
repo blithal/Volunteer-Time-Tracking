@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../models/user.dart';
+import 'package:volunteer_time_tracking/models/userInfo.dart';
 import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {
@@ -8,9 +8,9 @@ class UserProvider with ChangeNotifier {
     this.fetchUsers();
   }
 
-  List<User> _users = [];
+  List<UserInfo> _users = [];
 
-  List<User> get users {
+  List<UserInfo> get users {
     return [..._users];
   }
 
@@ -19,7 +19,7 @@ class UserProvider with ChangeNotifier {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var data = json.decode(response.body) as List;
-      _users = data.map<User>((json) => User.fromJson(json)).toList();
+      _users = data.map<UserInfo>((json) => UserInfo.fromJson(json)).toList();
     }
   }
 }

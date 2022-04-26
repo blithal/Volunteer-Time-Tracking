@@ -3,11 +3,14 @@ from django.db import models
 # Create your models here.
 
 class info(models.Model):
-    id= models.IntegerField((""),primary_key=True)
+    id= models.AutoField((""),primary_key=True)
+    organizer = models.CharField(max_length=100)
     name = models.CharField(max_length = 100)
     description = models.CharField(max_length = 500)
     startDate = models.DateField((""), auto_now=False, auto_now_add=False)
-    startTime = models.TimeField((""), auto_now=False, auto_now_add=False)
-    completed = models.BooleanField()
-class Meta:
-    db_table = "events"
+    startTime = models.CharField(max_length=256)
+    location = models.CharField(max_length = 256)
+    completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)

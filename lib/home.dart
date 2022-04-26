@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volunteer_time_tracking/models/user.dart';
+import 'package:volunteer_time_tracking/models/userInfo.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,7 +8,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  late Future<List<User>> users;
+  late Future<List<UserInfo>> users;
   final userListKey = GlobalKey<HomeState>();
 
   @override
@@ -35,7 +35,7 @@ class HomeState extends State<Home> {
           // title: Text(getUserList().toString()),
           ),
       body: Center(
-        child: FutureBuilder<List<User>>(
+        child: FutureBuilder<List<UserInfo>>(
           // future: getUserList(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) return CircularProgressIndicator();

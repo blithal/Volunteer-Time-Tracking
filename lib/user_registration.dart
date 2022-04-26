@@ -1,34 +1,188 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:volunteer_time_tracking/UserSettings.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
+import 'package:volunteer_time_tracking/main.dart';
+import 'package:volunteer_time_tracking/models/eventInfo.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
+import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
+import 'package:volunteer_time_tracking/user_completed.dart';
+import 'package:volunteer_time_tracking/user_enrolled.dart';
+import 'package:volunteer_time_tracking/user_home.dart';
+import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 
 class UserRegistration extends StatelessWidget {
-  const UserRegistration({Key? key}) : super(key: key);
+  const UserRegistration({Key? key, required this.currUserId})
+      : super(key: key);
 
+  final User currUserId;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title:
           'User Registration Page - Fayetteville Public Library Volunteer System',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: VolunteerTheme.lightTheme,
+      home: UserRegistrationPage(
+        title:
+            'Fayetteville Public Library Volunteer System - User Account Page',
+        currUserId: currUserId,
       ),
-      home: const UserRegistrationPage(
-          title:
-              'Fayetteville Public Library Volunteer System - User Account Page'),
     );
   }
 }
 
 class UserRegistrationPage extends StatefulWidget {
-  const UserRegistrationPage({Key? key, required this.title}) : super(key: key);
+  const UserRegistrationPage(
+      {Key? key, required this.title, required this.currUserId})
+      : super(key: key);
 
   final String title;
+  final User currUserId;
 
   @override
   State<UserRegistrationPage> createState() => _UserRegistrationPage();
 }
 
+// class EventsInfo {
+//   String event, date, description, orginizer, start, end, address;
+//   EventsInfo(
+//       {required this.event,
+//       required this.date,
+//       required this.description,
+//       required this.orginizer,
+//       required this.start,
+//       required this.end,
+//       required this.address});
+// }
+
 class _UserRegistrationPage extends State<UserRegistrationPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<EventInfo>? events;
+  bool eventsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadEvents();
+  }
+
+  loadEvents() async {
+    events = await RemoteService().GetEvents();
+    if (events != null) {
+      setState(() {
+        eventsLoaded = true;
+      });
+    }
+  }
+
+  Widget volunteerCard(String name, String date, String description,
+      String organizerName, String startTime, String endTime, String loca) {
+    return Container(
+        //width: displayWidth(context) * .2,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          color: const Color.fromARGB(255, 100, 105, 111),
+          border: Border.all(color: const Color.fromARGB(255, 113, 200, 184)),
+        ),
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Column(children: [
+                Container(
+                  width: displayWidth(context) * .50,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(),
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  width: displayWidth(context) * .50,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 0, 46, 70),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Text(
+                    "Organizer: " + organizerName,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ]),
+              const SizedBox(width: 10),
+              Column(children: [
+                Container(
+                  width: displayWidth(context) * .15,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10))),
+                  child: Text(
+                    date,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  width: displayWidth(context) * .15,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 113, 200, 184),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10))),
+                  child: Text(
+                    startTime + "-" + endTime,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ]),
+            ]),
+            const SizedBox(height: 10),
+            Container(
+              width: displayWidth(context) * .66,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: Text(
+                "Location: " + loca,
+                textAlign: TextAlign.left,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: displayWidth(context) * .66,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 126, 148, 203),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: Text(
+                "Information: " + description,
+                textAlign: TextAlign.left,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+              ),
+            ),
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: displayWidth(context) * .66,
+                child: ElevatedButton(
+                    onPressed: () {}, child: const Text('Sign Up'))),
+          ],
+        ));
+  }
+
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
   }
@@ -43,31 +197,187 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    loadEvents();
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 10) /*Spacing for user*/,
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              /*Area for name*/
-              Container(
-                width: displayWidth(context) * .25,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Hello World',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 10) /*Spacing for user*/,
+                Container(
+                  width: displayWidth(context) * .70,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Volunteer Opportunities',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ),
-              ),
-            ]),
-          ],
+                const SizedBox(height: 10) /*Spacing for user*/,
+                // Column(
+                //   children: events.map((eventone) {
+                //     return ListTile(
+                //         title: SizedBox(
+                //             child: volunteerCard(
+                //                 eventone.event,
+                //                 eventone.date,
+                //                 eventone.description,
+                //                 eventone.orginizer,
+                //                 eventone.start,
+                //                 eventone.end,
+                //                 eventone.address)));
+                //   }).toList(),
+                // )
+              ],
+            ),
+          ),
+          // const SizedBox(height: 10) /*Spacing for user*/,
+          // Column(
+          //     // children: events.map((eventone) {
+          //     //   return Container(
+          //     //     child: ListTile(
+          //     //       title: Text(eventone.event),
+          //     //       subtitle: Text("Address: " + eventone.date),
+          //     //     ),
+          //     //     margin: const EdgeInsets.all(5),
+          //     //     padding: const EdgeInsets.all(5),
+          //     //     color: Colors.green[100],
+          //     //   );
+          //     // }).toList(),
+          //     )
         ),
       ),
+      drawer: Drawer(
+          child: ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(
+                            user: widget.currUserId,
+                          )));
+            },
+            icon: const Icon(
+              Icons.home,
+              size: 20,
+            ),
+            label: const Text('Home'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Volunteer Opportunities'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.currUserId,
+                          )));
+            },
+            child: const Text('Currently Enrolled'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.currUserId,
+                          )));
+            },
+            child: const Text('Volunteer History'),
+          ),
+          const SizedBox(height: 25) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserAccount(
+                            user: widget.currUserId,
+                          )));
+            },
+            icon: const Icon(
+              Icons.account_circle,
+              size: 20,
+            ),
+            label: const Text('Account'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserSettings(
+                            user: widget.currUserId,
+                          )));
+            },
+            icon: const Icon(
+              Icons.settings,
+              size: 20,
+            ),
+            label: const Text('Settings'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LoginPage(
+                            userRepository: UserRepository(),
+                          )));
+            },
+            icon: const Icon(
+              Icons.logout,
+              size: 20,
+            ),
+            label: const Text('Logout'),
+          ),
+        ],
+      )),
     );
   }
 }

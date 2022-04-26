@@ -6,6 +6,8 @@ from .serializers import eventsSerializer
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework import status
+from events.models import enroll
+from .serializers import enrollSerializer
 
 
 # Create your views here.
@@ -22,3 +24,7 @@ class events(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         instance.delete()
+
+class enrolled(viewsets.ModelViewSet):
+    queryset = enroll.objects.all()
+    serializer_class = enrollSerializer

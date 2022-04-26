@@ -303,7 +303,13 @@ class _ClockInClockOutPage extends State<ClockInClockOutPage> {
                         onPressed: () {},
                         child: const Text('Submit'),
                       ),
-                    )
+                    ),
+                    const SizedBox(width: 10, height: 30),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        width: displayWidth(context) * .66,
+                        child: ElevatedButton(
+                            onPressed: () {}, child: const Text('Clock In'))),
                   ],
                 ),
               ),

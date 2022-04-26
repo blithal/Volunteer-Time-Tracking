@@ -7,6 +7,7 @@ class userTimeSerializer(serializers.ModelSerializer):
     model = info
     fields = [
     'userId',
+    'eventId',
     'ClockIn',
     'ClockOut',
     'Date',

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/admin_view_admins.dart';
 import 'package:volunteer_time_tracking/admin_view_events.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
@@ -42,23 +44,23 @@ class AdminAccountPage extends StatefulWidget {
 }
 
 class _AdminAccountPage extends State<AdminAccountPage> {
-  List<UserInfo>? users;
+  UserInfo? users;
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    // getData();
+    getData();
   }
 
-  // getData() async {
-  //   users = await RemoteService().getUsersInfo();
-  //   if (users != null) {
-  //     setState(() {
-  //       isLoaded = true;
-  //     });
-  //   }
-  // }
+  getData() async {
+    users = await RemoteService().getUserInfo(widget.user);
+    if (users != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
 
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
@@ -112,10 +114,7 @@ class _AdminAccountPage extends State<AdminAccountPage> {
                         width: displayWidth(context) * .25,
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "Admin: " +
-                              users![1].firstName +
-                              " " +
-                              users![1].lastName,
+                          "Admin: " + users!.firstName + " " + users!.lastName,
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 25),
                         ),
@@ -149,7 +148,7 @@ class _AdminAccountPage extends State<AdminAccountPage> {
                           color: Color.fromARGB(255, 113, 200, 184),
                         ),
                         child: Text(
-                          users![1].email,
+                          users!.email,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 17, color: Colors.white),
@@ -186,7 +185,7 @@ class _AdminAccountPage extends State<AdminAccountPage> {
                           color: Color.fromARGB(255, 113, 200, 184),
                         ),
                         child: Text(
-                          users![1].phone,
+                          users!.phone,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 17, color: Colors.white),
@@ -329,8 +328,11 @@ class _AdminAccountPage extends State<AdminAccountPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyApp()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginPage(userRepository: UserRepository())));
             },
             icon: const Icon(
               Icons.logout,

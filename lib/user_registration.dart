@@ -1,6 +1,7 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:volunteer_time_tracking/UserSettings.dart';
 import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
 import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
@@ -47,18 +48,6 @@ class UserRegistrationPage extends StatefulWidget {
   State<UserRegistrationPage> createState() => _UserRegistrationPage();
 }
 
-// class EventsInfo {
-//   String event, date, description, orginizer, start, end, address;
-//   EventsInfo(
-//       {required this.event,
-//       required this.date,
-//       required this.description,
-//       required this.orginizer,
-//       required this.start,
-//       required this.end,
-//       required this.address});
-// }
-
 class _UserRegistrationPage extends State<UserRegistrationPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<EventInfo>? events;
@@ -73,6 +62,12 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
   loadEvents() async {
     events = await RemoteService().GetEvents();
     if (events != null) {
+      for (final i in events!) {
+        if (i.id == 1) {
+          events!.remove(i);
+          break;
+        }
+      }
       setState(() {
         eventsLoaded = true;
       });
@@ -80,7 +75,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
   }
 
   Widget volunteerCard(String name, String date, String description,
-      String organizerName, String startTime, String endTime, String loca) {
+      String organizerName, String startTime, String loca, bool completed) {
     return Container(
         //width: displayWidth(context) * .2,
         padding: const EdgeInsets.all(10),
@@ -141,7 +136,7 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
                           bottomRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10))),
                   child: Text(
-                    startTime + "-" + endTime,
+                    startTime,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
@@ -197,187 +192,178 @@ class _UserRegistrationPage extends State<UserRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    loadEvents();
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 10) /*Spacing for user*/,
-                Container(
-                  width: displayWidth(context) * .70,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Volunteer Opportunities',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ),
-                const SizedBox(height: 10) /*Spacing for user*/,
-                // Column(
-                //   children: events.map((eventone) {
-                //     return ListTile(
-                //         title: SizedBox(
-                //             child: volunteerCard(
-                //                 eventone.event,
-                //                 eventone.date,
-                //                 eventone.description,
-                //                 eventone.orginizer,
-                //                 eventone.start,
-                //                 eventone.end,
-                //                 eventone.address)));
-                //   }).toList(),
-                // )
-              ],
-            ),
-          ),
-          // const SizedBox(height: 10) /*Spacing for user*/,
-          // Column(
-          //     // children: events.map((eventone) {
-          //     //   return Container(
-          //     //     child: ListTile(
-          //     //       title: Text(eventone.event),
-          //     //       subtitle: Text("Address: " + eventone.date),
-          //     //     ),
-          //     //     margin: const EdgeInsets.all(5),
-          //     //     padding: const EdgeInsets.all(5),
-          //     //     color: Colors.green[100],
-          //     //   );
-          //     // }).toList(),
-          //     )
+    if (!eventsLoaded) {
+      return Scaffold();
+    } else {
+      return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      drawer: Drawer(
-          child: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+        body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  Container(
+                    width: displayWidth(context) * .70,
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      'Volunteer Opportunities',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  const SizedBox(height: 10) /*Spacing for user*/,
+                  ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: events?.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: volunteerCard(
+                              events![index].name,
+                              events![index].startDate.toString(),
+                              events![index].description,
+                              events![index].organizer,
+                              events![index].startTime,
+                              events![index].location,
+                              events![index].completed),
+                        );
+                      })
+                ],
+              ),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserHome(
-                            user: widget.currUserId,
-                          )));
-            },
-            icon: const Icon(
-              Icons.home,
-              size: 20,
-            ),
-            label: const Text('Home'),
           ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+        ),
+        drawer: Drawer(
+            child: ListView(
+          padding: const EdgeInsets.all(8),
+          children: <Widget>[
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserHome(
+                              user: widget.currUserId,
+                            )));
+              },
+              icon: const Icon(
+                Icons.home,
+                size: 20,
+              ),
+              label: const Text('Home'),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Volunteer Opportunities'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Volunteer Opportunities'),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserEnrolled(
-                            currUserId: widget.currUserId,
-                          )));
-            },
-            child: const Text('Currently Enrolled'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserEnrolled(
+                              currUserId: widget.currUserId,
+                            )));
+              },
+              child: const Text('Currently Enrolled'),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserCompleted(
-                            currUserId: widget.currUserId,
-                          )));
-            },
-            child: const Text('Volunteer History'),
-          ),
-          const SizedBox(height: 25) /*Spacing for user*/,
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserCompleted(
+                              currUserId: widget.currUserId,
+                            )));
+              },
+              child: const Text('Volunteer History'),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserAccount(
-                            user: widget.currUserId,
-                          )));
-            },
-            icon: const Icon(
-              Icons.account_circle,
-              size: 20,
+            const SizedBox(height: 25) /*Spacing for user*/,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserAccount(
+                              user: widget.currUserId,
+                            )));
+              },
+              icon: const Icon(
+                Icons.account_circle,
+                size: 20,
+              ),
+              label: const Text('Account'),
             ),
-            label: const Text('Account'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserSettings(
+                              user: widget.currUserId,
+                            )));
+              },
+              icon: const Icon(
+                Icons.settings,
+                size: 20,
+              ),
+              label: const Text('Settings'),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserSettings(
-                            user: widget.currUserId,
-                          )));
-            },
-            icon: const Icon(
-              Icons.settings,
-              size: 20,
+            const SizedBox(height: 10) /*Spacing for user*/,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(
+                              userRepository: UserRepository(),
+                            )));
+              },
+              icon: const Icon(
+                Icons.logout,
+                size: 20,
+              ),
+              label: const Text('Logout'),
             ),
-            label: const Text('Settings'),
-          ),
-          const SizedBox(height: 10) /*Spacing for user*/,
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 17),
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LoginPage(
-                            userRepository: UserRepository(),
-                          )));
-            },
-            icon: const Icon(
-              Icons.logout,
-              size: 20,
-            ),
-            label: const Text('Logout'),
-          ),
-        ],
-      )),
-    );
+          ],
+        )),
+      );
+    }
   }
 }

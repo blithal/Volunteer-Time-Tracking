@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:volunteer_time_tracking/models/enrolledInfo.dart';
 import 'package:volunteer_time_tracking/models/eventInfo.dart';
 import 'package:volunteer_time_tracking/models/userInfo.dart';
 import 'package:http/http.dart' as http;
@@ -84,6 +85,22 @@ class RemoteService {
     }
   }
 
+  Future<EventInfo> GetEvent(int eventId) async {
+    var client = http.Client();
+
+    String urlString = "http://127.0.0.1:8000/events/" + eventId.toString();
+    var uri = Uri.parse(urlString);
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = response.body;
+      EventInfo temp =
+          EventInfo.fromJson(jsonDecode(json) as Map<String, dynamic>);
+      return temp;
+    } else {
+      return EventInfo.defaultEvent();
+    }
+  }
+
   Future<bool> CreateEvent(String name, String description, DateTime date,
       String time, bool completed, String organizer, String location) async {
     var client = http.Client();
@@ -101,7 +118,7 @@ class RemoteService {
     });
     var response = await client
         .post(uri, body: body, headers: {"Content-Type": "application/json"});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return true;
     } else {
       return false;
@@ -147,6 +164,31 @@ class RemoteService {
     var urlString = "http://127.0.0.1:8000/events/" + eventId.toString();
     var uri = Uri.parse(urlString);
     var response = await client.delete(uri);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<List<EnrolledInfo>?> GetEnrollInfo() async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/enrolled?format=json");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = response.body;
+      return enrolledInfoFromJson(json);
+    }
+  }
+
+  Future<bool> EnrollUser(int userId, int eventId) async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/enrolled");
+    var body = json.encode({"userId": userId, "eventId": eventId});
+    var response = await client
+        .post(uri, body: body, headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       return true;
     } else {

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import info
+from .models import enroll
 
 
 class eventsSerializer(serializers.ModelSerializer):
@@ -18,4 +19,13 @@ class eventsSerializer(serializers.ModelSerializer):
           'startTime',
           'location',
           'completed'
+        ]
+
+class enrollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = enroll
+        fields = [
+            'id',
+          'userId',
+          'eventId'
         ]

@@ -33,6 +33,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register('userdetails', viewsUser.user)
 router.register('logindetails', viewsUser.logininfo)
 router.register('events', viewsEvent.events, basename='events')
+router.register('enrolled', viewsEvent.enrolled, basename='enrolled')
 
 router2 = routers.DefaultRouter(trailing_slash=False)
 router2.register('userTimedetails', viewsTime.views)

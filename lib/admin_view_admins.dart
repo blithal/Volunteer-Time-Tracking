@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
 import 'package:volunteer_time_tracking/admin_view_events.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
+import 'package:volunteer_time_tracking/bloc_login/login/login_page.dart';
 import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_home.dart';
@@ -372,8 +374,11 @@ class _ViewAdminsPage extends State<ViewAdminsPage> {
               textStyle: const TextStyle(fontSize: 17),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyApp()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginPage(userRepository: UserRepository())));
             },
             icon: const Icon(
               Icons.logout,

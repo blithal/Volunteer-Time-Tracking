@@ -67,6 +67,10 @@ class _EditEventPage extends State<EditEventPage> {
     return displaySize(context).width;
   }
 
+  _EditEventPressed() {
+    if (widget.event.id == -1) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -72,33 +72,6 @@ class _ViewEventsPage extends State<ViewEventsPage> {
     }
   }
 
-  // final events = List.generate(
-  //   10,
-  //   (i) => Event(
-  //     '$i',
-  //     'Title $i',
-  //     '$i-1/22',
-  //     'This is a test description for event number $i.',
-  //     'Organizer $i',
-  //     '$i:00am',
-  //     '$i:00am',
-  //     '$i MakeBelieve Place, Fayetteville AR',
-  //   ),
-  // );
-
-  // final nullEvent = List.generate(
-  //   1,
-  //   (i) => Event(
-  //     -1,
-  //     '',
-  //     '',
-  //     '',
-  //     DateTime.now(),
-  //     '',
-  //     false,
-  //   ),
-  // );
-
   Widget volunteerCard(String name, String date, String description,
       String organizerName, String startTime, String loca, bool completed) {
     return Container(

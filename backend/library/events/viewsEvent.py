@@ -10,10 +10,10 @@ from rest_framework import status
 
 # Create your views here.
 class events(viewsets.ModelViewSet):
+    #http_method_names = ['get', 'head', 'post', 'put']
     permission_classes = [permissions.AllowAny]
     queryset = info.objects.all()
     serializer_class = eventsSerializer
-        
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

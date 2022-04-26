@@ -34,41 +34,11 @@ class RemoteService {
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
-      // List<UserInfo> users = userInfoFromJson(json);
-      // UserInfo temp = UserInfo.defaultUser();
-      // users.forEach((u) {
-      //   if (u.id == user.id) {
-      //     temp = u;
-      //   }
-      // });
-      // return temp;
-      //List<UserInfo> temps = userInfoFromJson(json);
       UserInfo temp =
           UserInfo.fromJson(jsonDecode(json) as Map<String, dynamic>);
       return temp;
     } else {
       return UserInfo.defaultUser();
-    }
-  }
-
-  Future<bool?> createEvent(String name, String description, DateTime startDate,
-      String startTime) async {
-    var client = http.Client();
-
-    var formatter = new DateFormat("yyyy-MM-dd");
-    var uri = Uri.parse("http://127.0.0.1:8000/events/events");
-    var body = jsonEncode({
-      "name": name,
-      "description": description,
-      "startDate": formatter.format(startDate).toString(),
-      "startTime": startTime
-    });
-    var response = await client
-        .post(uri, body: body, headers: {"Content-Type": "application/json"});
-    if (response.statusCode == 201) {
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -114,21 +84,23 @@ class RemoteService {
     }
   }
 
-  Future<bool> CreateEvent(String name, String description, String date,
+  Future<bool> CreateEvent(String name, String description, DateTime date,
       String time, bool completed, String organizer, String location) async {
     var client = http.Client();
 
+    var formatter = new DateFormat("yyyy-MM-dd");
     var uri = Uri.parse("http://127.0.0.1:8000/events");
     var body = json.encode({
       "name": name,
       "description": description,
-      "startDate": DateTime.parse(date),
+      "startDate": formatter.format(date).toString(),
       "startTime": time,
       "completed": completed,
       "organizer": organizer,
       "location": location
     });
-    var response = await client.post(uri, body: body);
+    var response = await client
+        .post(uri, body: body, headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -140,25 +112,41 @@ class RemoteService {
       int eventId,
       String name,
       String description,
-      String date,
+      DateTime date,
       String time,
       bool completed,
       String organizer,
       String location) async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/events");
+    var urlString = "http://127.0.0.1:8000/events/" + eventId.toString();
+    var formatter = new DateFormat("yyyy-MM-dd");
+    var uri = Uri.parse(urlString);
     var body = json.encode({
       "id": eventId,
       "name": name,
       "description": description,
-      "startDate": DateTime.parse(date),
+      "startDate": formatter.format(date).toString(),
       "startTime": time,
       "completed": completed,
       "organizer": organizer,
       "location": location
     });
-    var response = await client.post(uri, body: body);
+    var response = await client
+        .put(uri, body: body, headers: {"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> DeleteEvent(int eventId) async {
+    var client = http.Client();
+
+    var urlString = "http://127.0.0.1:8000/events/" + eventId.toString();
+    var uri = Uri.parse(urlString);
+    var response = await client.delete(uri);
     if (response.statusCode == 200) {
       return true;
     } else {

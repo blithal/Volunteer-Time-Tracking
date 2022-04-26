@@ -8,6 +8,7 @@ import 'package:volunteer_time_tracking/admin_view_events.dart';
 import 'package:volunteer_time_tracking/admin_view_users.dart';
 import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
 import 'package:volunteer_time_tracking/models/eventInfo.dart';
+import 'package:volunteer_time_tracking/services/remote_service.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
 import 'package:volunteer_time_tracking/main.dart';
 import 'package:volunteer_time_tracking/admin_account.dart';
@@ -65,6 +66,45 @@ class _EditEventPage extends State<EditEventPage> {
 
   double displayWidth(BuildContext context) {
     return displaySize(context).width;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadEditEvent();
+  }
+
+  loadEditEvent() {
+    if (widget.event.id != -1) {
+      nameController.text = widget.event.name;
+      descController.text = widget.event.description;
+      dateController.text = widget.event.startDate;
+      timeController.text = widget.event.startTime;
+      organizerController.text = widget.event.organizer;
+      locationController.text = widget.event.location;
+    }
+  }
+
+  _EditEventPressed() async {
+    if (widget.event.id != -1) {
+      var added = await RemoteService().UpdateEvent(
+          widget.event.id,
+          nameController.text,
+          descController.text,
+          DateTime.parse(dateController.text),
+          timeController.text,
+          false,
+          organizerController.text,
+          locationController.text);
+      if (added) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewEvents(
+                      user: widget.user,
+                    )));
+      }
+    }
   }
 
   @override
@@ -324,10 +364,11 @@ class _EditEventPage extends State<EditEventPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: displayWidth(context) * .20,
-                    child: const TextField(
+                    child: TextField(
                       decoration: InputDecoration(
                         labelText: 'New Address',
                       ),
+                      controller: locationController,
                     ),
                   ),
                 ]),
@@ -348,7 +389,10 @@ class _EditEventPage extends State<EditEventPage> {
                     width: displayWidth(context) * .50,
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
-                        onPressed: () {}, child: const Text('Save'))),
+                        onPressed: () {
+                          _EditEventPressed();
+                        },
+                        child: const Text('Save'))),
               ],
             ),
           ),

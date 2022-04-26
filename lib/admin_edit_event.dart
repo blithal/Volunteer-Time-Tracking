@@ -40,6 +40,7 @@ class EditEventPage extends StatefulWidget {
 
   final EventInfo event;
   final String title;
+
   User user;
   @override
   State<EditEventPage> createState() => _EditEventPage();
@@ -47,6 +48,12 @@ class EditEventPage extends StatefulWidget {
 
 class _EditEventPage extends State<EditEventPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final nameController = TextEditingController();
+  final descController = TextEditingController();
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
+  final organizerController = TextEditingController();
+  final locationController = TextEditingController();
 
   Size displaySize(BuildContext context) {
     return MediaQuery.of(context).size;
@@ -94,45 +101,6 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: const Text(
-                      'ID: ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 17, color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(width: 10) /*Spacing for user*/,
-                  Container(
-                    width: displayWidth(context) * .20,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 113, 200, 184),
-                    ),
-                    child: Text(
-                      "Previous: " + widget.event.id.toString(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 17, color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(width: 10) /*Spacing for user*/,
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    width: displayWidth(context) * .20,
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'New ID',
-                      ),
-                    ),
-                  ),
-                ]),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Container(
-                    width: displayWidth(context) * .20,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: const Text(
                       'Title: ',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 17, color: Colors.white),
@@ -156,10 +124,11 @@ class _EditEventPage extends State<EditEventPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: displayWidth(context) * .20,
-                    child: const TextField(
+                    child: TextField(
                       decoration: InputDecoration(
                         labelText: 'New Title',
                       ),
+                      controller: nameController,
                     ),
                   ),
                 ]),
@@ -195,10 +164,11 @@ class _EditEventPage extends State<EditEventPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: displayWidth(context) * .20,
-                    child: const TextField(
+                    child: TextField(
                       decoration: InputDecoration(
                         labelText: 'New Date',
                       ),
+                      controller: dateController,
                     ),
                   ),
                 ]),
@@ -234,10 +204,11 @@ class _EditEventPage extends State<EditEventPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: displayWidth(context) * .20,
-                    child: const TextField(
+                    child: TextField(
                       decoration: InputDecoration(
                         labelText: 'New Description',
                       ),
+                      controller: descController,
                     ),
                   ),
                 ]),
@@ -273,10 +244,11 @@ class _EditEventPage extends State<EditEventPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: displayWidth(context) * .20,
-                    child: const TextField(
+                    child: TextField(
                       decoration: InputDecoration(
                         labelText: 'New Organizer',
                       ),
+                      controller: organizerController,
                     ),
                   ),
                 ]),
@@ -289,7 +261,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 126, 148, 203),
                     ),
                     child: const Text(
-                      'Start Time: ',
+                      'Time: ',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 17, color: Colors.white),
                     ),
@@ -312,49 +284,11 @@ class _EditEventPage extends State<EditEventPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: displayWidth(context) * .20,
-                    child: const TextField(
+                    child: TextField(
                       decoration: InputDecoration(
-                        labelText: 'New Start Time',
+                        labelText: 'New Time',
                       ),
-                    ),
-                  ),
-                ]),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Container(
-                    width: displayWidth(context) * .20,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 126, 148, 203),
-                    ),
-                    child: const Text(
-                      'End Time: ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 17, color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(width: 10) /*Spacing for user*/,
-                  Container(
-                    width: displayWidth(context) * .20,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Color.fromARGB(255, 113, 200, 184),
-                    ),
-                    child: Text(
-                      "Previous: " + widget.event.location,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 17, color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(width: 10) /*Spacing for user*/,
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    width: displayWidth(context) * .20,
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'New EndTime',
-                      ),
+                      controller: timeController,
                     ),
                   ),
                 ]),
@@ -381,7 +315,7 @@ class _EditEventPage extends State<EditEventPage> {
                       color: Color.fromARGB(255, 113, 200, 184),
                     ),
                     child: Text(
-                      "Previous: " + widget.event.completed.toString(),
+                      "Previous: " + widget.event.location.toString(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17, color: Colors.white),
                     ),

@@ -11,5 +11,6 @@ class info(models.Model):
     startTime = models.CharField(max_length=256)
     location = models.CharField(max_length = 256)
     completed = models.BooleanField(default=False)
-class Meta:
-    db_table = "events"
+
+    def __str__(self):
+        return str(self.id)

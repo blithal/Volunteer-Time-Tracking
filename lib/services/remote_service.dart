@@ -13,11 +13,12 @@ class RemoteService {
   Future<List<UserInfo>?> getUsersInfo(User user) async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/api/user?format=json");
-    var response = await client.get(uri, headers: {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      "Authorization": user.token
-    });
+    var uri = Uri.parse("http://127.0.0.1:8000/userdetails?format=json");
+    // var response = await client.get(uri, headers: {
+    //   "Content-Type": 'application/x-www-form-urlencoded',
+    //   "Authorization": user.token
+    // });
+    var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
       return userInfoFromJson(json);
@@ -26,21 +27,24 @@ class RemoteService {
 
   Future<UserInfo> getUserInfo(User user) async {
     var client = http.Client();
-
-    var uri = Uri.parse("http://127.0.0.1:8000/api/user?format=json");
-    var response = await client.get(uri, headers: {
-      "Content-Type": 'application/octet-stream',
-      "Authorization": user.token
-    });
+    var urlString = "http://127.0.0.1:8000/userdetails/" +
+        user.id.toString() +
+        "?format=json";
+    var uri = Uri.parse(urlString);
+    var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
-      List<UserInfo> users = userInfoFromJson(json);
-      UserInfo temp = UserInfo.defaultUser();
-      users.forEach((u) {
-        if (u.id == user.id) {
-          temp = u;
-        }
-      });
+      // List<UserInfo> users = userInfoFromJson(json);
+      // UserInfo temp = UserInfo.defaultUser();
+      // users.forEach((u) {
+      //   if (u.id == user.id) {
+      //     temp = u;
+      //   }
+      // });
+      // return temp;
+      //List<UserInfo> temps = userInfoFromJson(json);
+      UserInfo temp =
+          UserInfo.fromJson(jsonDecode(json) as Map<String, dynamic>);
       return temp;
     } else {
       return UserInfo.defaultUser();
@@ -90,6 +94,13 @@ class RemoteService {
     }
   }
 
+  // Future<bool> createUserInfo(
+  //     String firstName, String lastName, String email) async {
+  //   var client = http.Client();
+  //   var uri = Uri.parse("http://127.0.0.1:8000/userdetails/");
+  //   var body = jsonEncode({"firstName"});
+  // }
+
   Future<bool> isUserAdmin(User user) async {
     UserInfo info = await getUserInfo(user);
     if (info.isAdmin) {
@@ -107,6 +118,58 @@ class RemoteService {
     if (response.statusCode == 200) {
       var json = response.body;
       return eventFromJson(json);
+    }
+  }
+
+  Future<bool> CreateEvent(String name, String description, String date,
+      String time, bool completed, String organizer, String location) async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/events/events/");
+    var body = json.encode({
+      "name": name,
+      "description": description,
+      "startDate": DateTime.parse(date),
+      "startTime": time,
+      "completed": completed,
+      "organizer": organizer,
+      "location": location
+    });
+    var response = await client.post(uri, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> UpdateEvent(
+      int EventId,
+      String name,
+      String description,
+      String date,
+      String time,
+      bool completed,
+      String organizer,
+      String location) async {
+    var client = http.Client();
+
+    var uri = Uri.parse("http://127.0.0.1:8000/events/events/");
+    var body = json.encode({
+      "id": EventId,
+      "name": name,
+      "description": description,
+      "startDate": DateTime.parse(date),
+      "startTime": time,
+      "completed": completed,
+      "organizer": organizer,
+      "location": location
+    });
+    var response = await client.post(uri, body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

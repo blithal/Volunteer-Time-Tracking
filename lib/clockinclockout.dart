@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:volunteer_time_tracking/bloc_login/model/user.dart';
-import 'clockinclockout_eventsdropdown.dart';
+import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
+import 'package:volunteer_time_tracking/clockinclockout_eventsdropdown.dart';
 import 'package:volunteer_time_tracking/theme/volunteerTheme.dart';
+import 'package:volunteer_time_tracking/user_account.dart';
+import 'package:volunteer_time_tracking/user_completed.dart';
+import 'package:volunteer_time_tracking/user_enrolled.dart';
+import 'package:volunteer_time_tracking/user_home.dart';
+import 'package:volunteer_time_tracking/user_registration.dart';
 
-// void main() => runApp(new MyApp());
+import 'UserSettings.dart';
+import 'bloc_login/login/login_page.dart';
 
-// datetime picker documentation: https://pub.dev/packages/flutter_datetime_picker/example
 class CustomPicker extends CommonPickerModel {
   String digits(int value, int length) {
     return '$value'.padLeft(length, "0");
@@ -16,15 +22,15 @@ class CustomPicker extends CommonPickerModel {
   CustomPicker({DateTime? currentTime, LocaleType? locale})
       : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
-    this.setLeftIndex(this.currentTime.hour);
-    this.setMiddleIndex(this.currentTime.minute);
-    this.setRightIndex(this.currentTime.second);
+    setLeftIndex(this.currentTime.hour);
+    setMiddleIndex(this.currentTime.minute);
+    setRightIndex(this.currentTime.second);
   }
 
   @override
   String? leftStringAtIndex(int index) {
     if (index >= 0 && index < 24) {
-      return this.digits(index, 2);
+      return digits(index, 2);
     } else {
       return null;
     }
@@ -33,7 +39,7 @@ class CustomPicker extends CommonPickerModel {
   @override
   String? middleStringAtIndex(int index) {
     if (index >= 0 && index < 60) {
-      return this.digits(index, 2);
+      return digits(index, 2);
     } else {
       return null;
     }
@@ -42,7 +48,7 @@ class CustomPicker extends CommonPickerModel {
   @override
   String? rightStringAtIndex(int index) {
     if (index >= 0 && index < 60) {
-      return this.digits(index, 2);
+      return digits(index, 2);
     } else {
       return null;
     }
@@ -66,67 +72,11 @@ class CustomPicker extends CommonPickerModel {
   @override
   DateTime finalTime() {
     return currentTime.isUtc
-        ? DateTime.utc(
-            currentTime.year,
-            currentTime.month,
-            currentTime.day,
-            this.currentLeftIndex(),
-            this.currentMiddleIndex(),
-            this.currentRightIndex())
-        : DateTime(
-            currentTime.year,
-            currentTime.month,
-            currentTime.day,
-            this.currentLeftIndex(),
-            this.currentMiddleIndex(),
-            this.currentRightIndex());
+        ? DateTime.utc(currentTime.year, currentTime.month, currentTime.day,
+            currentLeftIndex(), currentMiddleIndex(), currentRightIndex())
+        : DateTime(currentTime.year, currentTime.month, currentTime.day,
+            currentLeftIndex(), currentMiddleIndex(), currentRightIndex());
   }
-}
-
-// List<DropdownMenuItem<String>> get dropdownItems {
-//   List<DropdownMenuItem<String>> menuItems = [
-//     DropdownMenuItem(child: Text("USA"), value: "USA"),
-//     DropdownMenuItem(child: Text("Canada"), value: "Canada"),
-//     DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
-//     DropdownMenuItem(child: Text("England"), value: "England"),
-//   ];
-//   return menuItems;
-// }
-
-// class DropdownItem extends StatefulWidget {
-//   const DropdownItem({Key? key}) : super(key: key);
-
-//   @override
-//   _DropdownItemState createState() => _DropdownItemState();
-// }
-
-// class _DropdownItemState extends State<DropdownItem> {
-//   String selectedValue = "USA";
-//   @override
-//   Widget build(BuildContext context) {
-//     return DropdownButton(value: selectedValue, items: dropdownItems);
-//   }
-// }
-
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: new ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: new HomePage(),
-//     );
-//   }
-// }
-
-class ClockInClockOut extends StatefulWidget {
-  ClockInClockOut({Key? key, required this.user}) : super(key: key);
-  User user;
-  @override
-  State<ClockInClockOut> createState() => _ClockInClockOutState();
 }
 
 class UserPickedValues {
@@ -136,19 +86,52 @@ class UserPickedValues {
   static DateTime clockOutTime = DateTime.now();
 }
 
-Size displaySize(BuildContext context) {
-  return MediaQuery.of(context).size;
+class ClockInClockOut extends StatelessWidget {
+  const ClockInClockOut({Key? key, required this.user}) : super(key: key);
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title:
+          'User Clock In / Clock Out Page - Fayetteville Public Library Volunteer System',
+      theme: VolunteerTheme.lightTheme,
+      home: ClockInClockOutPage(
+        title:
+            'Fayetteville Public Library Volunteer System - Clock In / Clock Out Page',
+        user: user,
+      ),
+    );
+  }
 }
 
-double displayHeight(BuildContext context) {
-  return displaySize(context).height;
+class ClockInClockOutPage extends StatefulWidget {
+  const ClockInClockOutPage({Key? key, required this.title, required this.user})
+      : super(key: key);
+
+  final String title;
+  final User user;
+
+  @override
+  State<ClockInClockOutPage> createState() => _ClockInClockOutPage();
 }
 
-double displayWidth(BuildContext context) {
-  return displaySize(context).width;
-}
+class _ClockInClockOutPage extends State<ClockInClockOutPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-class _ClockInClockOutState extends State<ClockInClockOut> {
+  Size displaySize(BuildContext context) {
+    return MediaQuery.of(context).size;
+  }
+
+  double displayHeight(BuildContext context) {
+    return displaySize(context).height;
+  }
+
+  double displayWidth(BuildContext context) {
+    return displaySize(context).width;
+  }
+
   void updatePage() {
     // purpose of this is to get the Event chosen text widget to update the screen with the event picked when the user chooses the event
     setState(() {});
@@ -162,170 +145,295 @@ class _ClockInClockOutState extends State<ClockInClockOut> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: VolunteerTheme.lightTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Volunteer Time Entry'),
-        ),
-        body: Center(
-          child: Container(
-            width: displayWidth(context) * .60,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 126, 148, 203),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Column(
-              children: [
-                const SizedBox(width: 10, height: 10), // padding
-                Container(
-                  width: displayWidth(context) * .50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: const Color.fromARGB(255, 100, 105, 111),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (_) => EventPicker()))
-                              .then((value) => updatePage());
-                        },
-                        child: Text('Click to choose event'),
-                        style: TextButton.styleFrom(primary: Colors.lightBlue),
-                      ),
-                      Text('Event chosen: ${EventChosen.eventChosen}',
-                          style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10, height: 10), // padding
-                Container(
-                  width: displayWidth(context) * .50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: const Color.fromARGB(255, 100, 105, 111),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Row(
-                    children: <Widget>[
-                      TextButton(
-                          onPressed: () {
-                            DatePicker.showDatePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime(2022, 1, 1),
-                                maxTime: DateTime(
-                                    getCurrentDate().year,
-                                    getCurrentDate().month,
-                                    getCurrentDate().day),
-                                // theme: DatePickerTheme(
-                                //     headerColor: Colors.orange,
-                                //     backgroundColor: Colors.blue,
-                                //     itemStyle: TextStyle(
-                                //         color: Colors.white,
-                                //         fontWeight: FontWeight.bold,
-                                //         fontSize: 18),
-                                //     doneStyle:
-                                //         TextStyle(color: Colors.white, fontSize: 16)),
-                                onChanged: (date) {
-                              print('change $date in time zone ' +
-                                  date.timeZoneOffset.inHours.toString());
-                            }, onConfirm: (date) {
-                              print('confirm $date');
-                              UserPickedValues.datePicked = date;
-                              updatePage(); // refresh page after user picks value
-                            },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.en);
-                          },
-                          child: Text(
-                            'Choose Date',
-                            style: TextStyle(color: Colors.lightBlue),
-                          )),
-                      Text('${UserPickedValues.datePicked}',
-                          style: TextStyle(color: Colors.white)),
-                      Text('      '), // whitespace
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10, height: 10), // padding
-                Container(
-                  width: displayWidth(context) * .50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: const Color.fromARGB(255, 100, 105, 111),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Row(
-                    children: <Widget>[
-                      TextButton(
-                          onPressed: () {
-                            DatePicker.showTime12hPicker(context,
-                                showTitleActions: true, onChanged: (date) {
-                              print('change $date in time zone ' +
-                                  date.timeZoneOffset.inHours.toString());
-                            }, onConfirm: (date) {
-                              print('confirm $date');
-                              UserPickedValues.clockInTime = date;
-                              updatePage(); // refresh page after user picks value
-                            }, currentTime: DateTime.now());
-                          },
-                          child: Text(
-                            'Choose Clock-In Time',
-                            style: TextStyle(color: Colors.lightBlue),
-                          )),
-                      Text('${UserPickedValues.clockInTime}',
-                          style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10, height: 10), // padding
-                Container(
-                  width: displayWidth(context) * .50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: const Color.fromARGB(255, 100, 105, 111),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Row(
-                    children: <Widget>[
-                      TextButton(
-                          onPressed: () {
-                            DatePicker.showTime12hPicker(context,
-                                showTitleActions: true, onChanged: (date) {
-                              print('change $date in time zone ' +
-                                  date.timeZoneOffset.inHours.toString());
-                            }, onConfirm: (date) {
-                              print('confirm $date');
-                              UserPickedValues.clockOutTime = date;
-                              updatePage(); // refresh the page after user picks value
-                            }, currentTime: DateTime.now());
-                          },
-                          child: Text(
-                            'Choose Clock-Out Time',
-                            style: TextStyle(color: Colors.lightBlue),
-                          )),
-                      Text('${UserPickedValues.clockOutTime}',
-                          style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10, height: 10), // padding
-                Container(
-                  width: displayWidth(context) * .25,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 113, 200, 184),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Text('Submit'),
-                      style: TextButton.styleFrom(primary: Colors.white)),
-                )
-              ],
-            ),
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Volunteer Time Entry'),
       ),
+      body: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Container(
+                width: displayWidth(context) * .60,
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 126, 148, 203),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Column(
+                  children: [
+                    const SizedBox(width: 10, height: 10),
+                    Container(
+                      width: displayWidth(context) * .70,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Clock In',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ), // padding
+                    const SizedBox(width: 10, height: 10),
+                    Container(
+                      width: displayWidth(context) * .50,
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 100, 105, 111),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (_) => EventPicker()))
+                                  .then((value) => updatePage());
+                            },
+                            child: const Text('Click to choose event'),
+                            style:
+                                TextButton.styleFrom(primary: Colors.lightBlue),
+                          ),
+                          Text('Event chosen: ${EventChosen.eventChosen}',
+                              style: const TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10, height: 10), // padding
+                    Container(
+                      width: displayWidth(context) * .50,
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 100, 105, 111),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Row(
+                        children: <Widget>[
+                          TextButton(
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime(2022, 1, 1),
+                                    maxTime: DateTime(
+                                        getCurrentDate().year,
+                                        getCurrentDate().month,
+                                        getCurrentDate().day),
+                                    onChanged: (date) {
+                                  print('change $date in time zone ' +
+                                      date.timeZoneOffset.inHours.toString());
+                                }, onConfirm: (date) {
+                                  print('confirm $date');
+                                  UserPickedValues.datePicked = date;
+                                  updatePage(); // refresh page after user picks value
+                                },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.en);
+                              },
+                              child: const Text(
+                                'Choose Date',
+                                style: TextStyle(color: Colors.lightBlue),
+                              )),
+                          Text('${UserPickedValues.datePicked}',
+                              style: const TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10, height: 10), // padding
+                    Container(
+                      width: displayWidth(context) * .50,
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 100, 105, 111),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Row(
+                        children: <Widget>[
+                          TextButton(
+                              onPressed: () {
+                                DatePicker.showTime12hPicker(context,
+                                    showTitleActions: true, onChanged: (date) {
+                                  print('change $date in time zone ' +
+                                      date.timeZoneOffset.inHours.toString());
+                                }, onConfirm: (date) {
+                                  print('confirm $date');
+                                  UserPickedValues.clockInTime = date;
+                                  updatePage(); // refresh page after user picks value
+                                }, currentTime: DateTime.now());
+                              },
+                              child: const Text(
+                                'Choose Clock-In Time',
+                                style: TextStyle(color: Colors.lightBlue),
+                              )),
+                          Text('${UserPickedValues.clockInTime}',
+                              style: const TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10, height: 10), // padding
+                    Container(
+                      width: displayWidth(context) * .50,
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 100, 105, 111),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Row(
+                        children: <Widget>[
+                          TextButton(
+                              onPressed: () {
+                                DatePicker.showTime12hPicker(context,
+                                    showTitleActions: true, onChanged: (date) {
+                                  print('change $date in time zone ' +
+                                      date.timeZoneOffset.inHours.toString());
+                                }, onConfirm: (date) {
+                                  print('confirm $date');
+                                  UserPickedValues.clockOutTime = date;
+                                  updatePage(); // refresh the page after user picks value
+                                }, currentTime: DateTime.now());
+                              },
+                              child: const Text(
+                                'Choose Clock-Out Time',
+                                style: TextStyle(color: Colors.lightBlue),
+                              )),
+                          Text('${UserPickedValues.clockOutTime}',
+                              style: const TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10, height: 10), // padding
+                    Container(
+                      width: displayWidth(context) * .25,
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('Submit'),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )),
+      /*Page Navagation*/
+      drawer: Drawer(
+          child: ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(
+                            user: widget.user,
+                          )));
+            },
+            icon: const Icon(
+              Icons.home,
+              size: 20,
+            ),
+            label: const Text('Home'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserRegistration(
+                            currUserId: widget.user,
+                          )));
+            },
+            child: const Text('Volunteer Opportunities'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserEnrolled(
+                            currUserId: widget.user,
+                          )));
+            },
+            child: const Text('Currently Enrolled'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserCompleted(
+                            currUserId: widget.user,
+                          )));
+            },
+            child: const Text('Volunteer History'),
+          ),
+          const SizedBox(height: 25) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserAccount(
+                            user: widget.user,
+                          )));
+            },
+            icon: const Icon(
+              Icons.account_circle,
+              size: 20,
+            ),
+            label: const Text('Account'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserSettings(user: widget.user)));
+            },
+            icon: const Icon(
+              Icons.settings,
+              size: 20,
+            ),
+            label: const Text('Settings'),
+          ),
+          const SizedBox(height: 10) /*Spacing for user*/,
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 17),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginPage(userRepository: UserRepository())));
+            },
+            icon: const Icon(
+              Icons.logout,
+              size: 20,
+            ),
+            label: const Text('Logout'),
+          ),
+        ],
+      )),
     );
   }
 }

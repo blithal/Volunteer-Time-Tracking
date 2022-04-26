@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volunteer_time_tracking/admin_view_events.dart';
 import 'package:volunteer_time_tracking/bloc_login/repository/user_repository.dart';
 
 import 'package:volunteer_time_tracking/bloc_login/bloc/authentication_bloc.dart';
@@ -52,6 +53,11 @@ class App extends StatelessWidget {
             return LoginPage(
               userRepository: userRepository,
             );
+            // return ViewEvents(
+            //     user: User(
+            //         id: 1,
+            //         token: "4fc48e61be704ce90094c79cfd83f04c52bf0f28",
+            //         username: "admin"));
           }
           return LoadingIndicator();
         },

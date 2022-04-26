@@ -26,11 +26,13 @@ from CustomToken import views
 # ]
 from user import viewsUser
 from userTime import viewsTime
+from events import viewsEvent
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register('userdetails', viewsUser.user)
 router.register('logindetails', viewsUser.logininfo)
+router.register('events', viewsEvent.events, basename='events')
 
 router2 = routers.DefaultRouter(trailing_slash=False)
 router2.register('userTimedetails', viewsTime.views)
@@ -43,7 +45,7 @@ urlpatterns = [
     path('loginInfo/', include('loginInfo.urls')),
     path('user/', include(router.urls)),
     path('userTime/', include(router2.urls)),
-    path('events/', include('events.urls')),
+    #path('events/', include('events.urls')),
     path('api/', include ('api.urls', namespace='api')),
     path('api-token-auth/', views.CustomObtainAuthToken.as_view(), name='api-token-auth'),
 ]

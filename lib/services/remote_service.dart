@@ -94,13 +94,6 @@ class RemoteService {
     }
   }
 
-  // Future<bool> createUserInfo(
-  //     String firstName, String lastName, String email) async {
-  //   var client = http.Client();
-  //   var uri = Uri.parse("http://127.0.0.1:8000/userdetails/");
-  //   var body = jsonEncode({"firstName"});
-  // }
-
   Future<bool> isUserAdmin(User user) async {
     UserInfo info = await getUserInfo(user);
     if (info.isAdmin) {
@@ -113,7 +106,7 @@ class RemoteService {
   Future<List<EventInfo>?> GetEvents() async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/events/events?format=json");
+    var uri = Uri.parse("http://127.0.0.1:8000/events?format=json");
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
@@ -125,7 +118,7 @@ class RemoteService {
       String time, bool completed, String organizer, String location) async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/events/events/");
+    var uri = Uri.parse("http://127.0.0.1:8000/events");
     var body = json.encode({
       "name": name,
       "description": description,
@@ -144,7 +137,7 @@ class RemoteService {
   }
 
   Future<bool> UpdateEvent(
-      int EventId,
+      int eventId,
       String name,
       String description,
       String date,
@@ -154,9 +147,9 @@ class RemoteService {
       String location) async {
     var client = http.Client();
 
-    var uri = Uri.parse("http://127.0.0.1:8000/events/events/");
+    var uri = Uri.parse("http://127.0.0.1:8000/events");
     var body = json.encode({
-      "id": EventId,
+      "id": eventId,
       "name": name,
       "description": description,
       "startDate": DateTime.parse(date),

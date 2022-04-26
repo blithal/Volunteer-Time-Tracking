@@ -62,37 +62,23 @@ class UserRegistrationPage extends StatefulWidget {
 class _UserRegistrationPage extends State<UserRegistrationPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<EventInfo>? events;
+  bool eventsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadEvents();
+  }
 
   loadEvents() async {
     events = await RemoteService().GetEvents();
+    if (events != null) {
+      setState(() {
+        eventsLoaded = true;
+      });
+    }
   }
 
-  // List<EventsInfo> events = [
-  //   EventsInfo(
-  //       event: "test1",
-  //       date: "1-1-22",
-  //       description: "test description 1",
-  //       orginizer: "john doe",
-  //       start: "8:00am",
-  //       end: "9:00pm",
-  //       address: "0000 N Empty St Fayetteville, Arkansas 72701"),
-  //   EventsInfo(
-  //       event: "test2",
-  //       date: "1-2-22",
-  //       description: "test description 2",
-  //       orginizer: "jane doe",
-  //       start: "8:10am",
-  //       end: "9:10pm",
-  //       address: "0001 N Empty St Fayetteville, Arkansas 72701"),
-  //   EventsInfo(
-  //       event: "test3",
-  //       date: "1-3-22",
-  //       description: "test description 3",
-  //       orginizer: "Kagen Crouch",
-  //       start: "8:20am",
-  //       end: "9:20pm",
-  //       address: "0002 N Empty St Fayetteville, Arkansas 72701"),
-  // ];
   Widget volunteerCard(String name, String date, String description,
       String organizerName, String startTime, String endTime, String loca) {
     return Container(
